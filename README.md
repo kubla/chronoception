@@ -4,6 +4,13 @@ Chronoception is an Apple Watch app that measures and trains your sense of elaps
 
 So far, this repository contains product docs and an interactive mockup. Docs include the product specification, mode and metric definitions, and HealthKit integration details for Chronoception v1.
 
+## Web Demo
+
+An interactive web-based demo of the app is included in this repository.
+It simulates the Apple Watch UI and demonstrates Challenge, Fear, and Passive modes.
+
+- View the source in [`web-demo/`](web-demo/)
+
 ## Documents
 
 - [`docs/PRD.md`](docs/PRD.md)  
