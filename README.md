@@ -2,7 +2,7 @@
 
 Chronoception is an Apple Watch app that measures and trains your sense of elapsed time. It treats chronoception as a trainable sense, similar to interoception, and gives you simple on-wrist tools to practice and track improvement.
 
-This repository contains the product specification, mode and metric definitions, and HealthKit integration details for Chronoception v1.
+So far, this repository contains product docs and an interactive mockup. Docs include the product specification, mode and metric definitions, and HealthKit integration details for Chronoception v1.
 
 ## Documents
 
