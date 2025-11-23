@@ -20,7 +20,10 @@ It simulates the Apple Watch UI and demonstrates Challenge, Fear, and Passive mo
 - [`docs/HealthKitSpec.md`](docs/HealthKitSpec.md)  
   HealthKit write behavior, Mindful Session metadata schema, and permission handling.
 
-## High level
+- [`docs/WatchUX.md`](docs/WatchUX.md)  
+  Watch UX & Interaction Design
+
+## High level Overview
 
 Chronoception is designed for two primary audiences:
 
