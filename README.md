@@ -7,8 +7,7 @@ So far, this repository contains product docs and an interactive mockup. Docs in
 ## Web Demo
 
 An interactive web-based demo of the app is included in this repository.
-It simulates the Apple Watch UI and demonstrates Challenge, Fear, and Passive modes. View it here: [[`web-demo/`](web-demo/)
-](https://kubla.github.io/chronoception/web-demo/)
+It simulates the Apple Watch UI and demonstrates Challenge, Fear, and Passive modes. View it here: https://kubla.github.io/chronoception/web-demo/
 
 ## Documents
 
