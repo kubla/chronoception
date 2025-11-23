@@ -22,14 +22,15 @@ It simulates the Apple Watch UI and demonstrates Challenge, Fear, and Passive mo
 
 ## High level
 
-- Platform: Apple Watch only for v1  
-- Modes:
-  - Challenge Mode
-  - Fear Mode (high arousal variant of Challenge)
-  - Passive Training Mode
-- Logs: Mindfulness minutes to Apple Health with rich metadata, to enable deeper off-watch analysis.
-
 Chronoception is designed for two primary audiences:
 
 1. Quantified self enthusiasts who want to run experiments on time perception and learning.
 2. Meditation practitioners who want to meditate on chronoception as a sense gate, and occasionally calibrate that practice against objective time.
+
+- Platform: Apple Watch
+- Modes:
+  - Passive Training Mode, giving you a sense of the passage of time with haptics
+  - Challenge Mode
+  - Fear Mode (high arousal variant of Challenge Mode)
+  - Stats on Challenge Mode accuracy and rate of improvement 
+- Logs: Mindfulness minutes to Apple Health with rich metadata, to enable deeper off-watch analysis
