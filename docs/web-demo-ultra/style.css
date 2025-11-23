@@ -1,0 +1,482 @@
+:root {
+    --watch-bg: #000000;
+    --watch-text: #ffffff;
+    --accent-color: #ff9500; /* Orange-ish like generic watch apps or maybe blue */
+    --item-bg: #1c1c1e; /* Dark gray for list items */
+    --screen-width: 368px; /* 44mm watch */
+    --screen-height: 448px;
+    --bezel: 20px;
+}
+
+body {
+    background-color: #f0f0f0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.presentation-container {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+#watch-scale-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    height: 800px;
+}
+
+#watch-case {
+    position: relative;
+    width: 800px;
+    height: 800px;
+    flex-shrink: 0;
+    background-image: url('apple-watch-ultra-frame.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    transform-origin: center center;
+}
+
+#watch-screen {
+    position: absolute;
+    top: 236px;
+    left: 268px;
+    width: 410px;
+    height: 502px;
+    background-color: var(--watch-bg);
+    color: var(--watch-text);
+    border-radius: 66px; /* Apple Watch Ultra corner radius approximation */
+    overflow: hidden;
+    font-size: 18px;
+    transform: scale(0.6275); /* Uniform scaling to fit the frame hole height, preserving aspect ratio */
+    transform-origin: top left;
+}
+
+#digital-crown, #side-button {
+    display: none;
+}
+
+/* Screens */
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.screen.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Generic Hidden */
+.hidden {
+    display: none !important;
+}
+
+/* Common Elements */
+.header {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    color: var(--accent-color);
+}
+
+.header-small {
+    font-size: 18px;
+    color: #aaa;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Menu */
+.menu-list {
+    width: 100%;
+    overflow-y: auto;
+    flex: 1;
+    padding-bottom: 20px;
+}
+
+.menu-item {
+    width: 100%;
+    background-color: var(--item-bg);
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.menu-item:active {
+    background-color: #3a3a3c;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 15px;
+    background-color: gray;
+}
+
+.challenge-icon { background-color: #34c759; } /* Green */
+.fear-icon { background-color: #ff3b30; } /* Red */
+.passive-icon { background-color: #5856d6; } /* Purple */
+.progress-icon { background-color: #ff9500; } /* Orange */
+.settings-icon { background-color: #8e8e93; } /* Gray */
+
+.label {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+/* Picker */
+.picker-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    /* 3D Effect Mask */
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+.picker-column {
+    height: 150px;
+    width: 70px;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    text-align: center;
+    margin: 0 5px;
+    scroll-behavior: smooth;
+}
+
+/* Hide scrollbar */
+.picker-column::-webkit-scrollbar {
+    display: none;
+}
+
+.picker-item {
+    height: 50px;
+    line-height: 50px;
+    font-size: 28px;
+    scroll-snap-align: center;
+    color: #888;
+}
+
+.picker-item.selected {
+    color: white;
+    font-weight: bold;
+}
+
+.picker-label {
+    font-size: 18px;
+    margin-top: 10px;
+    color: var(--accent-color);
+}
+
+.action-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 20px;
+    width: 90%;
+    cursor: pointer;
+}
+
+.action-button:active {
+    opacity: 0.8;
+}
+
+.text-button {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.text-button:active {
+    color: white;
+}
+
+.stop-btn {
+    background-color: #ff3b30;
+}
+
+/* Config Stepper */
+.config-value-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#config-value {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+}
+
+#config-label {
+    font-size: 16px;
+    color: #aaa;
+}
+
+.stepper-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.stepper-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #333;
+    color: white;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+.stepper-btn:active {
+    background-color: #555;
+}
+
+/* Session Screen styles */
+#session-content {
+    width: 100%;
+    height: 100%;
+}
+
+#session-challenge-container, #session-passive-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.session-state {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.large-time {
+    font-size: 64px;
+    font-weight: 200;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.large-text {
+    font-size: 36px;
+    font-weight: 500;
+    color: white;
+}
+
+.instruction-text {
+    font-size: 18px;
+    color: var(--accent-color);
+    margin-top: 10px;
+}
+
+/* Feedback */
+#challenge-feedback {
+    background-color: #000; /* will change based on error */
+}
+
+.feedback-main {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.feedback-sub {
+    font-size: 32px;
+    font-weight: 400;
+    color: #ddd;
+}
+
+/* Summary */
+.summary-stat {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid #333;
+}
+
+.stat-label {
+    color: #aaa;
+}
+
+.stat-value {
+    color: white;
+    font-weight: 600;
+}
+
+.passive-status {
+    font-size: 24px;
+    color: var(--accent-color);
+    margin-bottom: 30px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Progress */
+.progress-list, .settings-list {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.progress-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--item-bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.progress-label {
+    color: white;
+    font-size: 18px;
+}
+
+.progress-value {
+    color: var(--accent-color);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.progress-chart-placeholder {
+    width: 100%;
+    height: 150px;
+    background-color: var(--item-bg);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.chart-bar {
+    width: 15px;
+    background-color: var(--accent-color);
+    border-radius: 3px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-bottom: 1px solid #333;
+    color: #aaa;
+}
+
+.history-score {
+    color: white;
+    font-weight: bold;
+}
+
+/* Settings */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--item-bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.setting-label {
+    color: white;
+    font-size: 18px;
+}
+
+.toggle {
+    width: 50px;
+    height: 30px;
+    background-color: #333;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle.active {
+    background-color: #34c759;
+}
+
+.toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.toggle.active::after {
+    transform: translateX(20px);
+}
