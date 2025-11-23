@@ -57,6 +57,38 @@ function init() {
     setupPicker();
     setupConfig();
     setupSessionInteractions();
+    setupScaling();
+}
+
+// Scaling
+function setupScaling() {
+    window.addEventListener('resize', scaleWatch);
+    // Initial scale
+    scaleWatch();
+}
+
+function scaleWatch() {
+    const wrapper = document.getElementById('watch-scale-wrapper');
+    const caseEl = document.getElementById('watch-case');
+    if (!wrapper || !caseEl) return;
+
+    const padding = 40;
+    const baseSize = 800;
+    const availW = window.innerWidth;
+    const availH = window.innerHeight;
+
+    let scale = Math.min(
+        (availW - padding) / baseSize,
+        (availH - padding) / baseSize
+    );
+
+    // Update wrapper size to matched scaled content
+    wrapper.style.width = `${baseSize * scale}px`;
+    wrapper.style.height = `${baseSize * scale}px`;
+
+    // Scale the case
+    caseEl.style.transformOrigin = 'top left';
+    caseEl.style.transform = `scale(${scale})`;
 }
 
 // Navigation
