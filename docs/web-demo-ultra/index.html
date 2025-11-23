@@ -14,165 +14,163 @@
                 <div id="watch-screen">
 
                     <!-- Screen: Home / Main Menu -->
-        <div id="watch-case">
-            <div id="watch-screen">
-
-                <!-- Screen: Home / Main Menu -->
-                <div id="screen-home" class="screen active">
-                    <div class="header">Chronoception</div>
-                    <div class="menu-list">
-                        <button class="menu-item" data-mode="challenge">
-                            <div class="icon challenge-icon"></div>
-                            <div class="label">Challenge</div>
-                        </button>
-                        <button class="menu-item" data-mode="fear">
-                            <div class="icon fear-icon"></div>
-                            <div class="label">Fear Mode</div>
-                        </button>
-                        <button class="menu-item" data-mode="passive">
-                            <div class="icon passive-icon"></div>
-                            <div class="label">Passive</div>
-                        </button>
-                        <button class="menu-item" data-mode="progress">
-                            <div class="icon progress-icon"></div>
-                            <div class="label">Progress</div>
-                        </button>
-                        <button class="menu-item" data-mode="settings">
-                            <div class="icon settings-icon"></div>
-                            <div class="label">Settings</div>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Screen: Progress -->
-                <div id="screen-progress" class="screen hidden">
-                    <div class="header">Progress</div>
-                    <div class="progress-list">
-                         <!-- Mock Data -->
-                         <div class="progress-item">
-                            <div class="progress-label">Acuity (7d)</div>
-                            <div class="progress-value">82</div>
-                         </div>
-                         <div class="progress-item">
-                            <div class="progress-label">Sessions</div>
-                            <div class="progress-value">12</div>
-                         </div>
-                         <div class="progress-chart-placeholder">
-                            <!-- CSS Chart -->
-                            <div class="chart-bar" style="height: 60%"></div>
-                            <div class="chart-bar" style="height: 80%"></div>
-                            <div class="chart-bar" style="height: 50%"></div>
-                            <div class="chart-bar" style="height: 90%"></div>
-                            <div class="chart-bar" style="height: 75%"></div>
-                         </div>
-                         <div class="header-small">History</div>
-                         <div class="history-item">
-                             <div>Challenge 5m</div>
-                             <div class="history-score">90</div>
-                         </div>
-                         <div class="history-item">
-                             <div>Fear 5m</div>
-                             <div class="history-score">75</div>
-                         </div>
-                    </div>
-                    <button class="action-button" onclick="showScreen('home')">Back</button>
-                </div>
-
-                 <!-- Screen: Settings -->
-                 <div id="screen-settings" class="screen hidden">
-                    <div class="header">Settings</div>
-                    <div class="settings-list">
-                        <div class="setting-item">
-                            <div class="setting-label">HealthKit</div>
-                            <div class="toggle active" id="toggle-healthkit"></div>
-                        </div>
-                        <div class="setting-item">
-                            <div class="setting-label">Sound</div>
-                            <div class="toggle active" id="toggle-sound"></div>
+                    <div id="screen-home" class="screen active">
+                        <div class="header">Chronoception</div>
+                        <div class="menu-list">
+                            <button class="menu-item" data-mode="challenge">
+                                <div class="icon challenge-icon"></div>
+                                <div class="label">Challenge</div>
+                            </button>
+                            <button class="menu-item" data-mode="fear">
+                                <div class="icon fear-icon"></div>
+                                <div class="label">Fear Mode</div>
+                            </button>
+                            <button class="menu-item" data-mode="passive">
+                                <div class="icon passive-icon"></div>
+                                <div class="label">Passive</div>
+                            </button>
+                            <button class="menu-item" data-mode="progress">
+                                <div class="icon progress-icon"></div>
+                                <div class="label">Progress</div>
+                            </button>
+                            <button class="menu-item" data-mode="settings">
+                                <div class="icon settings-icon"></div>
+                                <div class="label">Settings</div>
+                            </button>
                         </div>
                     </div>
-                    <button class="action-button" onclick="showScreen('home')">Back</button>
-                 </div>
 
-                <!-- Screen: Interval Picker -->
-                <div id="screen-picker" class="screen hidden">
-                    <div class="header-small">Set Interval</div>
-                    <div class="picker-container">
-                        <div class="picker-column" id="picker-min">
-                            <!-- Minutes will be generated by JS -->
+                    <!-- Screen: Progress -->
+                    <div id="screen-progress" class="screen hidden">
+                        <div class="header">Progress</div>
+                        <div class="progress-list">
+                             <!-- Mock Data -->
+                             <div class="progress-item">
+                                <div class="progress-label">Acuity (7d)</div>
+                                <div class="progress-value">82</div>
+                             </div>
+                             <div class="progress-item">
+                                <div class="progress-label">Sessions</div>
+                                <div class="progress-value">12</div>
+                             </div>
+                             <div class="progress-chart-placeholder">
+                                <!-- CSS Chart -->
+                                <div class="chart-bar" style="height: 60%"></div>
+                                <div class="chart-bar" style="height: 80%"></div>
+                                <div class="chart-bar" style="height: 50%"></div>
+                                <div class="chart-bar" style="height: 90%"></div>
+                                <div class="chart-bar" style="height: 75%"></div>
+                             </div>
+                             <div class="header-small">History</div>
+                             <div class="history-item">
+                                 <div>Challenge 5m</div>
+                                 <div class="history-score">90</div>
+                             </div>
+                             <div class="history-item">
+                                 <div>Fear 5m</div>
+                                 <div class="history-score">75</div>
+                             </div>
                         </div>
-                        <div class="picker-label">m</div>
-                        <div class="picker-column" id="picker-sec">
-                            <!-- Seconds will be generated by JS -->
-                        </div>
-                        <div class="picker-label">s</div>
+                        <button class="action-button" onclick="showScreen('home')">Back</button>
                     </div>
-                    <button class="action-button" id="picker-confirm">Next</button>
-                    <button class="text-button" onclick="showScreen('home')">Cancel</button>
-                </div>
 
-                <!-- Screen: Configuration (Attempt Count / Repetitions) -->
-                <div id="screen-config" class="screen hidden">
-                    <div class="header-small" id="config-title">Configuration</div>
-                    <div class="config-value-display">
-                        <span id="config-value">1</span>
-                        <span id="config-label">Attempt</span>
-                    </div>
-                    <div class="stepper-controls">
-                        <button class="stepper-btn" id="config-minus">-</button>
-                        <button class="stepper-btn" id="config-plus">+</button>
-                    </div>
-                    <button class="action-button" id="config-start">Start</button>
-                </div>
-
-                <!-- Screen: Session (Challenge/Fear/Passive) -->
-                 <div id="screen-session" class="screen hidden">
-                    <!-- Challenge/Fear UI -->
-                    <div id="session-challenge-container" class="hidden">
-                        <div id="challenge-ready" class="session-state">
-                            <div class="header-small">Target</div>
-                            <div class="large-time" id="challenge-target-display">5m 0s</div>
-                            <div class="instruction-text">Tap to Start</div>
-                        </div>
-
-                        <div id="challenge-running" class="session-state hidden">
-                            <div class="header-small" id="challenge-attempt-label">Attempt 1 / 5</div>
-                            <div class="large-text">Tap when done</div>
-                            <!-- Invisible tap area covering the whole screen is handled by the container click -->
-                        </div>
-
-                        <div id="challenge-feedback" class="session-state hidden">
-                            <div class="feedback-main" id="feedback-main">Late</div>
-                            <div class="feedback-sub" id="feedback-sub">by 5s</div>
-                        </div>
-
-                        <div id="challenge-summary" class="session-state hidden">
-                            <div class="header">Summary</div>
-                            <div class="summary-stat">
-                                <div class="stat-label">Mean Error</div>
-                                <div class="stat-value" id="summary-mean-error">1.2s</div>
+                    <!-- Screen: Settings -->
+                    <div id="screen-settings" class="screen hidden">
+                        <div class="header">Settings</div>
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <div class="setting-label">HealthKit</div>
+                                <div class="toggle active" id="toggle-healthkit"></div>
                             </div>
-                            <div class="summary-stat">
-                                <div class="stat-label">Acuity Score</div>
-                                <div class="stat-value" id="summary-score">85</div>
+                            <div class="setting-item">
+                                <div class="setting-label">Sound</div>
+                                <div class="toggle active" id="toggle-sound"></div>
                             </div>
-                             <button class="action-button" id="summary-done">Done</button>
+                        </div>
+                        <button class="action-button" onclick="showScreen('home')">Back</button>
+                    </div>
+
+                    <!-- Screen: Interval Picker -->
+                    <div id="screen-picker" class="screen hidden">
+                        <div class="header-small">Set Interval</div>
+                        <div class="picker-container">
+                            <div class="picker-column" id="picker-min">
+                                <!-- Minutes will be generated by JS -->
+                            </div>
+                            <div class="picker-label">m</div>
+                            <div class="picker-column" id="picker-sec">
+                                <!-- Seconds will be generated by JS -->
+                            </div>
+                            <div class="picker-label">s</div>
+                        </div>
+                        <button class="action-button" id="picker-confirm">Next</button>
+                        <button class="text-button" onclick="showScreen('home')">Cancel</button>
+                    </div>
+
+                    <!-- Screen: Configuration (Attempt Count / Repetitions) -->
+                    <div id="screen-config" class="screen hidden">
+                        <div class="header-small" id="config-title">Configuration</div>
+                        <div class="config-value-display">
+                            <span id="config-value">1</span>
+                            <span id="config-label">Attempt</span>
+                        </div>
+                        <div class="stepper-controls">
+                            <button class="stepper-btn" id="config-minus">-</button>
+                            <button class="stepper-btn" id="config-plus">+</button>
+                        </div>
+                        <button class="action-button" id="config-start">Start</button>
+                    </div>
+
+                    <!-- Screen: Session (Challenge/Fear/Passive) -->
+                    <div id="screen-session" class="screen hidden">
+                        <!-- Challenge/Fear UI -->
+                        <div id="session-challenge-container" class="hidden">
+                            <div id="challenge-ready" class="session-state">
+                                <div class="header-small">Target</div>
+                                <div class="large-time" id="challenge-target-display">5m 0s</div>
+                                <div class="instruction-text">Tap to Start</div>
+                            </div>
+
+                            <div id="challenge-running" class="session-state hidden">
+                                <div class="header-small" id="challenge-attempt-label">Attempt 1 / 5</div>
+                                <div class="large-text">Tap when done</div>
+                                <!-- Invisible tap area covering the whole screen is handled by the container click -->
+                            </div>
+
+                            <div id="challenge-feedback" class="session-state hidden">
+                                <div class="feedback-main" id="feedback-main">Late</div>
+                                <div class="feedback-sub" id="feedback-sub">by 5s</div>
+                            </div>
+
+                            <div id="challenge-summary" class="session-state hidden">
+                                <div class="header">Summary</div>
+                                <div class="summary-stat">
+                                    <div class="stat-label">Mean Error</div>
+                                    <div class="stat-value" id="summary-mean-error">1.2s</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="stat-label">Acuity Score</div>
+                                    <div class="stat-value" id="summary-score">85</div>
+                                </div>
+                                 <button class="action-button" id="summary-done">Done</button>
+                            </div>
+                        </div>
+
+                        <!-- Passive UI -->
+                        <div id="session-passive-container" class="hidden">
+                            <div class="header-small">Passive Mode</div>
+                            <div class="passive-status">Running...</div>
+                            <div class="large-time" id="passive-timer">00:00</div>
+                            <div class="instruction-text">Haptics active</div>
+                            <button class="action-button stop-btn" id="passive-stop">End Session</button>
                         </div>
                     </div>
 
-                    <!-- Passive UI -->
-                     <div id="session-passive-container" class="hidden">
-                        <div class="header-small">Passive Mode</div>
-                        <div class="passive-status">Running...</div>
-                        <div class="large-time" id="passive-timer">00:00</div>
-                        <div class="instruction-text">Haptics active</div>
-                        <button class="action-button stop-btn" id="passive-stop">End Session</button>
-                     </div>
-                 </div>
-
-            </div>
-        </div>
-        </div>
+                </div> <!-- End watch-screen -->
+                <div id="digital-crown"></div>
+                <div id="side-button"></div>
+            </div> <!-- End watch-case -->
+        </div> <!-- End watch-scale-wrapper -->
 
         <div class="instructions">
             <h2>Chronoception Web Demo</h2>

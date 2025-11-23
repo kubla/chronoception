@@ -40,17 +40,12 @@ body {
     width: 800px;
     height: 800px;
     flex-shrink: 0;
-    width: 80vh;
-    height: 80vh;
-    max-width: 800px;
-    max-height: 800px;
     background-image: url('apple-watch-ultra-frame.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     margin: 0;
     transform-origin: center center;
-    margin: 0 auto;
 }
 
 #watch-screen {
@@ -69,15 +64,6 @@ body {
     font-size: 18px;
     transform: scale(0.702); /* Upscaled to 0.702 to fill the detected hole (288px width) more tightly */
     transform-origin: top left;
-    top: 29.0%;
-    left: 30.25%;
-    width: 36.5%;
-    height: 44.0%;
-    background-color: var(--watch-bg);
-    color: var(--watch-text);
-    border-radius: 18%;
-    overflow: hidden;
-    font-size: 18px;
 }
 
 #digital-crown, #side-button {
