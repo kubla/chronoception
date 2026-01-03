@@ -23,7 +23,7 @@ The emphasis remains on the Watch experience; the iOS app improves discovery, on
   - `ChronoceptionShared` (Swift package or framework containing shared models, metrics, and services used by both apps).
 - **Framework dependencies**
   - `SwiftUI` – UI layer and navigation.
-  - `HealthKit` – writing Mindful Session entries and optionally reading app‑owned entries on iOS.
+  - `HealthKit` – writing Mindful Session entries from Watch and optionally reading app‑owned entries on iOS.
   - `WatchConnectivity` – syncing preferences and summary‑level session aggregates between Watch and iPhone.
   - `UserNotifications` – optional local reminders on iOS (if included in v1 scope per requirements).
   - `Foundation` / `Combine` – core types, async coordination.
@@ -215,9 +215,8 @@ At a high level (exact folder names may evolve within the Xcode project):
 ### 4.3 Persistence
 
 - **On Watch**
-  - Lightweight persistence via:
-    - `FileManager` writing JSON blobs per session, **or**
-    - `CoreData` or `SQLite` if needed (decision made during implementation based on complexity).
+  - Default: a lightweight, file‑backed store using `FileManager` + `Codable` JSON (e.g., one file per session plus a small index).
+  - Criteria to revisit (non‑default): only migrate to `CoreData`/SQLite if we need complex queries, migrations, or performance beyond what simple JSON can support.
   - Requirements:
     - Sessions must be durable for on‑watch Progress even if iPhone is unavailable.
     - Storage size is small; we can reasonably retain several hundred sessions locally.
@@ -227,7 +226,7 @@ At a high level (exact folder names may evolve within the Xcode project):
     - `SessionSummary` records.
     - Derived aggregates cached for quick display.
   - Persistence backend:
-    - `CoreData` or similar local store, to handle modest amounts of analytics data.
+    - Default: `CoreData` for `SessionSummary` and cached aggregates.
 
 - **Settings and defaults**
   - Use `UserDefaults` with App Group for:
@@ -256,13 +255,17 @@ Define typed payloads for messages between Watch and iPhone, serialised as JSON 
 Connectivity behavior:
 
 - Watch is authoritative for session data; iOS treats incoming `SessionSummaryPayload`s as append‑only events.
+- Idempotency: `sessionId` is the primary key; iOS inserts are upserts keyed on `sessionId` so duplicate deliveries are safe.
+- Queueing: Watch maintains a bounded outbox of unsent `SessionSummaryPayload`s and flushes when connectivity is available.
 - Preferences are **last‑writer‑wins** with iOS usually acting as the main author; Watch updates can also be sent if user changes settings on Watch.
 
 ### 4.5 HealthKit integration
 
 - **Types and permissions**
-  - Request **write** permission for `HKCategoryTypeIdentifier.mindfulSession` on both Watch and iOS (for consistency).
-  - No other Health types in v1; no reads beyond potential app‑owned Mindful Sessions on iOS.
+  - Watch (v1): request **write** permission for `HKCategoryTypeIdentifier.mindfulSession`.
+  - iOS (v1): no HealthKit writes; request no HealthKit permissions unless the optional read‑based history rebuild is enabled.
+  - iOS (stretch / v1.1): request **read** permission for `HKCategoryTypeIdentifier.mindfulSession` (app‑owned entries only) to rebuild summaries.
+  - No other Health types are read or written in v1.
 
 - **Write behavior (Watch)**
   - For each completed session:
@@ -449,4 +452,3 @@ Connectivity behavior:
 - Phase 6: Preferences sync correctly, and both apps behave sensibly in all described permission and connectivity states.
 
 This technical specification is designed to fully realize the revised PRD for a Watch‑first experience with a supporting iOS app, while keeping scope constrained, testable, and aligned with the existing product documentation and web prototype.
-
