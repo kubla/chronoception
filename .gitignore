@@ -1,0 +1,35 @@
+node_modules/
+dist/
+build/
+.cache/
+*.log
+
+# Xcode / Swift
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+*.xcuserdatad/
+*.xcuserdata/
+*.swp
+*.DS_Store
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Temporary files
+tmp/
