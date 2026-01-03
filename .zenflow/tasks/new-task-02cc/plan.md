@@ -51,7 +51,8 @@ If the feature is trivial and doesn't warrant full specification, update this wo
 
 Save to `{@artifacts_path}/plan.md`.
 
-### [ ] Step: Implementation
+### [x] Step: Implementation
+<!-- chat-id: 76900e58-c322-470e-8543-1595f2ae979d -->
 
 Implement the work described in `.zenflow/tasks/new-task-02cc/spec.md` by completing the tasks below, in order. Each step includes explicit verification guidance.
 

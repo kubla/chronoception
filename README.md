@@ -4,6 +4,11 @@ Chronoception is an Apple Watch app that measures and trains your sense of elaps
 
 So far, this repository contains product docs and an interactive mockup. Docs include the product specification, mode and metric definitions, and HealthKit integration details for Chronoception v1.
 
+The v1 release is intended to ship as an **iOS app with a companion watchOS app**:
+
+- The **Apple Watch app** is the primary training surface (sessions, haptics, immediate feedback).
+- The **iPhone app** improves discovery (App Store listing), onboarding, configuration, and reflection (progress summaries).
+
 ## Web Demo
 
 An interactive web-based demo of the app is included in this repository.
@@ -22,6 +27,12 @@ It simulates the Apple Watch UI and demonstrates Challenge, Fear, and Passive mo
 
 - [`docs/WatchUX.md`](docs/WatchUX.md)  
   Watch UX & Interaction Design
+
+- [`docs/iOSCompanion.md`](docs/iOSCompanion.md)
+  iOS companion app UX notes (Watch-first discovery, onboarding, progress, and settings).
+
+- `.zenflow/tasks/new-task-02cc/requirements.md` and `.zenflow/tasks/new-task-02cc/spec.md`
+  Revised PRD + technical spec that extend the Watch-first docs to include the iOS companion app.
 
 ## High level Overview
 
