@@ -7,7 +7,8 @@
 
 ## Workflow Steps
 
-### [ ] Step: Requirements
+### [x] Step: Requirements
+<!-- chat-id: e2d8ff6e-dec9-46e4-9156-80cb595ffaee -->
 
 Create a Product Requirements Document (PRD) based on the feature description.
 
