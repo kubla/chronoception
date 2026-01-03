@@ -57,16 +57,22 @@ Implement the work described in `.zenflow/tasks/new-task-02cc/spec.md` by comple
 
 #### [ ] Step: Repo hygiene and Xcode scaffolding
 
+- Ensure `.gitignore` covers generated artifacts (already added during Planning).
 - Create an Xcode workspace and two app targets:
   - `Chronoception` (iOS)
   - `ChronoceptionWatch` (watchOS)
 - Create a shared module `ChronoceptionShared` (Swift Package or framework target) referenced by both apps.
+- Configure App Groups for shared `UserDefaults` / shared container access between iOS + watchOS targets (per spec section 4.3).
 - Add baseline CI-friendly build scripts (Makefile or scripts folder) to run `xcodebuild` for iOS and watchOS schemes.
+
+- (Optional but recommended) Add SwiftLint configuration and a CI lint step (per spec section 7.2).
 
 Verification:
 - `xcodebuild -list -workspace Chronoception.xcworkspace`
-- `xcodebuild -workspace Chronoception.xcworkspace -scheme Chronoception -destination 'platform=iOS Simulator,name=iPhone 16' build`
-- `xcodebuild -workspace Chronoception.xcworkspace -scheme ChronoceptionWatch -destination 'platform=watchOS Simulator,name=Apple Watch Series 10 (45mm)' build`
+- Prefer using a destination available on your machine (simulator names vary). Examples:
+  - `xcodebuild -workspace Chronoception.xcworkspace -scheme Chronoception -destination 'platform=iOS Simulator,OS=latest,name=iPhone 15' build`
+  - `xcodebuild -workspace Chronoception.xcworkspace -scheme ChronoceptionWatch -destination 'platform=watchOS Simulator,OS=latest,name=Apple Watch Series 9 (45mm)' build`
+  - Or discover destinations with `xcrun simctl list devices`.
 
 #### [ ] Step: Shared domain models and utilities (ChronoceptionShared)
 
@@ -100,14 +106,24 @@ Build the watchOS session execution layer (non-UI logic) as testable engines in 
 - Fear Mode penalty trigger behavior per spec.
 - Passive mode repetition scheduling and completion logic within watchOS constraints.
 
+Notes:
+- watchOS background execution is limited; Passive mode may require:
+  - `WKExtendedRuntimeSession` for longer-running experiences, and/or
+  - user-visible sessions that tolerate suspension, and/or
+  - a simplified v1 behavior that clearly communicates limitations.
+
 Verification:
 - Unit tests for state transitions and edge cases (min interval = 10s, cancel/stop flows, repetition counts).
+- Manual verification for Passive mode constraints:
+  - Start Passive, return to watch face, wait for at least 2–3 haptic markers, confirm haptics occur as intended.
+  - Lock wrist / let app background and confirm behavior matches chosen constraint strategy.
 
 #### [ ] Step: Watch SwiftUI screens (watch-first UX)
 
 Implement watchOS UI per `docs/WatchUX.md`:
 
 - Home, Mode config (interval picker + attempt/repetition selection), Session, Feedback, Summary, Progress, Settings.
+- Ensure Watch **Progress** views are fully implemented (per-interval typical error + trend, plus mode mix) and reachable from Home.
 - Validate minimum interval and display formatting.
 
 Verification:
