@@ -1,0 +1,40 @@
+name: Native acceptance
+on:
+  push:
+    branches: [agent/native-practice, main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: native-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  environment:
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - name: Record clean native environment
+        run: |
+          mkdir -p evidence
+          sw_vers > evidence/macos.txt
+          xcodebuild -version > evidence/xcode.txt
+          swift --version > evidence/swift.txt
+          xcrun simctl list devices available -j > evidence/simulators.json
+          xcrun simctl list runtimes -j > evidence/runtimes.json
+          python3 - <<'PY'
+          import json, os, platform
+          from pathlib import Path
+          Path("evidence/environment.json").write_text(json.dumps({
+              "candidate": os.environ["GITHUB_SHA"],
+              "run": os.environ["GITHUB_RUN_ID"],
+              "system": platform.platform(),
+              "execution": "GitHub-hosted ephemeral macOS VM",
+              "personal_device_execution": False
+          }, indent=2))
+          PY
+      - name: Preserve environment evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-environment
+          path: evidence
+          retention-days: 7
