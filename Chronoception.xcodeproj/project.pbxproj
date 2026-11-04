@@ -1,0 +1,679 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+		31737EEAD0224466CDDFA7B2 = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "sourcecode.swift";
+			path = "AppInfoView.swift";
+			sourceTree = "<group>";
+		};
+		431159BDA4408D04806AA710 = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "sourcecode.swift";
+			path = "ChronoceptionApp.swift";
+			sourceTree = "<group>";
+		};
+		C3DD551C28425388350C67F9 = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "sourcecode.swift";
+			path = "HistoryView.swift";
+			sourceTree = "<group>";
+		};
+		05D093A3882924FEDB3F1EB9 = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "sourcecode.swift";
+			path = "PracticeStore.swift";
+			sourceTree = "<group>";
+		};
+		EAD86703C6DD10B0240B4348 = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "sourcecode.swift";
+			path = "PracticeView.swift";
+			sourceTree = "<group>";
+		};
+		70CBED41F055835D4EA1C53E = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "sourcecode.swift";
+			path = "PracticeUITests.swift";
+			sourceTree = "<group>";
+		};
+		62BC190A22A31E2C97284BED = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "folder.assetcatalog";
+			path = "Assets.xcassets";
+			sourceTree = "<group>";
+		};
+		5BA6CA76DD1BD29BBBB5547D = {
+			isa = "PBXGroup";
+			children = (31737EEAD0224466CDDFA7B2, 431159BDA4408D04806AA710, C3DD551C28425388350C67F9, 05D093A3882924FEDB3F1EB9, EAD86703C6DD10B0240B4348, 62BC190A22A31E2C97284BED);
+			path = "Application";
+			sourceTree = "<group>";
+		};
+		121BB60E85DEE453365B9ECD = {
+			isa = "PBXGroup";
+			children = (70CBED41F055835D4EA1C53E);
+			path = "UITests";
+			sourceTree = "<group>";
+		};
+		B8A7C4C7C43B9A2F11EEEA63 = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "folder";
+			path = "Shared";
+			sourceTree = "<group>";
+		};
+		5B4002BED79CE6D06D0C2D3B = {
+			isa = "XCLocalSwiftPackageReference";
+			relativePath = "Shared";
+		};
+		1CEF3ABB5C4E6461687D2A8B = {
+			isa = "PBXFileReference";
+			explicitFileType = "wrapper.application";
+			includeInIndex = 0;
+			path = "Chronoception.app";
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		9D8CE8FECEDF016E7DA59190 = {
+			isa = "PBXBuildFile";
+			fileRef = 31737EEAD0224466CDDFA7B2;
+		};
+		62F4E6007A62DD30C7A37EE8 = {
+			isa = "PBXBuildFile";
+			fileRef = 431159BDA4408D04806AA710;
+		};
+		5765CCF21524FD00089C2246 = {
+			isa = "PBXBuildFile";
+			fileRef = C3DD551C28425388350C67F9;
+		};
+		CCD4B6FF88F53F445F7CD691 = {
+			isa = "PBXBuildFile";
+			fileRef = 05D093A3882924FEDB3F1EB9;
+		};
+		6400F8BE9D2DF7641878DA02 = {
+			isa = "PBXBuildFile";
+			fileRef = EAD86703C6DD10B0240B4348;
+		};
+		63FB8E53D600592A71FB4679 = {
+			isa = "PBXSourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = (9D8CE8FECEDF016E7DA59190, 62F4E6007A62DD30C7A37EE8, 5765CCF21524FD00089C2246, CCD4B6FF88F53F445F7CD691, 6400F8BE9D2DF7641878DA02);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29416B5D5ACF28BDD056B15B = {
+			isa = "XCSwiftPackageProductDependency";
+			package = 5B4002BED79CE6D06D0C2D3B;
+			productName = "ChronoceptionCore";
+		};
+		F0507A17397572B70C8D4287 = {
+			isa = "PBXBuildFile";
+			productRef = 29416B5D5ACF28BDD056B15B;
+		};
+		B900D66FFC26263CA26F571E = {
+			isa = "XCSwiftPackageProductDependency";
+			package = 5B4002BED79CE6D06D0C2D3B;
+			productName = "ChronoceptionStorage";
+		};
+		24EA6DA4675A4AC3F3122E10 = {
+			isa = "PBXBuildFile";
+			productRef = B900D66FFC26263CA26F571E;
+		};
+		215FD7423435C00CA3EF2DDC = {
+			isa = "PBXFrameworksBuildPhase";
+			buildActionMask = 2147483647;
+			files = (F0507A17397572B70C8D4287, 24EA6DA4675A4AC3F3122E10);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5224852A7218925D8824D791 = {
+			isa = "PBXBuildFile";
+			fileRef = 62BC190A22A31E2C97284BED;
+		};
+		37E6F86073C8B84C16AA7D96 = {
+			isa = "PBXResourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = (5224852A7218925D8824D791);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0E92F1303A215EBFB41E3F51 = {
+			isa = "PBXContainerItemProxy";
+			containerPortal = 244210E48437B6556980A702;
+			proxyType = 1;
+			remoteGlobalIDString = 37540B03B03267C17B309616;
+			remoteInfo = "ChronoceptionWatch";
+		};
+		5EB1EA26F8E23197EA37C9F1 = {
+			isa = "PBXTargetDependency";
+			target = 37540B03B03267C17B309616;
+			targetProxy = 0E92F1303A215EBFB41E3F51;
+		};
+		1A26739A0F9559E250038211 = {
+			isa = "PBXBuildFile";
+			fileRef = 742D28FBFAC08C04EE050CA3;
+			settings = {
+				ATTRIBUTES = ("RemoveHeadersOnCopy");
+			};
+		};
+		C4A324DAD436795A5E624C0A = {
+			isa = "PBXCopyFilesBuildPhase";
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (1A26739A0F9559E250038211);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA11788F6BCC7A1F98B9DC02 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "1";
+				SDKROOT = "iphoneos";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SKIP_INSTALL = "NO";
+				IPHONEOS_DEPLOYMENT_TARGET = "17.0";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronoception";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "AccentColor";
+				SWIFT_EMIT_LOC_STRINGS = "YES";
+				INFOPLIST_KEY_UILaunchScreen_Generation = "YES";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = "YES";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = "dwarf";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = "YES";
+			};
+			name = "Debug";
+		};
+		307177B7A2ED6FD6DBC38F6E = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "1";
+				SDKROOT = "iphoneos";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SKIP_INSTALL = "NO";
+				IPHONEOS_DEPLOYMENT_TARGET = "17.0";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronoception";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "AccentColor";
+				SWIFT_EMIT_LOC_STRINGS = "YES";
+				INFOPLIST_KEY_UILaunchScreen_Generation = "YES";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = "YES";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			};
+			name = "Release";
+		};
+		7C7FD1418434D7B339286670 = {
+			isa = "XCConfigurationList";
+			buildConfigurations = (FA11788F6BCC7A1F98B9DC02, 307177B7A2ED6FD6DBC38F6E);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		3F0B65145F2987E740EBBE69 = {
+			isa = "PBXNativeTarget";
+			buildConfigurationList = 7C7FD1418434D7B339286670;
+			buildPhases = (63FB8E53D600592A71FB4679, 215FD7423435C00CA3EF2DDC, 37E6F86073C8B84C16AA7D96, C4A324DAD436795A5E624C0A);
+			buildRules = ();
+			dependencies = (5EB1EA26F8E23197EA37C9F1);
+			name = "Chronoception";
+			packageProductDependencies = (29416B5D5ACF28BDD056B15B, B900D66FFC26263CA26F571E);
+			productName = "Chronoception";
+			productReference = 1CEF3ABB5C4E6461687D2A8B;
+			productType = "com.apple.product-type.application";
+		};
+		742D28FBFAC08C04EE050CA3 = {
+			isa = "PBXFileReference";
+			explicitFileType = "wrapper.application";
+			includeInIndex = 0;
+			path = "ChronoceptionWatch.app";
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		767C7B4C89B4CC8C28E52669 = {
+			isa = "PBXBuildFile";
+			fileRef = 31737EEAD0224466CDDFA7B2;
+		};
+		AE900EC366FD52DC366741CF = {
+			isa = "PBXBuildFile";
+			fileRef = 431159BDA4408D04806AA710;
+		};
+		86B92D8556C2C8E27CDFC518 = {
+			isa = "PBXBuildFile";
+			fileRef = C3DD551C28425388350C67F9;
+		};
+		603B4648776B7F0B6BBDD821 = {
+			isa = "PBXBuildFile";
+			fileRef = 05D093A3882924FEDB3F1EB9;
+		};
+		9AF3794AE23F27A55114B822 = {
+			isa = "PBXBuildFile";
+			fileRef = EAD86703C6DD10B0240B4348;
+		};
+		E4792F6870027EB3109177D4 = {
+			isa = "PBXSourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = (767C7B4C89B4CC8C28E52669, AE900EC366FD52DC366741CF, 86B92D8556C2C8E27CDFC518, 603B4648776B7F0B6BBDD821, 9AF3794AE23F27A55114B822);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30476A59B370B7E39243389F = {
+			isa = "XCSwiftPackageProductDependency";
+			package = 5B4002BED79CE6D06D0C2D3B;
+			productName = "ChronoceptionCore";
+		};
+		AD41E62ADEE32E500CE26AEB = {
+			isa = "PBXBuildFile";
+			productRef = 30476A59B370B7E39243389F;
+		};
+		30148081F2940FF5A1F1E906 = {
+			isa = "XCSwiftPackageProductDependency";
+			package = 5B4002BED79CE6D06D0C2D3B;
+			productName = "ChronoceptionStorage";
+		};
+		DBA80CF020DCD4BE1D62C20B = {
+			isa = "PBXBuildFile";
+			productRef = 30148081F2940FF5A1F1E906;
+		};
+		AF737FB5274EBBCEEB4B3BCC = {
+			isa = "PBXFrameworksBuildPhase";
+			buildActionMask = 2147483647;
+			files = (AD41E62ADEE32E500CE26AEB, DBA80CF020DCD4BE1D62C20B);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCF8FBD813453933828F3E5C = {
+			isa = "PBXBuildFile";
+			fileRef = 62BC190A22A31E2C97284BED;
+		};
+		89F80C54216BFB659B933C11 = {
+			isa = "PBXResourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = (FCF8FBD813453933828F3E5C);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7C85BD354555E77AC94C959 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "4";
+				SDKROOT = "watchos";
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SKIP_INSTALL = "YES";
+				WATCHOS_DEPLOYMENT_TARGET = "10.0";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronoception";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIconWatch";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "AccentColor";
+				SWIFT_EMIT_LOC_STRINGS = "YES";
+				INFOPLIST_KEY_WKApplication = "YES";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "io.mjjt.chronoception";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = "YES";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = "dwarf";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = "YES";
+			};
+			name = "Debug";
+		};
+		346BB8CA01308CCBA5DD5866 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "4";
+				SDKROOT = "watchos";
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SKIP_INSTALL = "YES";
+				WATCHOS_DEPLOYMENT_TARGET = "10.0";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronoception";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIconWatch";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "AccentColor";
+				SWIFT_EMIT_LOC_STRINGS = "YES";
+				INFOPLIST_KEY_WKApplication = "YES";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "io.mjjt.chronoception";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = "YES";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			};
+			name = "Release";
+		};
+		98E3B56817A5E0D6A67B65B7 = {
+			isa = "XCConfigurationList";
+			buildConfigurations = (E7C85BD354555E77AC94C959, 346BB8CA01308CCBA5DD5866);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		37540B03B03267C17B309616 = {
+			isa = "PBXNativeTarget";
+			buildConfigurationList = 98E3B56817A5E0D6A67B65B7;
+			buildPhases = (E4792F6870027EB3109177D4, AF737FB5274EBBCEEB4B3BCC, 89F80C54216BFB659B933C11);
+			buildRules = ();
+			dependencies = ();
+			name = "ChronoceptionWatch";
+			packageProductDependencies = (30476A59B370B7E39243389F, 30148081F2940FF5A1F1E906);
+			productName = "ChronoceptionWatch";
+			productReference = 742D28FBFAC08C04EE050CA3;
+			productType = "com.apple.product-type.application";
+		};
+		859F4F5AF3C77642837261B3 = {
+			isa = "PBXFileReference";
+			explicitFileType = "wrapper.cfbundle";
+			includeInIndex = 0;
+			path = "ChronoceptionUITests.xctest";
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		B9F1BB00A281E51E609BC44B = {
+			isa = "PBXBuildFile";
+			fileRef = 70CBED41F055835D4EA1C53E;
+		};
+		6C9EA015374B654EBB26F29C = {
+			isa = "PBXSourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = (B9F1BB00A281E51E609BC44B);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9459C294F5C3FF08863750DE = {
+			isa = "PBXFrameworksBuildPhase";
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3DC75CFEFC808CE17497A0A = {
+			isa = "PBXResourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DBFFDA3BB9C96E5F50225A0 = {
+			isa = "PBXContainerItemProxy";
+			containerPortal = 244210E48437B6556980A702;
+			proxyType = 1;
+			remoteGlobalIDString = 3F0B65145F2987E740EBBE69;
+			remoteInfo = "Chronoception";
+		};
+		700FA7D78A280BC404945D8B = {
+			isa = "PBXTargetDependency";
+			target = 3F0B65145F2987E740EBBE69;
+			targetProxy = 4DBFFDA3BB9C96E5F50225A0;
+		};
+		237A8C9ACEA27667C82B1704 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception.uitests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "1";
+				SDKROOT = "iphoneos";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SKIP_INSTALL = "YES";
+				IPHONEOS_DEPLOYMENT_TARGET = "17.0";
+				TEST_TARGET_NAME = "Chronoception";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = "dwarf";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = "YES";
+			};
+			name = "Debug";
+		};
+		1F87195FCDC70E036FA8C75F = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception.uitests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "1";
+				SDKROOT = "iphoneos";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SKIP_INSTALL = "YES";
+				IPHONEOS_DEPLOYMENT_TARGET = "17.0";
+				TEST_TARGET_NAME = "Chronoception";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			};
+			name = "Release";
+		};
+		C01186607D9352F956AB505E = {
+			isa = "XCConfigurationList";
+			buildConfigurations = (237A8C9ACEA27667C82B1704, 1F87195FCDC70E036FA8C75F);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		3B9445A6C82DED672F92FC5E = {
+			isa = "PBXNativeTarget";
+			buildConfigurationList = C01186607D9352F956AB505E;
+			buildPhases = (6C9EA015374B654EBB26F29C, 9459C294F5C3FF08863750DE, C3DC75CFEFC808CE17497A0A);
+			buildRules = ();
+			dependencies = (700FA7D78A280BC404945D8B);
+			name = "ChronoceptionUITests";
+			packageProductDependencies = ();
+			productName = "ChronoceptionUITests";
+			productReference = 859F4F5AF3C77642837261B3;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		A9B9EF49C4B77611C8A3108B = {
+			isa = "PBXFileReference";
+			explicitFileType = "wrapper.cfbundle";
+			includeInIndex = 0;
+			path = "ChronoceptionWatchUITests.xctest";
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		B313CDCB62F6EF474BF0D803 = {
+			isa = "PBXBuildFile";
+			fileRef = 70CBED41F055835D4EA1C53E;
+		};
+		55FB3513805ADF56B6FE0238 = {
+			isa = "PBXSourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = (B313CDCB62F6EF474BF0D803);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		384F2DFC59AFDA90048B3F82 = {
+			isa = "PBXFrameworksBuildPhase";
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F508F073F33DA474DDD7B371 = {
+			isa = "PBXResourcesBuildPhase";
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6F88B06B5CBD7295310F659 = {
+			isa = "PBXContainerItemProxy";
+			containerPortal = 244210E48437B6556980A702;
+			proxyType = 1;
+			remoteGlobalIDString = 37540B03B03267C17B309616;
+			remoteInfo = "ChronoceptionWatch";
+		};
+		7862C41EBB72559983480C60 = {
+			isa = "PBXTargetDependency";
+			target = 37540B03B03267C17B309616;
+			targetProxy = B6F88B06B5CBD7295310F659;
+		};
+		816442FA92D843857E2D34B8 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception.watchkitapp.uitests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "4";
+				SDKROOT = "watchos";
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SKIP_INSTALL = "YES";
+				WATCHOS_DEPLOYMENT_TARGET = "10.0";
+				TEST_TARGET_NAME = "ChronoceptionWatch";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = "dwarf";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = "YES";
+			};
+			name = "Debug";
+		};
+		29CC31FFEC56C4948A0EE5C2 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "io.mjjt.chronoception.watchkitapp.uitests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = "6.0";
+				SWIFT_STRICT_CONCURRENCY = "complete";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_STYLE = "Automatic";
+				CURRENT_PROJECT_VERSION = "1";
+				MARKETING_VERSION = "0.1.0";
+				ENABLE_USER_SCRIPT_SANDBOXING = "YES";
+				TARGETED_DEVICE_FAMILY = "4";
+				SDKROOT = "watchos";
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SKIP_INSTALL = "YES";
+				WATCHOS_DEPLOYMENT_TARGET = "10.0";
+				TEST_TARGET_NAME = "ChronoceptionWatch";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			};
+			name = "Release";
+		};
+		0C189B251BCA48A3D44AE337 = {
+			isa = "XCConfigurationList";
+			buildConfigurations = (816442FA92D843857E2D34B8, 29CC31FFEC56C4948A0EE5C2);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		36681D6E1688E0B42F3AECEF = {
+			isa = "PBXNativeTarget";
+			buildConfigurationList = 0C189B251BCA48A3D44AE337;
+			buildPhases = (55FB3513805ADF56B6FE0238, 384F2DFC59AFDA90048B3F82, F508F073F33DA474DDD7B371);
+			buildRules = ();
+			dependencies = (7862C41EBB72559983480C60);
+			name = "ChronoceptionWatchUITests";
+			packageProductDependencies = ();
+			productName = "ChronoceptionWatchUITests";
+			productReference = A9B9EF49C4B77611C8A3108B;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		AE7805B56D1DCAFAA071416F = {
+			isa = "PBXGroup";
+			children = (1CEF3ABB5C4E6461687D2A8B, 742D28FBFAC08C04EE050CA3, 859F4F5AF3C77642837261B3, A9B9EF49C4B77611C8A3108B);
+			name = "Products";
+			sourceTree = "<group>";
+		};
+		1581DD06BA742054F0CA2C42 = {
+			isa = "PBXGroup";
+			children = (5BA6CA76DD1BD29BBBB5547D, B8A7C4C7C43B9A2F11EEEA63, 121BB60E85DEE453365B9ECD, AE7805B56D1DCAFAA071416F);
+			sourceTree = "<group>";
+		};
+		0B8CF9A978C27BD86D8B22D2 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				CLANG_ENABLE_MODULES = "YES";
+				SWIFT_VERSION = "6.0";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				DEBUG_INFORMATION_FORMAT = "dwarf";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				ENABLE_TESTABILITY = "YES";
+			};
+			name = "Debug";
+		};
+		9EA3F85534490133C1FD3250 = {
+			isa = "XCBuildConfiguration";
+			buildSettings = {
+				CLANG_ENABLE_MODULES = "YES";
+				SWIFT_VERSION = "6.0";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+			};
+			name = "Release";
+		};
+		AF797F0382D714D04A261BC4 = {
+			isa = "XCConfigurationList";
+			buildConfigurations = (0B8CF9A978C27BD86D8B22D2, 9EA3F85534490133C1FD3250);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		244210E48437B6556980A702 = {
+			isa = "PBXProject";
+			attributes = {
+				BuildIndependentTargetsInParallel = "YES";
+				LastUpgradeCheck = "1600";
+				TargetAttributes = {
+					3F0B65145F2987E740EBBE69 = {
+						CreatedOnToolsVersion = "16.0";
+					};
+					37540B03B03267C17B309616 = {
+						CreatedOnToolsVersion = "16.0";
+					};
+					3B9445A6C82DED672F92FC5E = {
+						CreatedOnToolsVersion = "16.0";
+						TestTargetID = 3F0B65145F2987E740EBBE69;
+					};
+					36681D6E1688E0B42F3AECEF = {
+						CreatedOnToolsVersion = "16.0";
+						TestTargetID = 37540B03B03267C17B309616;
+					};
+				};
+			};
+			buildConfigurationList = AF797F0382D714D04A261BC4;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "en";
+			hasScannedForEncodings = 0;
+			knownRegions = ("en", "Base");
+			mainGroup = 1581DD06BA742054F0CA2C42;
+			packageReferences = (5B4002BED79CE6D06D0C2D3B);
+			productRefGroup = AE7805B56D1DCAFAA071416F;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (3F0B65145F2987E740EBBE69, 37540B03B03267C17B309616, 3B9445A6C82DED672F92FC5E, 36681D6E1688E0B42F3AECEF);
+		};
+	};
+	rootObject = 244210E48437B6556980A702;
+}

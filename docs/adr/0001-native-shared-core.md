@@ -1,0 +1,3 @@
+# Independent native apps with a shared deterministic core
+
+Accepted November 3, 2026. Use SwiftUI iPhone and independent Watch apps with a shared Swift core and explicit platform effects. Native APIs fit the haptic/background questions and expressive types constrain session transitions; this avoids a JavaScript runtime or backend requirement for individual practice. Cross-device sync, Health export and community services can be added after their own contracts are demonstrated. Local Apple tools and ephemeral CI are complementary execution options, selected for practical security, cost and operating benefits.

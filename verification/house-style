@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+toolchain=$(dirname "$(xcrun --find swiftc)")/..
+host="$toolchain/lib/swift/host"
+build=$(mktemp -d "${TMPDIR:-/tmp}/chronoception-lint.XXXXXX")
+trap 'rm -rf "$build"' EXIT
+xcrun swiftc -I "$host" -L "$host" -lSwiftSyntax -lSwiftParser -Xlinker -rpath -Xlinker "$host" "$root/verification/HouseStyle.swift" -o "$build/house-style"
+"$build/house-style" --self-test
+"$build/house-style" "$root"

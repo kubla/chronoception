@@ -1,0 +1,122 @@
+name: Native acceptance
+on:
+  push:
+    branches: [main]
+  pull_request:
+env:
+  DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+permissions:
+  contents: read
+concurrency:
+  group: native-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  core:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify core and house conventions
+        run: |
+          mkdir -p evidence
+          set -o pipefail
+          verification/core 2>&1 | tee evidence/core.log
+      - name: Test the tests with meaningful faults
+        run: python3 verification/mutation.py
+      - name: Check bounded state model
+        run: |
+          set -o pipefail
+          verification/formal 2>&1 | tee evidence/formal.log
+      - name: Preserve core evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: core-evidence
+          path: evidence
+          retention-days: 7
+  release-build:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Compile the release archive for both devices
+        run: |
+          mkdir -p evidence
+          set -o pipefail
+          xcodebuild -quiet -project Chronoception.xcodeproj -scheme Chronoception \
+            -destination 'generic/platform=iOS' -derivedDataPath "$RUNNER_TEMP/release-build" \
+            -archivePath "$RUNNER_TEMP/Chronoception.xcarchive" CODE_SIGNING_ALLOWED=NO archive \
+            2>&1 | tee evidence/archive.log
+          python3 verification/check_archive.py "$RUNNER_TEMP/Chronoception.xcarchive"
+      - name: Preserve release compilation evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-build-evidence
+          path: evidence
+          retention-days: 7
+  native:
+    runs-on: macos-15
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - kind: phone
+            scheme: Chronoception
+          - kind: watch
+            scheme: ChronoceptionWatch
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Record native environment
+        run: |
+          mkdir -p evidence
+          sw_vers > evidence/macos.txt
+          xcodebuild -version | tee evidence/xcode.txt
+          swift --version | tee evidence/swift.txt
+          xcrun simctl list -j > evidence/simulators.json
+      - name: Select and boot simulator
+        id: simulator
+        run: python3 verification/select_simulator.py '${{ matrix.kind }}'
+      - name: Exercise the full native app and preserve its recordings
+        env:
+          DEVICE: ${{ steps.simulator.outputs.device }}
+          SCHEME: ${{ matrix.scheme }}
+          KIND: ${{ matrix.kind }}
+        run: |
+          set -o pipefail
+          xcodebuild -quiet -project Chronoception.xcodeproj -scheme "$SCHEME" \
+            -destination "id=$DEVICE" -derivedDataPath "$RUNNER_TEMP/native-$KIND" \
+            CODE_SIGNING_ALLOWED=NO ARCHS="$(uname -m)" ONLY_ACTIVE_ARCH=YES build-for-testing \
+            2>&1 | tee "evidence/$KIND-build.log"
+          python3 verification/native_smoke.py "$KIND" "$DEVICE" "$RUNNER_TEMP/native-$KIND"
+          xcodebuild -project Chronoception.xcodeproj -scheme "$SCHEME" \
+            -destination "id=$DEVICE" -derivedDataPath "$RUNNER_TEMP/native-$KIND" \
+            -test-timeouts-enabled YES -maximum-test-execution-time-allowance 120 \
+            -parallel-testing-enabled NO -resultBundlePath "evidence/$KIND.xcresult" \
+            CODE_SIGNING_ALLOWED=NO ARCHS="$(uname -m)" ONLY_ACTIVE_ARCH=YES test-without-building 2>&1 | tee "evidence/$KIND.log"
+      - name: Export screenshots and validate native result
+        if: ${{ !cancelled() }}
+        env:
+          KIND: ${{ matrix.kind }}
+        run: |
+          if [ -d "evidence/$KIND.xcresult" ]; then
+            xcrun xcresulttool export attachments --path "evidence/$KIND.xcresult" --output-path "evidence/$KIND-screenshots"
+            python3 verification/record_acceptance.py "$KIND"
+          else
+            echo "No native result bundle exists; acceptance remains incomplete."
+            exit 1
+          fi
+      - name: Preserve native evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-${{ matrix.kind }}-evidence
+          path: evidence
+          retention-days: 7

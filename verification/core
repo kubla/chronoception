@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+work=$(mktemp -d "${TMPDIR:-/tmp}/chronoception-core.XXXXXX")
+trap 'rm -rf "$work"' EXIT
+cd "$root"
+python3 verification/generate_project.py --check
+xcrun swift-format lint --strict --configuration .swift-format --recursive Shared Application UITests verification/*.swift
+verification/house-style
+swift verification/check_icons.swift "$root"
+swift test --package-path Shared --scratch-path "$work/build"
