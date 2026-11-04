@@ -1,0 +1,53 @@
+{
+  "candidate": "465745f457159d96c2a0944d9ecfc3f9913ae253",
+  "run": "41766217342",
+  "result": "passed",
+  "journeys": [
+    "phone: real estimate, feedback, finish, persisted history after reload",
+    "phone: cancellation does not manufacture an attempt",
+    "phone: unfinished practice is interrupted on reload",
+    "watch: independent history and three explicit estimates/advances",
+    "about: privacy and browser limitations are available without an account"
+  ],
+  "layouts": [
+    {
+      "device": "phone",
+      "width": 320,
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "device": "watch",
+      "width": 320,
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "device": "phone",
+      "width": 390,
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "device": "watch",
+      "width": 390,
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "device": "phone",
+      "width": 1280,
+      "viewport": 1280,
+      "content": 1280
+    },
+    {
+      "device": "watch",
+      "width": 1280,
+      "viewport": 1280,
+      "content": 1280
+    }
+  ],
+  "browserErrors": [],
+  "environment": "ephemeral Chromium against the actual Pages files; live Pages also inspected separately",
+  "haptics": "not_simulated"
+}
