@@ -46,6 +46,12 @@ export function duration(seconds: number): string {
   return remainder === 0 ? minutes + ' min' : minutes + 'm ' + remainder + 's';
 }
 
+export function intervalLabel(seconds: number): string {
+  const minutes = Math.floor(seconds / 60), remainder = seconds % 60;
+  if (minutes === 0) return remainder + 's';
+  return remainder === 0 ? minutes + ' min' : minutes + 'm ' + remainder + 's';
+}
+
 export function feedback(attempt: Attempt): string {
   const error = attempt.elapsedSeconds - attempt.intervalSeconds;
   return error === 0 ? 'On time' : duration(Math.abs(error)) + (error < 0 ? ' early' : ' late');

@@ -1,4 +1,4 @@
-import { createSession, decodeHistory, duration, feedback, record, recover, transition, upsert } from './core.mjs';
+import { createSession, decodeHistory, duration, feedback, intervalLabel, record, recover, transition, upsert } from './core.mjs';
                                                                                  
 
                                 
@@ -26,7 +26,7 @@ function load(device        )          {
 
 const previews = { phone: load('phone'), watch: load('watch') };
 const current = () => previews[device];
-const label = (seconds        ) => duration(seconds);
+const label = intervalLabel;
 const button = (action        , text        , style = 'primary') => `<button class="${style}" data-action="${action}">${text}</button>`;
 
 function persist(preview         )       {
@@ -84,7 +84,7 @@ function render(focus = false)       {
   const preview = current();
   deviceFrame.className = 'device ' + device;
   document.querySelectorAll                   ('[data-device]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.device === device)));
-  document.querySelector('#device-caption') .textContent = (device === 'phone' ? 'iPhone' : 'Apple Watch') + ' · current native design';
+  document.querySelector('#device-caption') .textContent = (device === 'phone' ? 'iPhone' : 'Apple Watch') + ' · browser preview · no haptics';
   title.textContent = device === 'phone' ? 'Chronoception' : 'Practice';
   storageMessage.textContent = preview.storageMessage;
   storageMessage.hidden = preview.storageMessage === '';

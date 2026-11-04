@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createSession, decodeHistory, duration, feedback, record, recover, transition, upsert } from '../docs/preview/core.mjs';
+import { createSession, decodeHistory, duration, feedback, intervalLabel, record, recover, transition, upsert } from '../docs/preview/core.mjs';
 
 const fresh = (attemptCount = 1) => createSession({ intervalSeconds: 300, attemptCount }, 'session-1', '2026-11-03T12:00:00Z');
 const started = (count = 1) => transition(fresh(count), { type: 'start', atMilliseconds: 1000 });
@@ -71,4 +71,10 @@ test('formatting retains the native literal durations', () => {
   assert.equal(duration(5.5), '5.5s');
   assert.equal(duration(65), '1m 5s');
   assert.equal(duration(300), '5 min');
+});
+test('interval labels agree with native integer-second labels', () => {
+  assert.equal(intervalLabel(1), '1s');
+  assert.equal(intervalLabel(30), '30s');
+  assert.equal(intervalLabel(65), '1m 5s');
+  assert.equal(intervalLabel(300), '5 min');
 });
