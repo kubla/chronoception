@@ -33,3 +33,7 @@ Carthage/Build/
 
 # Temporary files
 tmp/
+
+# Verification products
+/evidence/
+/Shared/.swiftpm/

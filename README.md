@@ -1,50 +1,31 @@
 # Chronoception
 
-Chronoception is an Apple Watch app that measures and trains your sense of elapsed time. It treats chronoception as a trainable sense, similar to interoception, and gives you simple on-wrist tools to practice and track improvement.
+Practice noticing elapsed time, on iPhone or Apple Watch.
 
-So far, this repository contains product docs and an interactive mockup. Docs include the product specification, mode and metric definitions, and HealthKit integration details for Chronoception v1.
+The native app lets you choose an interval, estimate it without a countdown, receive literal early/late feedback and retain your observations. Phone and Watch each work independently. Individual practice needs no account or backend.
 
-The v1 release is intended to ship as an **iOS app with a companion watchOS app**:
+## Native app
 
-- The **Apple Watch app** is the primary training surface (sessions, haptics, immediate feedback).
-- The **iPhone app** improves discovery (App Store listing), onboarding, configuration, and reflection (progress summaries).
+Open `Chronoception.xcodeproj` in Xcode. `Chronoception` builds the phone app and embeds the independent Watch app; `ChronoceptionWatch` runs the Watch app directly. Select your development team when signing for a physical device.
 
-## Web Demo
+The app uses SwiftUI and a local Swift package, with no third-party runtime dependencies. `Shared` contains the deterministic session core and local persistence. `Application` contains the views and platform effects. Domain terms live in [GLOSSARY.md](GLOSSARY.md); current scope and decisions live in [docs/BUILD.md](docs/BUILD.md).
 
-An interactive web-based demo of the app is included in this repository.
-It simulates the Apple Watch UI and demonstrates Challenge, Fear, and Passive modes. View it here: https://kubla.github.io/chronoception/web-demo/
+## Verification
 
-## Documents
+Run `verification/core` with the intended Xcode selected through `DEVELOPER_DIR`. It checks formatting, parser-based house rules, the generated project and the actual production core. Build products use temporary storage.
 
-- [`docs/PRD.md`](docs/PRD.md)  
-  High level product requirements, goals, ICPs, and use cases.
+[Native acceptance](https://github.com/kubla/chronoception/actions) runs on clean GitHub-hosted macOS VMs. It exercises core invariants, meaningful seeded faults, a bounded state model and full phone/Watch UI journeys. Per-run artifacts contain logs, screenshots, video and receipts. A failed or missing prerequisite is not a pass.
 
-- [`docs/ModesAndMetrics.md`](docs/ModesAndMetrics.md)  
-  Detailed specifications for Challenge, Fear, and Passive modes, including state machines and metric definitions.
+[The session diagram](docs/model/Session.md) connects the domain transitions, production engine and generated-trace tests. `verification/house-style` uses the SwiftSyntax/SwiftParser libraries shipped with the selected Xcode, with positive and negative rule fixtures.
 
-- [`docs/HealthKitSpec.md`](docs/HealthKitSpec.md)  
-  HealthKit write behavior, Mindful Session metadata schema, and permission handling.
+## Delivery state
 
-- [`docs/WatchUX.md`](docs/WatchUX.md)  
-  Watch UX & Interaction Design
+This branch is the native implementation and acceptance path. Simulator results establish native UI behavior, not physical haptics, locked-pocket cue delivery or store distribution. Those facts are recorded separately. No public-store release is claimed by a passing build.
 
-- [`docs/iOSCompanion.md`](docs/iOSCompanion.md)
-  iOS companion app UX notes (Watch-first discovery, onboarding, progress, and settings).
+Pocket-cue feasibility and social/community concepts are product experiments, not assumed implementations. Local history stays independent of any future service.
 
-- `.zenflow/tasks/new-task-02cc/requirements.md` and `.zenflow/tasks/new-task-02cc/spec.md`
-  Revised PRD + technical spec that extend the Watch-first docs to include the iOS companion app.
+## Earlier design material
 
-## High level Overview
+The files in `docs/PRD.md`, `docs/ModesAndMetrics.md`, `docs/HealthKitSpec.md`, `docs/WatchUX.md`, `docs/iOSCompanion.md`, `.zenflow` and the browser demos preserve earlier ideas. They are informational, not requirements. The current product direction and observed platform behavior govern the implementation.
 
-Chronoception is designed for two primary audiences:
-
-1. Quantified self enthusiasts who want to run experiments on time perception and learning.
-2. Meditation practitioners who want to meditate on chronoception as a sense gate, and occasionally calibrate that practice against objective time.
-
-- Platform: Apple Watch
-- Modes:
-  - Passive Training Mode, giving you a sense of the passage of time with haptics
-  - Challenge Mode
-  - Fear Mode (high arousal variant of Challenge Mode)
-  - Stats on Challenge Mode accuracy and rate of improvement 
-- Logs: Mindfulness minutes to Apple Health with rich metadata, to enable deeper off-watch analysis
+[Historical browser prototype](https://kubla.github.io/chronoception/) · [Current build direction](docs/BUILD.md)

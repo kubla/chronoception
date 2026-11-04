@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+work=$(mktemp -d "${TMPDIR:-/tmp}/chronoception-model.XXXXXX")
+trap 'rm -rf "$work"' EXIT
+curl --fail --location --silent --show-error 'https://github.com/tlaplus/tlaplus/releases/download/v1.7.4/tla2tools.jar' -o "$work/tla2tools.jar"
+cp "$root/docs/model/Session.tla" "$root/docs/model/Session.cfg" "$work/"
+cd "$work"
+java -cp tla2tools.jar tlc2.TLC -workers 1 -config Session.cfg Session.tla
