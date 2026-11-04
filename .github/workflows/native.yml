@@ -23,6 +23,15 @@ jobs:
           mkdir -p evidence
           set -o pipefail
           verification/core 2>&1 | tee evidence/core.log
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.22.3'
+      - name: Verify the browser preview
+        run: |
+          set -o pipefail
+          node verification/build_browser.mjs --check
+          npm exec --yes --package=typescript@5.9.3 -- tsc -p verification/browser-tsconfig.json
+          node --test verification/browser.test.mjs 2>&1 | tee evidence/browser.log
       - name: Test the tests with meaningful faults
         run: python3 verification/mutation.py
       - name: Check bounded state model
