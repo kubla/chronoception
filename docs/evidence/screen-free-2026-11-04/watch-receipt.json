@@ -1,0 +1,156 @@
+{
+  "candidate": "e74fd161a02d2a2034819c0f3859e2ffea27d0d1",
+  "candidate_tree": "2a4856b9207f57c8091f637e79ed23adb0c12d8f",
+  "run": "41913911408",
+  "kind": "watch",
+  "result": "passed",
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "21BFC51E-5CB4-4370-BCB7-DADBCA1A7B83",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "Apple Watch Series 11 (46mm)",
+          "osBuildNumber": "23S303",
+          "osVersion": "26.2",
+          "platform": "watchOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 10,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "ChronoceptionWatch \u00b7 Built with macOS 15.8.2",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1793827751.081,
+    "passedTests": 10,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1793827377.046,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - ChronoceptionWatch",
+    "topInsights": [],
+    "totalTestCount": 10
+  },
+  "media": [
+    {
+      "journey": "testRealEstimateFeedbackAndHistorySurviveRelaunch",
+      "videos": [
+        "2B362763-90D5-4DDE-B962-76A271C2AA75.mp4"
+      ],
+      "captures": [
+        "Ready",
+        "Estimating",
+        "Feedback",
+        "Finished",
+        "Persisted history"
+      ],
+      "launch_to_ready_seconds_including_automation": 4.911000875
+    },
+    {
+      "journey": "testRelaunchInterruptsAnUnfinishedSession",
+      "videos": [
+        "30AC68AE-197A-4A86-8201-68A9A7F2A84C.mp4"
+      ],
+      "captures": [
+        "Interrupted history"
+      ],
+      "launch_to_ready_seconds_including_automation": 15.37653925
+    },
+    {
+      "journey": "testCancelDoesNotManufactureAnEstimate",
+      "videos": [
+        "E306BC01-8FAE-4791-A593-6BF0CFE8DA97.mp4"
+      ],
+      "captures": [
+        "Cancelled history"
+      ],
+      "launch_to_ready_seconds_including_automation": 43.140780292
+    },
+    {
+      "journey": "testRepeatedPracticeRequiresEachEstimateAndExplicitAdvance",
+      "videos": [
+        "C4D77AFF-7442-4468-9F53-6C7C28DBC2E4.mp4"
+      ],
+      "captures": [
+        "Repeated practice history"
+      ],
+      "launch_to_ready_seconds_including_automation": 5.326351875
+    },
+    {
+      "journey": "testPrivacyIsAvailableWithoutStartingPractice",
+      "videos": [
+        "1A043E24-23FD-42F8-9133-69DBB8DF5371.mp4"
+      ],
+      "captures": [
+        "About and privacy"
+      ],
+      "launch_to_ready_seconds_including_automation": 16.433538792
+    },
+    {
+      "journey": "testCalibrationComparesIntervalsAndEarlierObservations",
+      "videos": [
+        "8BC7442F-2B2D-42E9-930D-43F80A765CA3.mp4"
+      ],
+      "captures": [
+        "Calibration comparison",
+        "Other interval calibration"
+      ],
+      "launch_to_ready_seconds_including_automation": 8.814793916
+    },
+    {
+      "journey": "testTrainingRepeatsAndPersistsWithoutCreatingEstimates",
+      "videos": [
+        "EC780BF6-C436-46B5-A4CA-8BD8ECD5B109.mp4"
+      ],
+      "captures": [
+        "Training running",
+        "Training complete",
+        "Training history"
+      ],
+      "launch_to_ready_seconds_including_automation": 5.160922291
+    },
+    {
+      "journey": "testTrainingCancellationRetainsNoInventedCues",
+      "videos": [
+        "BDF11FF8-7252-470C-80EF-ECADDC675BA2.mp4"
+      ],
+      "captures": [
+        "Cancelled training"
+      ],
+      "launch_to_ready_seconds_including_automation": 5.921200292
+    },
+    {
+      "journey": "testTrainingRelaunchInterruptsInsteadOfCompleting",
+      "videos": [
+        "BA81C22C-2249-47DF-99D6-7FE37EDF9925.mp4"
+      ],
+      "captures": [
+        "Interrupted training"
+      ],
+      "launch_to_ready_seconds_including_automation": 5.062045125
+    },
+    {
+      "journey": "testQuietPracticeRejectsAWindowBeyondTheRuntimeLimit",
+      "videos": [
+        "608B75EE-E925-44EE-BC36-2913F228B61D.mp4"
+      ],
+      "captures": [
+        "Quiet practice limit"
+      ],
+      "launch_to_ready_seconds_including_automation": 5.0153375
+    }
+  ],
+  "missing_evidence": [],
+  "title_contrast": "Rendered navigation-title contrast: 11.18:1",
+  "physical_haptics": "not_run",
+  "store_distribution": "not_run"
+}

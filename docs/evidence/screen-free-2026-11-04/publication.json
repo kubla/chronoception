@@ -1,0 +1,18 @@
+{
+  "source": "72a92c3b3749ddcb7f4fe1635351e348f524f893",
+  "tested_merge": "e74fd161a02d2a2034819c0f3859e2ffea27d0d1",
+  "accepted_tree": "2a4856b9207f57c8091f637e79ed23adb0c12d8f",
+  "delivered_main": "6b09ceec70b311058f06db78d8193d287ac7e02b",
+  "run": 41913911408,
+  "checks": "all four required jobs passed",
+  "product_status": "incomplete",
+  "physical_haptics": "not_run",
+  "signed_personal_distribution": "not_run",
+  "files": {
+    "watch-calibration.png": "ee48fd03cfc08243d0976726a1c2970ab9db42bf501e5dd382e4784c861b37d8",
+    "phone-pocket-scheduled.png": "97b1fb3d7e131196cecfb7ac7773b0d276d0f461a2374c36d2f37f7016ffd126",
+    "watch-receipt.json": "f9e468c315d45380cd33276749916b7a6d93a6174b8cb28aaeff58f8ca570f5e",
+    "phone-receipt.json": "0ca256e828ca6c310f98d59c264793f46ec4ff6a6cdeeca978968737604ef3f1",
+    "browser-receipt.json": "4cec85e9306e84d267129dd3e1da06345ed96bb5bb83f9cd99a12e2b9c842cd0"
+  }
+}
