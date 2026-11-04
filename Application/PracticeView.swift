@@ -4,6 +4,7 @@ import SwiftUI
 struct PracticeView: View {
     @Bindable var store: PracticeStore
     @State private var showIntervals = false
+    @State private var showCounts = false
     @State private var showHistory = false
     @State private var showInfo = false
 
@@ -68,6 +69,9 @@ struct PracticeView: View {
                 }
             }
             .sheet(isPresented: $showInfo) { AppInfoView() }
+            .sheet(isPresented: $showCounts) {
+                RepetitionSelection(count: $store.attemptCount)
+            }
             .sheet(isPresented: $showIntervals) {
                 IntervalSelection(interval: $store.interval)
             }
@@ -112,10 +116,10 @@ struct PracticeView: View {
                 }
                 .accessibilityLabel("Interval, \(store.interval.label)")
                 .accessibilityIdentifier("choose-interval")
-                Picker(store.trainingSelected ? "Repetitions" : "Attempts", selection: $store.attemptCount) {
-                    ForEach([1, 3, 5], id: \.self) { count in Text("\(count)").tag(count) }
+                Button("\(store.trainingSelected ? "Repetitions" : "Attempts"): \(store.attemptCount)") {
+                    showCounts = true
                 }
-                .pickerStyle(.navigationLink)
+                .accessibilityIdentifier("choose-repetitions")
                 Button("Begin", action: beginSelectedMode)
                     .buttonStyle(.borderedProminent)
                     .tint(PracticeStyle.accent)
@@ -158,6 +162,7 @@ struct PracticeView: View {
                     .pickerStyle(.segmented)
                 #endif
                 .accessibilityLabel("Number of attempts")
+                .accessibilityIdentifier("choose-repetitions")
                 Button("Begin", action: beginSelectedMode)
                     .buttonStyle(.borderedProminent)
                     .tint(PracticeStyle.accent)
@@ -327,6 +332,24 @@ private struct IntervalSelection: View {
                     Button("Done") { dismiss() }.foregroundStyle(PracticeStyle.toolbarInk)
                 }
             }
+        }
+    }
+}
+
+private struct RepetitionSelection: View {
+    @Binding var count: Int
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List([1, 3, 5], id: \.self) { value in
+                Button("\(value)") {
+                    count = value
+                    dismiss()
+                }
+                .accessibilityIdentifier("repetitions-\(value)")
+            }
+            .navigationTitle("Repetitions")
         }
     }
 }

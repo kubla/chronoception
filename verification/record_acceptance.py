@@ -21,6 +21,7 @@ expected = {
     'testCancelDoesNotManufactureAnEstimate': ['Cancelled history'],
     'testRepeatedPracticeRequiresEachEstimateAndExplicitAdvance': ['Repeated practice history'],
     'testPrivacyIsAvailableWithoutStartingPractice': ['About and privacy'],
+    'testCalibrationComparesIntervalsAndEarlierObservations': ['Calibration comparison'],
     'testTrainingRepeatsAndPersistsWithoutCreatingEstimates': ['Training running', 'Training complete', 'Training history'],
     'testTrainingCancellationRetainsNoInventedCues': ['Cancelled training'],
     'testTrainingRelaunchInterruptsInsteadOfCompleting': ['Interrupted training'],

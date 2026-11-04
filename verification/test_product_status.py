@@ -1,6 +1,6 @@
 import copy
 import unittest
-from product_status import assess, BROWSER_TRAIN, NATIVE_TRAIN, NATIVE_TEST
+from product_status import assess, BROWSER_TRAIN, NATIVE_TRAIN, NATIVE_TEST, NATIVE_CALIBRATION
 
 
 class ProductStatusTests(unittest.TestCase):
@@ -10,7 +10,7 @@ class ProductStatusTests(unittest.TestCase):
                          for name in ["purpose-browser", "purpose-phone", "purpose-watch", "purpose-release"]}
         self.receipts["purpose-browser"]["journeys"] = [BROWSER_TRAIN]
         for kind in ["phone", "watch"]:
-            self.receipts["purpose-" + kind]["media"] = [{"journey": name} for name in [NATIVE_TRAIN, NATIVE_TEST]]
+            self.receipts["purpose-" + kind]["media"] = [{"journey": name} for name in [NATIVE_TRAIN, NATIVE_TEST, NATIVE_CALIBRATION]]
 
     def test_green_slice_does_not_complete_product(self):
         result = assess(self.run, self.receipts, "tree")

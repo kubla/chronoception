@@ -58,6 +58,12 @@ function persistTraining(preview         , kind        )       {
   catch { preview.storageMessage = 'Training could not be saved. It remains available in this tab.'; }
 }
 
+function interruptTraining(preview         , kind        )       {
+  if (preview.training?.phase !== 'training') return;
+  preview.training = { ...preview.training, phase: 'interrupted' };
+  persistTraining(preview, kind);
+}
+
 function send(event       )       {
   const preview = current();
   if (preview.session === null) return;
@@ -120,6 +126,7 @@ function render(focus = false)       {
 }
 
 function navigate(page      )       {
+  if (page !== 'practice') interruptTraining(current(), device);
   current().page = page;
   render(true);
 }
@@ -127,6 +134,7 @@ function navigate(page      )       {
 document.querySelector('#about') .addEventListener('click', () => navigate('about'));
 document.querySelector('#history') .addEventListener('click', () => navigate('history'));
 document.querySelectorAll                   ('[data-device]').forEach(button => button.addEventListener('click', () => {
+  interruptTraining(current(), device);
   device = button.dataset.device          ;
   const url = new URL(location.href);
   url.searchParams.set('device', device);
@@ -187,10 +195,7 @@ document.addEventListener('visibilitychange', () => {
   for (const kind of ['phone', 'watch']         ) {
     device = kind;
     const preview = current();
-    if (preview.training?.phase === 'training') {
-      preview.training = { ...preview.training, phase: 'interrupted' };
-      persistTraining(preview, kind);
-    }
+    interruptTraining(preview, kind);
     if (preview.session?.phase === 'estimating' || preview.session?.phase === 'feedback') {
       preview.session = transition(preview.session, { type: 'interrupt' });
       persist(preview);
@@ -204,13 +209,17 @@ setInterval(() => {
   for (const kind of ['phone', 'watch']         ) {
     const preview = previews[kind];
     if (preview.training?.phase !== 'training') continue;
+    if (document.hidden || kind !== device || preview.page !== 'practice') {
+      interruptTraining(preview, kind);
+      continue;
+    }
     const before = preview.training;
     preview.training = pulseTraining(before, performance.now());
     if (preview.training === before) continue;
     persistTraining(preview, kind);
     if (kind === device && preview.page === 'practice') {
       render();
-      screen.querySelector('.cue-count')?.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 450 });
+      screen.querySelector('.cue-count')?.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450 });
     }
   }
 }, 40);

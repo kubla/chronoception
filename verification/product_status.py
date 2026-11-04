@@ -8,6 +8,7 @@ import zipfile
 REPOSITORY = "kubla/chronoception"
 PARENT = 11
 NATIVE_TRAIN = "testTrainingRepeatsAndPersistsWithoutCreatingEstimates"
+NATIVE_CALIBRATION = "testCalibrationComparesIntervalsAndEarlierObservations"
 NATIVE_TEST = "testRealEstimateFeedbackAndHistorySurviveRelaunch"
 BROWSER_TRAIN = "phone: train with three real timed cues, persistence, separate estimate count and per-interval calibration"
 
@@ -33,8 +34,8 @@ def assess(run, receipts, candidate_tree):
     for kind in ["phone", "watch"]:
         media = receipts.get("purpose-" + kind, {}).get("media", [])
         mapped = {item["journey"] for item in media}
-        if NATIVE_TRAIN not in mapped or NATIVE_TEST not in mapped:
-            problems.append(kind + ": train and test journeys both required")
+        if not {NATIVE_TRAIN, NATIVE_TEST, NATIVE_CALIBRATION}.issubset(mapped):
+            problems.append(kind + ": train, test and calibration journeys required")
     rows = [
         {"outcome": "Train, test, and review calibration in the foreground", "status": "verified" if not problems else "unverified", "next": "Retain candidate evidence" if not problems else "Repair the missing or failed acceptance evidence"},
         {"outcome": "Screen-free cues on actual iPhone and Watch", "status": "not_verified", "next": "Implement supported locked-device cue adapters and collect device timing, perceptibility, interruption and battery evidence"},

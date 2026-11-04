@@ -130,6 +130,33 @@ try {
     journeys.push(kind + ': training cancellation and reload do not invent cued intervals');
   }
 
+  for (const kind of ['phone', 'watch']) {
+    await page.goto(base + '/?device=' + kind);
+    await click('Train yourself');
+    await click('Interval, 5 min');
+    await page.getByLabel('Seconds', { exact: true }).fill('1');
+    await click('Use interval');
+    await click('3 repetitions');
+    await click('Begin');
+    await visible('Training complete');
+    await visible('3 of 3 cues');
+    await page.screenshot({ path: `evidence/browser/${kind}-training-complete.png`, fullPage: true });
+    await click('Practice again');
+    await click('Begin');
+    await click('History');
+    await click('Done');
+    await visible('Training interrupted');
+    await visible('0 of 3 cues');
+    await click('Practice again');
+    await click('Begin');
+    await click(kind === 'phone' ? 'Apple Watch' : 'iPhone');
+    await page.waitForTimeout(1200);
+    await click(kind === 'phone' ? 'iPhone' : 'Apple Watch');
+    await visible('Training interrupted');
+    await visible('0 of 3 cues');
+    journeys.push(kind + ': positive repeated cues; opening a sheet or switching device interrupts invisible training');
+  }
+
   const layouts = [];
   for (const width of [320, 390, 1280]) {
     for (const device of ['phone', 'watch']) {

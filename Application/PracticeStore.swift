@@ -23,8 +23,8 @@ final class PracticeStore {
     private var currentRecord: PracticeRecord?
     private var historyLoadFailed = false
 
-    init() {
-        var directory = URL.applicationSupportDirectory.appending(path: "Chronoception")
+    init(directory: URL = URL.applicationSupportDirectory.appending(path: "Chronoception")) {
+        var directory = directory
         #if DEBUG
             let environment = ProcessInfo.processInfo.environment
             if ProcessInfo.processInfo.arguments.contains("--ui-testing") {
@@ -43,6 +43,14 @@ final class PracticeStore {
         #endif
         repository = HistoryRepository(url: directory.appending(path: "history.json"))
         loadHistory()
+        #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("--ui-testing"),
+                let raw = ProcessInfo.processInfo.environment["CHRONOCEPTION_TEST_SEED_HISTORY"]
+            {
+                history = try! JSONDecoder().decode(PracticeHistory.self, from: Data(raw.utf8))
+                saveHistory()
+            }
+        #endif
     }
 
     private var tick: Duration { origin.duration(to: clock.now) }
@@ -57,14 +65,15 @@ final class PracticeStore {
     }
 
     func runTraining() async {
-        while case .training(let deadline) = training.phase {
+        let sessionID = trainingRecord?.id
+        while trainingRecord?.id == sessionID, case .training(let deadline) = training.phase {
             do {
                 try await clock.sleep(until: origin.advanced(by: deadline), tolerance: .milliseconds(20))
             } catch {
-                interruptTraining()
+                if trainingRecord?.id == sessionID { interruptTraining() }
                 return
             }
-            guard !Task.isCancelled else { return }
+            guard !Task.isCancelled, trainingRecord?.id == sessionID else { return }
             let previous = training.completedIntervals
             training.send(.pulse(at: tick))
             if training.completedIntervals > previous { hapticSequence += 1 }
@@ -147,7 +156,7 @@ final class PracticeStore {
             history = loaded
             historyLoadFailed = false
             storageMessage = nil
-            if recovered || !history.records.isEmpty { saveHistory() }
+            if recovered || !history.records.isEmpty || !history.trainingRecords.isEmpty { saveHistory() }
         } catch {
             historyLoadFailed = true
             storageMessage = "Saved history couldn’t be read. The file has been preserved."

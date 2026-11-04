@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+work=$(mktemp -d "${TMPDIR:-/tmp}/chronoception-store.XXXXXX")
+trap 'rm -rf "$work"' EXIT
+cd "$root"
+xcrun swiftc -swift-version 6 -emit-library -emit-module -module-name ChronoceptionCore \
+  Shared/Sources/ChronoceptionCore/*.swift -emit-module-path "$work/ChronoceptionCore.swiftmodule" \
+  -o "$work/libChronoceptionCore.dylib"
+xcrun swiftc -swift-version 6 -emit-library -emit-module -module-name ChronoceptionStorage \
+  -I "$work" -L "$work" -lChronoceptionCore Shared/Sources/ChronoceptionStorage/*.swift \
+  -emit-module-path "$work/ChronoceptionStorage.swiftmodule" -o "$work/libChronoceptionStorage.dylib"
+xcrun swiftc -swift-version 6 -parse-as-library -I "$work" -L "$work" \
+  -lChronoceptionCore -lChronoceptionStorage -Xlinker -rpath -Xlinker "$work" \
+  Application/PracticeStore.swift verification/PracticeStoreTests.swift -o "$work/practice-store-tests"
+"$work/practice-store-tests" "$work/data"

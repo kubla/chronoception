@@ -9,3 +9,5 @@ xcrun swift-format lint --strict --configuration .swift-format --recursive Share
 verification/house-style
 swift verification/check_icons.swift "$root"
 swift test --package-path Shared --scratch-path "$work/build"
+
+bash verification/practice-store
