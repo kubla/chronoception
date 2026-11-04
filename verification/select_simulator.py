@@ -8,12 +8,15 @@ import sys
 kind=sys.argv[1]
 inventory=json.loads(subprocess.check_output(['xcrun','simctl','list','-j']))
 def choose(platform):
-    groups=[(key,devices)for key,devices in inventory['devices'].items()if platform in key]
+    sdk = 'iphonesimulator' if platform == 'iOS' else 'watchsimulator'
+    version = subprocess.check_output(['xcrun', '--sdk', sdk, '--show-sdk-version'], text=True).strip()
+    compatible = tuple(map(int, version.split('.')[:2]))
+    groups=[(key,devices)for key,devices in inventory['devices'].items()if platform in key and tuple(map(int,re.findall(r'\d+',key)[:2])) == compatible]
     groups.sort(key=lambda item:tuple(map(int,re.findall(r'\d+',item[0]))),reverse=True)
     for runtime,devices in groups:
         candidates=[d for d in devices if d.get('isAvailable') and ('iPhone' in d['name'] if platform=='iOS' else 'Apple Watch' in d['name'])]
         if candidates:return candidates[0]
-    raise RuntimeError('No available '+platform+' simulator')
+    raise RuntimeError('No available '+platform+' simulator matching SDK '+version)
 phone=choose('iOS')
 selected=phone if kind=='phone' else choose('watchOS')
 if kind=='watch':
