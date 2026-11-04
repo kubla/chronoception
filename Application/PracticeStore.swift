@@ -8,6 +8,9 @@ import Observation
 final class PracticeStore {
     var interval: PracticeInterval = .fiveMinutes
     var attemptCount = 1
+    var trainingSelected = false
+    var training = TrainingEngine(plan: .singleFiveMinutes)
+    private var trainingRecord: TrainingRecord?
     var engine = SessionEngine(plan: .singleFiveMinutes)
     private(set) var history = PracticeHistory()
     private(set) var storageMessage: String?
@@ -43,6 +46,60 @@ final class PracticeStore {
     }
 
     private var tick: Duration { origin.duration(to: clock.now) }
+
+    func beginTraining() {
+        guard let plan = SessionPlan(interval: interval, attemptCount: attemptCount) else { return }
+        training = TrainingEngine(plan: plan)
+        trainingRecord = TrainingRecord(id: UUID(), startedAt: Date(), plan: plan)
+        training.send(.start(at: tick))
+        persistTraining()
+        hapticSequence += 1
+    }
+
+    func runTraining() async {
+        while case .training(let deadline) = training.phase {
+            do {
+                try await clock.sleep(until: origin.advanced(by: deadline), tolerance: .milliseconds(20))
+            } catch {
+                interruptTraining()
+                return
+            }
+            guard !Task.isCancelled else { return }
+            let previous = training.completedIntervals
+            training.send(.pulse(at: tick))
+            if training.completedIntervals > previous { hapticSequence += 1 }
+            persistTraining()
+        }
+    }
+
+    func interruptTraining() {
+        training.send(.interrupt)
+        persistTraining()
+    }
+
+    func cancelTraining() {
+        training.send(.cancel)
+        persistTraining()
+    }
+
+    func resetTraining() {
+        training = TrainingEngine(plan: .singleFiveMinutes)
+        trainingRecord = nil
+    }
+
+    private func persistTraining() {
+        guard var record = trainingRecord else { return }
+        record.completedIntervals = training.completedIntervals
+        switch training.phase {
+        case .completed: record.status = .completed
+        case .cancelled: record.status = .cancelled
+        case .interrupted: record.status = .interrupted
+        default: record.status = .active
+        }
+        trainingRecord = record
+        history.upsert(record)
+        saveHistory()
+    }
 
     func begin() {
         guard let plan = SessionPlan(interval: interval, attemptCount: attemptCount) else { return }
@@ -86,6 +143,7 @@ final class PracticeStore {
             var loaded = try repository.load()
             let recovered = loaded.markInterruptedSessions()
             for record in history.records.reversed() { loaded.upsert(record) }
+            for record in history.trainingRecords.reversed() { loaded.upsert(record) }
             history = loaded
             historyLoadFailed = false
             storageMessage = nil

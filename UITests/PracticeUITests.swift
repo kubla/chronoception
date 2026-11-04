@@ -4,12 +4,12 @@ import XCTest
 final class PracticeUITests: XCTestCase {
     private var app: XCUIApplication!
 
-    private func launchFixture(attempts: Int = 1) {
+    private func launchFixture(attempts: Int = 1, interval: Int = 300) {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["--ui-testing"]
         app.launchEnvironment["CHRONOCEPTION_TEST_HISTORY"] = UUID().uuidString
-        app.launchEnvironment["CHRONOCEPTION_TEST_INTERVAL"] = "300"
+        app.launchEnvironment["CHRONOCEPTION_TEST_INTERVAL"] = String(interval)
         app.launchEnvironment["CHRONOCEPTION_TEST_ATTEMPTS"] = String(attempts)
         let started = ContinuousClock.now
         app.launch()
@@ -46,6 +46,7 @@ final class PracticeUITests: XCTestCase {
         tap("open-history")
         XCTAssertTrue(app.staticTexts["history-count"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["history-count"].label, "1 recorded attempt")
+        XCTAssertTrue(app.staticTexts["5 min calibration"].exists)
         capture("Persisted history")
     }
 
@@ -96,6 +97,55 @@ final class PracticeUITests: XCTestCase {
         XCTAssertTrue(privacy.waitForExistence(timeout: 5))
         XCTAssertTrue(privacy.label.contains("stored locally"))
         capture("About and privacy")
+    }
+
+    private func chooseTraining() {
+        #if os(watchOS)
+            tap("practice-mode")
+        #else
+            app.buttons["Train yourself"].tap()
+        #endif
+    }
+
+    func testTrainingRepeatsAndPersistsWithoutCreatingEstimates() {
+        launchFixture(attempts: 3, interval: 1)
+        chooseTraining()
+        tap("begin-session")
+        XCTAssertTrue(app.staticTexts["training-cues"].waitForExistence(timeout: 5))
+        capture("Training running")
+        XCTAssertTrue(app.staticTexts["training-finished"].waitForExistence(timeout: 10))
+        XCTAssertEqual(app.staticTexts["training-finished"].label, "Training complete")
+        capture("Training complete")
+        app.terminate()
+        app.launch()
+        tap("open-history")
+        XCTAssertTrue(app.staticTexts["3 of 3 cued intervals"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["history-count"].label, "0 recorded attempts")
+        capture("Training history")
+    }
+
+    func testTrainingCancellationRetainsNoInventedCues() {
+        launchFixture()
+        chooseTraining()
+        tap("begin-session")
+        tap("end-training")
+        XCTAssertEqual(app.staticTexts["training-finished"].label, "Training ended")
+        tap("open-history")
+        XCTAssertTrue(app.staticTexts["0 of 1 cued intervals"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["history-count"].label, "0 recorded attempts")
+        capture("Cancelled training")
+    }
+
+    func testTrainingRelaunchInterruptsInsteadOfCompleting() {
+        launchFixture()
+        chooseTraining()
+        tap("begin-session")
+        app.terminate()
+        app.launch()
+        tap("open-history")
+        XCTAssertTrue(app.staticTexts["Interrupted"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["0 of 1 cued intervals"].exists)
+        capture("Interrupted training")
     }
 
     private func tap(_ identifier: String) {

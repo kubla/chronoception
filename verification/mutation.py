@@ -6,6 +6,7 @@ import tempfile
 
 root = Path(__file__).resolve().parents[1]
 cases = [
+    ('training-invents-cues', root/'Shared/Sources/ChronoceptionCore/TrainingEngine.swift', 'tick - deadline <= .milliseconds(500)', 'tick - deadline <= .seconds(500)', 'testDelayedTrainingInterruptsRatherThanInventingMissedCues'),
     ('error-sign', root/'Shared/Sources/ChronoceptionCore/Attempt.swift', 'elapsedSeconds - Double(interval.seconds)', 'Double(interval.seconds) - elapsedSeconds', 'testEarlyLateAndExactFeedback'),
     ('cancel-completes', root/'Shared/Sources/ChronoceptionCore/SessionEngine.swift', 'phase = .cancelled', 'phase = .completed', 'testCancellationIsTerminalAndKeepsCompletedAttempts'),
 ]
@@ -26,4 +27,4 @@ with tempfile.TemporaryDirectory(prefix='chronoception-mutation-') as scratch:
             path.write_text(source)
 (root/'evidence').mkdir(exist_ok=True)
 (root/'evidence/mutation.json').write_text(json.dumps(results,indent=2)+'\n')
-print('PASS: both meaningful seeded faults were rejected by the production-core tests.')
+print('PASS: all meaningful seeded faults were rejected by the production-core tests.')

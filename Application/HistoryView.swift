@@ -9,12 +9,43 @@ struct HistoryView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    if history.records.isEmpty {
+                    if history.records.isEmpty && history.trainingRecords.isEmpty {
                         ContentUnavailableView(
                             "No attempts yet", systemImage: "circle.dotted",
                             description: Text("Your observations will appear here."))
                     } else {
                         summary
+                        ForEach(history.calibration) { summary in
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("\(summary.interval.label) calibration").font(.headline)
+                                Text(
+                                    "Latest \(summary.recent.count): \(summary.recentErrorPercent, specifier: "%.1f")% error"
+                                )
+                                if let previous = summary.previousErrorPercent {
+                                    Text(
+                                        "Previous \(summary.previous.count): \(previous, specifier: "%.1f")% error"
+                                    )
+                                } else {
+                                    Text("Keep practicing to compare with earlier estimates.")
+                                }
+                            }
+                            .font(.caption)
+                            .accessibilityIdentifier("calibration-summary")
+                        }
+                        ForEach(history.trainingRecords) { record in
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("Training · \(record.interval.label)").font(.headline)
+                                Text(
+                                    "\(record.completedIntervals) of \(record.plannedRepetitions) cued intervals"
+                                )
+                                Text(record.status.rawValue.capitalized)
+                                Text(
+                                    record.startedAt,
+                                    format: .dateTime.month(.abbreviated).day().hour().minute())
+                            }
+                            .font(.caption)
+                            .accessibilityIdentifier("training-record")
+                        }
                         ForEach(history.records) { record in
                             VStack(alignment: .leading, spacing: 10) {
                                 HStack {

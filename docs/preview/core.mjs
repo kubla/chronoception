@@ -1,16 +1,16 @@
-                                                                     
-                                                                          
-                                                                                      
-                                     
-                      
-                                                      
-                                           
-                                                        
-  
-                   
-                                                                      
-                                     
-                                                                                                    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function createSession(plan      , id        , startedAt        )          {
   if (!Number.isInteger(plan.intervalSeconds) || plan.intervalSeconds <= 0 ||
@@ -89,4 +89,47 @@ export function decodeHistory(raw        )           {
   }
   if (!Array.isArray(value) || !value.every(isRecord)) throw new TypeError('Unreadable practice history');
   return value;
+}
+
+
+
+
+
+
+export function startTraining(plan      , id        , startedAt        , atMilliseconds        )           {
+  const session = createSession(plan, id, startedAt);
+  return { id, startedAt, plan: session.plan, completedIntervals: 0, phase: 'training', nextCueMilliseconds: atMilliseconds + plan.intervalSeconds * 1000 };
+}
+
+export function pulseTraining(training          , atMilliseconds        )           {
+  if (training.phase !== 'training' || atMilliseconds < training.nextCueMilliseconds) return training;
+  if (atMilliseconds - training.nextCueMilliseconds > 500) return { ...training, phase: 'interrupted' };
+  const completedIntervals = training.completedIntervals + 1;
+  return completedIntervals === training.plan.attemptCount
+    ? { ...training, completedIntervals, phase: 'completed' }
+    : { ...training, completedIntervals, nextCueMilliseconds: training.nextCueMilliseconds + training.plan.intervalSeconds * 1000 };
+}
+
+export function trainingRecord(training          )                 {
+  return { id: training.id, startedAt: training.startedAt, plan: training.plan, completedIntervals: training.completedIntervals, status: training.phase === 'training' ? 'active' : training.phase };
+}
+
+export function decodeTrainingHistory(raw        )                   {
+  const value          = JSON.parse(raw);
+  if (!Array.isArray(value)) throw new TypeError('Unreadable training history');
+  for (const item of value) {
+    decodeHistory(JSON.stringify([{ ...item, attempts: [] }]));
+    if (!Number.isInteger(item.completedIntervals) || item.completedIntervals < 0 || item.completedIntervals > item.plan.attemptCount) throw new TypeError('Invalid cue count');
+  }
+  return value;
+}
+
+export function calibration(records          )                                                                                                                               {
+  const attempts = [...records].sort((a, b) => Date.parse(b.startedAt) - Date.parse(a.startedAt)).flatMap(item => [...item.attempts].reverse());
+  const mean = (items           ) => items.reduce((sum, item) => sum + Math.abs(item.elapsedSeconds - item.intervalSeconds) / item.intervalSeconds * 100, 0) / items.length;
+  return [...new Set(attempts.map(item => item.intervalSeconds))].sort((a, b) => a - b).map(intervalSeconds => {
+    const matching = attempts.filter(item => item.intervalSeconds === intervalSeconds);
+    const recent = matching.slice(0, 5), previous = matching.slice(5, 10);
+    return { intervalSeconds, recentCount: recent.length, recentError: mean(recent), previousCount: previous.length, previousError: previous.length ? mean(previous) : null };
+  });
 }

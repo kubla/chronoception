@@ -21,6 +21,9 @@ expected = {
     'testCancelDoesNotManufactureAnEstimate': ['Cancelled history'],
     'testRepeatedPracticeRequiresEachEstimateAndExplicitAdvance': ['Repeated practice history'],
     'testPrivacyIsAvailableWithoutStartingPractice': ['About and privacy'],
+    'testTrainingRepeatsAndPersistsWithoutCreatingEstimates': ['Training running', 'Training complete', 'Training history'],
+    'testTrainingCancellationRetainsNoInventedCues': ['Cancelled training'],
+    'testTrainingRelaunchInterruptsInsteadOfCompleting': ['Interrupted training'],
 }
 media = []
 missing = []
@@ -59,7 +62,7 @@ if main is not None:
         missing.append('navigation title geometry or image missing')
 passed = summary.get('result') == 'Passed' and summary.get('failedTests', 0) == 0 and summary.get('passedTests', 0) >= len(expected) and not missing
 receipt = {
-    'candidate': os.environ['GITHUB_SHA'], 'run': os.environ['GITHUB_RUN_ID'],
+    'candidate': os.environ['GITHUB_SHA'], 'candidate_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(), 'run': os.environ['GITHUB_RUN_ID'],
     'kind': kind, 'result': 'passed' if passed else 'failed',
     'summary': summary, 'media': media, 'missing_evidence': missing, 'title_contrast': contrast,
     'physical_haptics': 'not_run', 'store_distribution': 'not_run',
@@ -67,4 +70,4 @@ receipt = {
 (root / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
 if not passed:
     raise SystemExit('Native acceptance incomplete: ' + '; '.join(missing or ['one or more UI journeys failed']))
-print('PASS: five native journeys with their screenshots, app recordings and launch observations.')
+print(f'PASS: {len(expected)} native journeys with their screenshots, app recordings and launch observations.')

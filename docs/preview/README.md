@@ -11,3 +11,5 @@ The native and browser engines are separate implementations. Their shared numeri
 The build hashes the CSS and both browser modules into their request URLs. Updating the preview therefore requests the matching assets instead of combining a fresh page with cached code. CI checks these references with the generated modules.
 
 The required core job also installs Playwright 1.64.1 and Chromium only in its ephemeral worker. Browser acceptance runs five journeys and checks horizontal overflow for both devices at 320, 390 and 1280 pixels. It retains screenshots, a browser recording and a receipt. This is separate from inspecting the actual public Pages deployment.
+
+Training is now a separate practice mode with repeated visual interval cues and separate local history. It stops when the tab is hidden or a boundary is over 500 ms late; it does not establish locked-device haptics. Calibration compares recent and previous estimates per interval, excluding training. The product parent remains open for physical cue delivery and signed personal distribution.

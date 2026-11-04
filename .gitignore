@@ -37,3 +37,5 @@ tmp/
 # Verification products
 /evidence/
 /Shared/.swiftpm/
+
+__pycache__/

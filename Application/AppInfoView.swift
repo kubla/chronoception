@@ -8,9 +8,10 @@ struct AppInfoView: View {
             List {
                 Section("Practice") {
                     Text(
-                        "Choose an interval. Tap when it feels complete. Each estimate gets early or late feedback."
+                        "Train with repeated interval cues, then test your sense of time without a countdown. Review calibration for each interval."
                     )
                     Text("Phone and Watch work independently. Their histories stay separate.")
+                    Text("Training currently needs this app open. Locking or leaving the app interrupts it.")
                 }
                 Section("Privacy") {
                     Text(

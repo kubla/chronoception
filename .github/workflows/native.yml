@@ -39,6 +39,13 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/preview-tools" --no-save --ignore-scripts playwright@1.64.1
           node "$RUNNER_TEMP/preview-tools/node_modules/playwright/cli.js" install chromium
           node verification/browser.acceptance.mjs "$RUNNER_TEMP/preview-tools/node_modules/playwright/index.mjs" 2>&1 | tee evidence/browser-acceptance.log
+      - name: Exercise product-completion regression checks
+        run: python3 -m unittest discover -s verification -p 'test_product_status.py'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: purpose-browser
+          path: evidence/browser/receipt.json
+          retention-days: 30
       - name: Test the tests with meaningful faults
         run: python3 verification/mutation.py
       - name: Check bounded state model
@@ -68,6 +75,19 @@ jobs:
             -archivePath "$RUNNER_TEMP/Chronoception.xcarchive" CODE_SIGNING_ALLOWED=NO archive \
             2>&1 | tee evidence/archive.log
           python3 verification/check_archive.py "$RUNNER_TEMP/Chronoception.xcarchive"
+      - name: Record release compilation acceptance
+        run: |
+          python3 - <<'PYCODE'
+          import json, os, subprocess
+          from pathlib import Path
+          receipt = dict(candidate=os.environ['GITHUB_SHA'], candidate_tree=subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(), run=os.environ['GITHUB_RUN_ID'], result='passed')
+          Path('evidence/receipt.json').write_text(json.dumps(receipt) + '\n')
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: purpose-release
+          path: evidence/receipt.json
+          retention-days: 30
       - name: Preserve release compilation evidence
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -136,3 +156,9 @@ jobs:
           name: native-${{ matrix.kind }}-evidence
           path: evidence
           retention-days: 7
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() }}
+        with:
+          name: purpose-${{ matrix.kind }}
+          path: evidence/receipt.json
+          retention-days: 30

@@ -279,7 +279,7 @@ summary {
 .quiet {
   font-size:12px;
 }
-.configuration,.estimation,.feedback,.finished {
+.configuration,.estimation,.feedback,.finished,.training {
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -912,3 +912,12 @@ summary {
     scroll-behavior:auto!important;
   }
 }
+
+.modes { width:100%; }
+.modes button { padding:7px; font-size:13px; }
+.training .cue-count { font-size:24px; padding:18px; border-radius:18px; background:#21665c18; }
+.watch .training { gap:12px; }
+.watch .training h2 { font-size:27px; }
+.watch .training .cue-count { font-size:20px; padding:10px; background:#20362d; }
+.calibration { margin:20px 0; padding:15px 0; border-top:1px solid #65736a55; }
+@media(prefers-reduced-motion:reduce) { .cue-count { animation:none; } }
