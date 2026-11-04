@@ -892,9 +892,6 @@ summary {
   .device:before,.device:after {
     display:none;
   }
-  .watch:before,.watch:after {
-    display:block;
-  }
   .site-footer {
     margin:0 22px;
     padding:20px 0;
