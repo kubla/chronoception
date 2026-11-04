@@ -2,6 +2,8 @@
 
 Practice noticing elapsed time, on iPhone or Apple Watch.
 
+[Try the interactive browser preview](https://kubla.github.io/chronoception/). It follows the current native interfaces, with real estimates and separate browser-local phone/Watch histories. Haptics and background timing require the native apps. [The earlier prototype](https://kubla.github.io/chronoception/earlier-prototype.html) remains available as historical design material.
+
 The native app lets you choose an interval, estimate it without a countdown, receive literal early/late feedback and retain your observations. Phone and Watch each work independently. Individual practice needs no account or backend.
 
 ## Native app
