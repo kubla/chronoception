@@ -1,0 +1,12 @@
+{
+  "delivered_main": "28602b70388f05fb86f1e559c06806526358dbff",
+  "accepted_tree": "0962f00547d1e14aa1021c81b3b51ddab5131111",
+  "acceptance_run": 41900826694,
+  "pages_run": 41905710026,
+  "url": "https://kubla.github.io/chronoception/",
+  "html_sha256": "a1a7536ab8a39ab5fa6ee8fa5a18aece3774f72887ecaad736ebb1571dbbf63a",
+  "html_matches_accepted": true,
+  "product_status": "incomplete",
+  "physical_cues": "not_verified",
+  "signed_native_delivery": "not_verified"
+}

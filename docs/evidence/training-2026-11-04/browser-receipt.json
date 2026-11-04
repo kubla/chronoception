@@ -1,0 +1,59 @@
+{
+  "candidate": "63ff6050fd35d091c9b04d18ca259b060a20d8d0",
+  "candidate_tree": "0962f00547d1e14aa1021c81b3b51ddab5131111",
+  "run": "41900826694",
+  "result": "passed",
+  "journeys": [
+    "phone: real estimate, feedback, finish, persisted history after reload",
+    "phone: cancellation does not manufacture an attempt",
+    "phone: unfinished practice is interrupted on reload",
+    "watch: independent history and three explicit estimates/advances",
+    "about: privacy and browser limitations are available without an account",
+    "phone: train with three real timed cues, persistence, separate estimate count and per-interval calibration",
+    "phone: training cancellation and reload do not invent cued intervals",
+    "watch: training cancellation and reload do not invent cued intervals",
+    "phone: positive repeated cues; opening a sheet or switching device interrupts invisible training",
+    "watch: positive repeated cues; opening a sheet or switching device interrupts invisible training"
+  ],
+  "layouts": [
+    {
+      "device": "phone",
+      "width": 320,
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "device": "watch",
+      "width": 320,
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "device": "phone",
+      "width": 390,
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "device": "watch",
+      "width": 390,
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "device": "phone",
+      "width": 1280,
+      "viewport": 1280,
+      "content": 1280
+    },
+    {
+      "device": "watch",
+      "width": 1280,
+      "viewport": 1280,
+      "content": 1280
+    }
+  ],
+  "browserErrors": [],
+  "environment": "ephemeral Chromium against the actual Pages files; live Pages also inspected separately",
+  "haptics": "not_simulated"
+}

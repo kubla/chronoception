@@ -1,0 +1,145 @@
+{
+  "candidate": "63ff6050fd35d091c9b04d18ca259b060a20d8d0",
+  "candidate_tree": "0962f00547d1e14aa1021c81b3b51ddab5131111",
+  "run": "41900826694",
+  "kind": "phone",
+  "result": "passed",
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "B7CD7ED2-0DFF-42FE-A30F-21CD2E3D3D2C",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23C54",
+          "osVersion": "26.2",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 9,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "Chronoception \u00b7 Built with macOS 15.8.2",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1793822931.233,
+    "passedTests": 9,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1793822643.588,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - Chronoception",
+    "topInsights": [],
+    "totalTestCount": 9
+  },
+  "media": [
+    {
+      "journey": "testRealEstimateFeedbackAndHistorySurviveRelaunch",
+      "videos": [
+        "9C2DD558-A142-4199-9050-F88DE19B7FA1.mp4"
+      ],
+      "captures": [
+        "Ready",
+        "Estimating",
+        "Feedback",
+        "Finished",
+        "Persisted history"
+      ],
+      "launch_to_ready_seconds_including_automation": 15.456030709
+    },
+    {
+      "journey": "testRelaunchInterruptsAnUnfinishedSession",
+      "videos": [
+        "B985600F-81CD-4085-887E-25D03291433D.mp4"
+      ],
+      "captures": [
+        "Interrupted history"
+      ],
+      "launch_to_ready_seconds_including_automation": 6.549528875
+    },
+    {
+      "journey": "testCancelDoesNotManufactureAnEstimate",
+      "videos": [
+        "DACFFE80-BF40-4A85-9567-493379BCC8E8.mp4"
+      ],
+      "captures": [
+        "Cancelled history"
+      ],
+      "launch_to_ready_seconds_including_automation": 7.30248425
+    },
+    {
+      "journey": "testRepeatedPracticeRequiresEachEstimateAndExplicitAdvance",
+      "videos": [
+        "8F08E1C8-01B2-463E-BAEF-385A19700F98.mp4"
+      ],
+      "captures": [
+        "Repeated practice history"
+      ],
+      "launch_to_ready_seconds_including_automation": 6.780892375
+    },
+    {
+      "journey": "testPrivacyIsAvailableWithoutStartingPractice",
+      "videos": [
+        "2E29ADAE-A97D-4809-BA64-4F70DF56F681.mp4"
+      ],
+      "captures": [
+        "About and privacy"
+      ],
+      "launch_to_ready_seconds_including_automation": 7.054611917
+    },
+    {
+      "journey": "testCalibrationComparesIntervalsAndEarlierObservations",
+      "videos": [
+        "97ED7C4F-6638-484F-84D4-F08EDE5F2353.mp4"
+      ],
+      "captures": [
+        "Calibration comparison"
+      ],
+      "launch_to_ready_seconds_including_automation": 22.369292125
+    },
+    {
+      "journey": "testTrainingRepeatsAndPersistsWithoutCreatingEstimates",
+      "videos": [
+        "57B1B8F4-8930-4E63-AE96-2BEE074A4537.mp4"
+      ],
+      "captures": [
+        "Training running",
+        "Training complete",
+        "Training history"
+      ],
+      "launch_to_ready_seconds_including_automation": 6.443394167
+    },
+    {
+      "journey": "testTrainingCancellationRetainsNoInventedCues",
+      "videos": [
+        "4B749BA1-60CB-4DF4-B28D-2C9961185CA6.mp4"
+      ],
+      "captures": [
+        "Cancelled training"
+      ],
+      "launch_to_ready_seconds_including_automation": 9.012715417
+    },
+    {
+      "journey": "testTrainingRelaunchInterruptsInsteadOfCompleting",
+      "videos": [
+        "E9806FB1-C4EB-40CA-A03D-77A887366E5E.mp4"
+      ],
+      "captures": [
+        "Interrupted training"
+      ],
+      "launch_to_ready_seconds_including_automation": 6.32977725
+    }
+  ],
+  "missing_evidence": [],
+  "title_contrast": "Rendered navigation-title contrast: 19.22:1",
+  "physical_haptics": "not_run",
+  "store_distribution": "not_run"
+}
