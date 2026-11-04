@@ -6,6 +6,7 @@ struct TrainingView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
+        let sessionID = store.trainingSessionID
         VStack(spacing: 16) {
             Text(store.training.plan.interval.label)
                 .font(.system(.title, design: .serif))
@@ -34,7 +35,7 @@ struct TrainingView: View {
             }
         }
         .multilineTextAlignment(.center)
-        .task { await store.runTraining() }
+        .task(id: sessionID) { await store.runTraining(sessionID: sessionID) }
         .onChange(of: scenePhase) { _, phase in
             if phase != .active { store.interruptTraining() }
         }

@@ -7,11 +7,12 @@ struct PracticeStoreTests {
     @MainActor
     static func main() async throws {
         let root = URL(fileURLWithPath: CommandLine.arguments[1])
-        for index in 0..<10 {
+        for index in 0..<20 {
             let store = PracticeStore(directory: root.appending(path: "race-\(index)"))
             store.beginTraining()
-            let oldRunner = Task { await store.runTraining() }
-            try await Task.sleep(for: .milliseconds(10))
+            let oldSessionID = store.trainingSessionID
+            let oldRunner = Task { await store.runTraining(sessionID: oldSessionID) }
+            if index % 2 == 0 { try await Task.sleep(for: .milliseconds(10)) }
             store.cancelTraining()
             store.resetTraining()
             oldRunner.cancel()

@@ -64,8 +64,10 @@ final class PracticeStore {
         hapticSequence += 1
     }
 
-    func runTraining() async {
-        let sessionID = trainingRecord?.id
+    var trainingSessionID: UUID? { trainingRecord?.id }
+
+    func runTraining(sessionID: UUID?) async {
+        guard let sessionID, !Task.isCancelled, trainingRecord?.id == sessionID else { return }
         while trainingRecord?.id == sessionID, case .training(let deadline) = training.phase {
             do {
                 try await clock.sleep(until: origin.advanced(by: deadline), tolerance: .milliseconds(20))
