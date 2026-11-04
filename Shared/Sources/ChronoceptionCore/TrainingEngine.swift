@@ -37,7 +37,7 @@ public struct TrainingEngine: Equatable, Sendable {
                 completedIntervals == plan.attemptCount
                 ? .completed : .training(nextCue: deadline + .seconds(plan.interval.seconds))
         case (.ready, .cancel), (.training, .cancel): phase = .cancelled
-        case (.training, .interrupt): phase = .interrupted
+        case (.ready, .interrupt), (.training, .interrupt): phase = .interrupted
         default: break
         }
     }
@@ -49,6 +49,7 @@ public struct TrainingRecord: Identifiable, Equatable, Sendable, Codable {
     public let interval: PracticeInterval
     public let plannedRepetitions: Int
     public var completedIntervals: Int
+    public var screenOffRequested: Bool?
     public var status: PracticeRecord.Status
 
     public init(id: UUID, startedAt: Date, plan: SessionPlan) {

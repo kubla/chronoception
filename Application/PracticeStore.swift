@@ -4,6 +4,10 @@ import Foundation
 import OSLog
 import Observation
 
+#if os(watchOS)
+    import WatchKit
+#endif
+
 @MainActor @Observable
 final class PracticeStore {
     var interval: PracticeInterval = .fiveMinutes
@@ -11,6 +15,15 @@ final class PracticeStore {
     var trainingSelected = false
     var training = TrainingEngine(plan: .singleFiveMinutes)
     private var trainingRecord: TrainingRecord?
+    private var trainingTask: Task<Void, Never>?
+    var quietTrainingSelected = false
+    #if os(iOS)
+        let pocketExperiment = PocketCueExperiment()
+    #endif
+    private(set) var trainingMessage: String?
+    #if os(watchOS)
+        private var quietRuntime: WatchTrainingRuntime?
+    #endif
     var engine = SessionEngine(plan: .singleFiveMinutes)
     private(set) var history = PracticeHistory()
     private(set) var storageMessage: String?
@@ -57,11 +70,68 @@ final class PracticeStore {
 
     func beginTraining() {
         guard let plan = SessionPlan(interval: interval, attemptCount: attemptCount) else { return }
+        #if os(watchOS)
+            if quietTrainingSelected && plan.interval.seconds > 3600 / plan.attemptCount {
+                trainingMessage = "Quiet practice must fit within one hour."
+                return
+            }
+        #endif
+        trainingMessage = nil
+        stopTrainingRuntime()
         training = TrainingEngine(plan: plan)
-        trainingRecord = TrainingRecord(id: UUID(), startedAt: Date(), plan: plan)
+        let sessionID = UUID()
+        trainingRecord = TrainingRecord(id: sessionID, startedAt: Date(), plan: plan)
+        #if os(watchOS)
+            trainingRecord?.screenOffRequested = quietTrainingSelected
+        #endif
+        persistTraining()
+        #if os(watchOS)
+            if quietTrainingSelected {
+                let runtime = WatchTrainingRuntime(
+                    onStarted: { [weak self] in self?.startTrainingClock(sessionID: sessionID) },
+                    onStopped: { [weak self] detail in
+                        guard let self, trainingRecord?.id == sessionID else { return }
+                        trainingMessage = detail
+                        interruptTraining()
+                    })
+                quietRuntime = runtime
+                runtime.start()
+                return
+            }
+        #endif
+        startTrainingClock(sessionID: sessionID)
+    }
+
+    private func startTrainingClock(sessionID: UUID) {
+        guard trainingRecord?.id == sessionID, training.phase == .ready else { return }
         training.send(.start(at: tick))
         persistTraining()
-        hapticSequence += 1
+        emitTrainingCue()
+        trainingTask = Task { [weak self] in await self?.runTraining(sessionID: sessionID) }
+    }
+
+    private func emitTrainingCue() {
+        #if os(watchOS)
+            WKInterfaceDevice.current().play(.notification)
+        #else
+            hapticSequence += 1
+        #endif
+    }
+
+    func trainingLeftActiveScene() {
+        #if os(watchOS)
+            if quietRuntime != nil { return }
+        #endif
+        interruptTraining()
+    }
+
+    private func stopTrainingRuntime() {
+        trainingTask?.cancel()
+        trainingTask = nil
+        #if os(watchOS)
+            quietRuntime?.stop()
+            quietRuntime = nil
+        #endif
     }
 
     var trainingSessionID: UUID? { trainingRecord?.id }
@@ -78,22 +148,27 @@ final class PracticeStore {
             guard !Task.isCancelled, trainingRecord?.id == sessionID else { return }
             let previous = training.completedIntervals
             training.send(.pulse(at: tick))
-            if training.completedIntervals > previous { hapticSequence += 1 }
+            if training.completedIntervals > previous { emitTrainingCue() }
             persistTraining()
         }
+        if trainingRecord?.id == sessionID { stopTrainingRuntime() }
     }
 
     func interruptTraining() {
         training.send(.interrupt)
         persistTraining()
+        stopTrainingRuntime()
     }
 
     func cancelTraining() {
         training.send(.cancel)
         persistTraining()
+        stopTrainingRuntime()
     }
 
     func resetTraining() {
+        stopTrainingRuntime()
+        trainingMessage = nil
         training = TrainingEngine(plan: .singleFiveMinutes)
         trainingRecord = nil
     }

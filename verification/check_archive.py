@@ -21,6 +21,7 @@ for path, identifier in expected:
     architectures = subprocess.check_output(['xcrun', 'lipo', '-archs', str(executable)], text=True).strip()
     products.append({'bundle': identifier, 'version': info['CFBundleShortVersionString'], 'architectures': architectures})
 watch_info = plistlib.loads((watch / 'Info.plist').read_bytes())
+assert watch_info['WKBackgroundModes'] == ['mindfulness'], 'Quiet practice needs its declared mindfulness runtime'
 assert watch_info['WKApplication'] is True
 assert watch_info['WKRunsIndependentlyOfCompanionApp'] is True
 assert watch_info['WKCompanionAppBundleIdentifier'] == expected[0][1]

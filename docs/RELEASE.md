@@ -14,7 +14,7 @@ Physical device checks must exercise a normal interval, wrist lowering or phone 
 
 ## Remaining required product work
 
-- **Screen-free training (required):** compare phone and Watch interval markers on real hardware. Measure requested versus delivered boundaries while the device is locked, perceptibility and battery impact. Establish platform-supported background behavior before promising passive practice.
+- **Screen-free training (required):** [quiet Watch runtime and phone notification adapters](experiments/screen-free-cues.md) are implemented as experiments. Compare their interval markers on real hardware. Measure requested versus delivered boundaries while the device is locked, perceptibility and battery impact. Establish platform-supported background behavior before promising passive practice.
 - **Calibration:** the foreground candidate compares recent and previous estimates per interval. Retain current candidate evidence on both native surfaces and the browser. Do not confuse cued intervals with accuracy observations.
 
 ## Optional exploration

@@ -17,3 +17,7 @@ Develop an intuitive sense of elapsed time through cued training and unaided est
 **Calibration**: How closely a person's estimates match the intended interval, considered separately for each duration over time.
 
 **Cue**: A perceptible marker that can orient practice in time. Cue delivery and the person's estimate are separate observations.
+
+**Quiet practice**: A deliberate silent session in which interval cues orient attention to elapsed time.
+
+**Cue request**: A request for a device to issue an interval marker. A requested marker and a marker someone felt are different observations.

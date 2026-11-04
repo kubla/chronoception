@@ -35,6 +35,7 @@ struct HistoryView: View {
                         ForEach(history.trainingRecords) { record in
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Training · \(record.interval.label)").font(.headline)
+                                if record.screenOffRequested == true { Text("Quiet practice") }
                                 Text(
                                     "\(record.completedIntervals) of \(record.plannedRepetitions) cued intervals"
                                 )

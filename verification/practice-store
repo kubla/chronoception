@@ -12,5 +12,5 @@ xcrun swiftc -swift-version 6 -emit-library -emit-module -module-name Chronocept
   -emit-module-path "$work/ChronoceptionStorage.swiftmodule" -o "$work/libChronoceptionStorage.dylib"
 xcrun swiftc -swift-version 6 -parse-as-library -I "$work" -L "$work" \
   -lChronoceptionCore -lChronoceptionStorage -Xlinker -rpath -Xlinker "$work" \
-  Application/PracticeStore.swift verification/PracticeStoreTests.swift -o "$work/practice-store-tests"
+  Application/PracticeStore.swift Application/PocketCueExperiment.swift verification/PracticeStoreTests.swift verification/PocketCueTests.swift -o "$work/practice-store-tests"
 "$work/practice-store-tests" "$work/data"

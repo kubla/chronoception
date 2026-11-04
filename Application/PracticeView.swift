@@ -5,6 +5,7 @@ struct PracticeView: View {
     @Bindable var store: PracticeStore
     @State private var showIntervals = false
     @State private var showCounts = false
+    @State private var showPocketExperiment = false
     @State private var showHistory = false
     @State private var showInfo = false
 
@@ -21,7 +22,7 @@ struct PracticeView: View {
                         .background(PracticeStyle.surface, in: RoundedRectangle(cornerRadius: 14))
                         .accessibilityIdentifier("storage-status")
                     }
-                    if store.training.phase != .ready {
+                    if store.trainingSessionID != nil {
                         TrainingView(store: store)
                     } else {
                         switch store.engine.phase {
@@ -40,7 +41,7 @@ struct PracticeView: View {
                 .frame(maxWidth: .infinity)
                 .foregroundStyle(PracticeStyle.ink)
             }
-            .id(store.training.phase == .ready ? phaseIdentity : 6)
+            .id(store.trainingSessionID == nil ? phaseIdentity : 6)
             .background(PracticeStyle.background)
             #if os(watchOS)
                 .navigationTitle("Practice")
@@ -68,6 +69,13 @@ struct PracticeView: View {
                     .accessibilityIdentifier("open-history")
                 }
             }
+            #if os(iOS)
+                .sheet(isPresented: $showPocketExperiment) {
+                    PocketCueExperimentView(
+                        interval: store.interval, repetitions: store.attemptCount,
+                        experiment: store.pocketExperiment)
+                }
+            #endif
             .sheet(isPresented: $showInfo) { AppInfoView() }
             .sheet(isPresented: $showCounts) {
                 RepetitionSelection(count: $store.attemptCount)
@@ -120,6 +128,13 @@ struct PracticeView: View {
                     showCounts = true
                 }
                 .accessibilityIdentifier("choose-repetitions")
+                if store.trainingSelected {
+                    Toggle("Quiet practice", isOn: $store.quietTrainingSelected)
+                        .accessibilityIdentifier("quiet-training")
+                }
+                if let message = store.trainingMessage {
+                    Text(message).font(.caption).accessibilityIdentifier("training-configuration-message")
+                }
                 Button("Begin", action: beginSelectedMode)
                     .buttonStyle(.borderedProminent)
                     .tint(PracticeStyle.accent)
@@ -169,6 +184,10 @@ struct PracticeView: View {
                     .foregroundStyle(PracticeStyle.buttonInk)
                     .frame(maxWidth: .infinity)
                     .accessibilityIdentifier("begin-session")
+                if store.trainingSelected {
+                    Button("Try pocket cues") { showPocketExperiment = true }
+                        .accessibilityIdentifier("open-pocket-experiment")
+                }
                 Text("A practice in noticing time.")
                     .font(.caption)
                     .foregroundStyle(.secondary)

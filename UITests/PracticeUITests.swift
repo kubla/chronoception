@@ -187,6 +187,39 @@ final class PracticeUITests: XCTestCase {
         capture("Interrupted training")
     }
 
+    #if os(iOS)
+        func testPocketExperimentSchedulesAndCancelsSystemRequests() {
+            launchFixture(attempts: 3)
+            chooseTraining()
+            tap("open-pocket-experiment")
+            XCTAssertTrue(app.staticTexts["pocket-status"].waitForExistence(timeout: 5))
+            tap("schedule-pocket-cues")
+            let system = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+            if system.buttons["Allow"].waitForExistence(timeout: 5) { system.buttons["Allow"].tap() }
+            let scheduled = NSPredicate(format: "label == %@", "3 cues pending")
+            expectation(for: scheduled, evaluatedWith: app.staticTexts["pocket-status"])
+            waitForExpectations(timeout: 10)
+            capture("Pocket cues scheduled")
+            tap("cancel-pocket-cues")
+            let cancelled = NSPredicate(format: "label == %@", "No cues pending")
+            expectation(for: cancelled, evaluatedWith: app.staticTexts["pocket-status"])
+            waitForExpectations(timeout: 10)
+            capture("Pocket cues cancelled")
+        }
+    #else
+        func testQuietPracticeRejectsAWindowBeyondTheRuntimeLimit() {
+            launchFixture(interval: 3601)
+            chooseTraining()
+            app.switches["quiet-training"].tap()
+            tap("begin-session")
+            XCTAssertTrue(app.staticTexts["training-configuration-message"].waitForExistence(timeout: 5))
+            XCTAssertEqual(
+                app.staticTexts["training-configuration-message"].label,
+                "Quiet practice must fit within one hour.")
+            capture("Quiet practice limit")
+        }
+    #endif
+
     private func tap(_ identifier: String) {
         let button = app.buttons.matching(identifier: identifier).firstMatch
         XCTAssertTrue(button.waitForExistence(timeout: 5))
