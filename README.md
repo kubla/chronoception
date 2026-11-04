@@ -14,7 +14,7 @@ The app uses SwiftUI and a local Swift package, with no third-party runtime depe
 
 Run `verification/core` with the intended Xcode selected through `DEVELOPER_DIR`. It checks formatting, parser-based house rules, the generated project and the actual production core. Build products use temporary storage. The entry point also decodes the actual icon assets and rejects blank, transparent or incorrectly sized images.
 
-[Native acceptance](https://github.com/kubla/chronoception/actions) runs on clean GitHub-hosted macOS VMs. It exercises core invariants, meaningful seeded faults, a bounded state model and full phone/Watch UI journeys. Per-run artifacts contain logs, screenshots, video and receipts. A failed or missing prerequisite is not a pass.
+[Native acceptance](https://github.com/kubla/chronoception/actions) runs on clean GitHub-hosted macOS VMs. It exercises core invariants, meaningful seeded faults, a bounded state model and full phone/Watch UI journeys. Per-run artifacts contain logs, screenshots, video and receipts. Acceptance also checks rendered navigation-title contrast inside bounds reported by the native accessibility tree; this is a focused regression check, not a complete accessibility audit. A failed or missing prerequisite is not a pass.
 
 [The session diagram](docs/model/Session.md) connects the domain transitions, production engine and generated-trace tests. `verification/house-style` uses the SwiftSyntax/SwiftParser libraries shipped with the selected Xcode, with positive and negative rule fixtures.
 

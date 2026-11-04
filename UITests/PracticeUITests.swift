@@ -111,5 +111,24 @@ final class PracticeUITests: XCTestCase {
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+        if name == "Ready" {
+            #if os(watchOS)
+                let title = app.navigationBars.staticTexts["Practice"].firstMatch
+            #else
+                let title = app.navigationBars.staticTexts["Chronoception"].firstMatch
+            #endif
+            XCTAssertTrue(title.exists)
+            let frame = title.frame
+            let viewport = app.frame
+            let geometry = [
+                "x": frame.minX / viewport.width, "y": frame.minY / viewport.height,
+                "width": frame.width / viewport.width, "height": frame.height / viewport.height,
+            ]
+            let data = try! JSONEncoder().encode(geometry)
+            let capture = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+            capture.name = "Navigation title bounds"
+            capture.lifetime = .keepAlways
+            add(capture)
+        }
     }
 }

@@ -44,11 +44,24 @@ for name, captures in expected.items():
     else:
         seconds = float((folder / timing['exportedFileName']).read_text().strip().split('=')[1])
     media.append({'journey': name, 'videos': videos, 'captures': captures, 'launch_to_ready_seconds_including_automation': seconds})
+main = next((item for item in manifest if 'testRealEstimateFeedbackAndHistorySurviveRelaunch' in item['testIdentifier']), None)
+contrast = 'not_checked'
+if main is not None:
+    bounds = next((item for item in main['attachments'] if item['suggestedHumanReadableName'].startswith('Navigation title bounds_')), None)
+    ready = next((item for item in main['attachments'] if item['suggestedHumanReadableName'].startswith('Ready_') and item['exportedFileName'].endswith('.png')), None)
+    if bounds is not None and ready is not None:
+        check = subprocess.run(['swift', 'verification/check_title_contrast.swift', str(folder / ready['exportedFileName']), str(folder / bounds['exportedFileName'])], text=True, capture_output=True)
+        contrast = check.stdout.strip()
+        print(check.stdout + check.stderr)
+        if check.returncode != 0:
+            missing.append('rendered navigation title contrast failed')
+    else:
+        missing.append('navigation title geometry or image missing')
 passed = summary.get('result') == 'Passed' and summary.get('failedTests', 0) == 0 and summary.get('passedTests', 0) >= len(expected) and not missing
 receipt = {
     'candidate': os.environ['GITHUB_SHA'], 'run': os.environ['GITHUB_RUN_ID'],
     'kind': kind, 'result': 'passed' if passed else 'failed',
-    'summary': summary, 'media': media, 'missing_evidence': missing,
+    'summary': summary, 'media': media, 'missing_evidence': missing, 'title_contrast': contrast,
     'physical_haptics': 'not_run', 'store_distribution': 'not_run',
 }
 (root / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
