@@ -99,7 +99,7 @@ final class PracticeUITests: XCTestCase {
     }
 
     private func tap(_ identifier: String) {
-        let button = app.buttons[identifier]
+        let button = app.buttons.matching(identifier: identifier).firstMatch
         XCTAssertTrue(button.waitForExistence(timeout: 5))
         for _ in 0..<5 where !button.isHittable { app.swipeUp() }
         XCTAssertTrue(button.isHittable, identifier)

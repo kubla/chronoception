@@ -37,8 +37,10 @@ struct PracticeView: View {
             }
             .id(phaseIdentity)
             .background(PracticeStyle.background)
-            .navigationTitle("Chronoception")
-            #if os(iOS)
+            #if os(watchOS)
+                .navigationTitle("Practice")
+            #else
+                .navigationTitle("Chronoception")
                 .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
@@ -70,6 +72,14 @@ struct PracticeView: View {
         }
     }
 
+    private var spacing: CGFloat {
+        #if os(watchOS)
+            10
+        #else
+            22
+        #endif
+    }
+
     private var phaseIdentity: Int {
         switch store.engine.phase {
         case .ready: 0
@@ -82,55 +92,90 @@ struct PracticeView: View {
     }
 
     private var configuration: some View {
-        VStack(spacing: 26) {
-            Text("Feel the interval.")
-                .font(.system(size: PracticeStyle.heroSize, weight: .regular, design: .serif))
-                .multilineTextAlignment(.center)
-                .padding(.top, 20)
-            Text("Choose a duration. Mark it when it feels complete.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-            Button {
-                showIntervals = true
-            } label: {
-                VStack(spacing: 6) {
-                    Text("INTERVAL").font(.caption2).tracking(2)
-                    HStack(spacing: 8) {
-                        Text(store.interval.label).font(.system(.largeTitle, design: .serif))
+        #if os(watchOS)
+            VStack(spacing: 10) {
+                Button {
+                    showIntervals = true
+                } label: {
+                    HStack {
+                        Text(store.interval.label).font(.system(.title2, design: .serif))
+                        Spacer()
                         Image(systemName: "chevron.down").font(.caption)
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 24)
-                .background(PracticeStyle.surface, in: RoundedRectangle(cornerRadius: 22))
+                .accessibilityLabel("Interval, \(store.interval.label)")
+                .accessibilityIdentifier("choose-interval")
+                Picker("Attempts", selection: $store.attemptCount) {
+                    ForEach([1, 3, 5], id: \.self) { count in Text("\(count)").tag(count) }
+                }
+                .pickerStyle(.navigationLink)
+                Button("Begin", action: store.begin)
+                    .buttonStyle(.borderedProminent)
+                    .foregroundStyle(PracticeStyle.buttonInk)
+                    .accessibilityIdentifier("begin-session")
             }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("choose-interval")
-            Picker("Attempts", selection: $store.attemptCount) {
-                ForEach([1, 3, 5], id: \.self) { count in Text("\(count)").tag(count) }
+        #else
+            VStack(spacing: 26) {
+                Text("Feel the interval.")
+                    .font(.system(size: PracticeStyle.heroSize, weight: .regular, design: .serif))
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 20)
+                Text("Choose a duration. Mark it when it feels complete.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                Button {
+                    showIntervals = true
+                } label: {
+                    VStack(spacing: 6) {
+                        Text("INTERVAL").font(.caption2).tracking(2)
+                        HStack(spacing: 8) {
+                            Text(store.interval.label).font(.system(.largeTitle, design: .serif))
+                            Image(systemName: "chevron.down").font(.caption)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 24)
+                    .background(PracticeStyle.surface, in: RoundedRectangle(cornerRadius: 22))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("choose-interval")
+                Text("Attempts").font(.caption).foregroundStyle(.secondary)
+                Picker("Attempts", selection: $store.attemptCount) {
+                    ForEach([1, 3, 5], id: \.self) { count in Text("\(count)").tag(count) }
+                }
+                #if os(iOS)
+                    .pickerStyle(.segmented)
+                #endif
+                .accessibilityLabel("Number of attempts")
+                Button("Begin", action: store.begin)
+                    .buttonStyle(.borderedProminent)
+                    .foregroundStyle(PracticeStyle.buttonInk)
+                    .frame(maxWidth: .infinity)
+                    .accessibilityIdentifier("begin-session")
+                Text("A practice in noticing time.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
-            #if os(iOS)
-                .pickerStyle(.segmented)
-            #endif
-            .accessibilityLabel("Number of attempts")
-            Button("Begin", action: store.begin)
-                .buttonStyle(.borderedProminent)
-                .frame(maxWidth: .infinity)
-                .accessibilityIdentifier("begin-session")
-            Text("A practice in noticing time.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        }
+        #endif
     }
 
     private var estimation: some View {
-        VStack(spacing: 22) {
-            Text(store.engine.plan.interval.label)
-                .font(.system(size: PracticeStyle.heroSize, weight: .regular, design: .serif))
-            Text("Attempt \(store.engine.attempts.count + 1) of \(store.engine.plan.attemptCount)")
+        VStack(spacing: spacing) {
+            #if os(watchOS)
+                HStack {
+                    Text(store.engine.plan.interval.label)
+                    Spacer()
+                    Text("\(store.engine.attempts.count + 1) of \(store.engine.plan.attemptCount)")
+                }
                 .font(.caption)
-                .foregroundStyle(.secondary)
+            #else
+                Text(store.engine.plan.interval.label)
+                    .font(.system(size: PracticeStyle.heroSize, weight: .regular, design: .serif))
+                Text("Attempt \(store.engine.attempts.count + 1) of \(store.engine.plan.attemptCount)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            #endif
             Button(action: store.estimate) {
                 Text("Now")
                     .font(.system(.title2, design: .serif))
@@ -141,35 +186,43 @@ struct PracticeView: View {
             .buttonStyle(.plain)
             .accessibilityLabel("Mark my estimate")
             .accessibilityIdentifier("mark-estimate")
-            Text("Tap when the interval feels complete.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+            #if os(iOS)
+                Text("Tap when the interval feels complete.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            #endif
             Button("End session", action: store.cancel)
                 .buttonStyle(.borderless)
                 .accessibilityIdentifier("end-session")
         }
-        .accessibilityIdentifier("estimation-screen")
     }
 
     private func feedback(_ attempt: Attempt) -> some View {
-        VStack(spacing: 20) {
+        VStack(spacing: spacing) {
             Text(attempt.feedback)
                 .font(.system(size: PracticeStyle.heroSize, weight: .regular, design: .serif))
                 .multilineTextAlignment(.center)
                 .accessibilityIdentifier("attempt-feedback")
-            VStack(spacing: 8) {
-                LabeledContent("Your estimate", value: DurationText.seconds(attempt.elapsedSeconds))
-                LabeledContent("Interval", value: attempt.interval.label)
-            }
-            .font(.subheadline)
-            .padding()
-            .background(PracticeStyle.surface, in: RoundedRectangle(cornerRadius: 18))
+            #if os(watchOS)
+                Text("Estimated \(DurationText.seconds(attempt.elapsedSeconds)) of \(attempt.interval.label)")
+                    .font(.caption)
+                    .multilineTextAlignment(.center)
+            #else
+                VStack(spacing: 8) {
+                    LabeledContent("Your estimate", value: DurationText.seconds(attempt.elapsedSeconds))
+                    LabeledContent("Interval", value: attempt.interval.label)
+                }
+                .font(.subheadline)
+                .padding()
+                .background(PracticeStyle.surface, in: RoundedRectangle(cornerRadius: 18))
+            #endif
             Button(
                 store.engine.attempts.count == store.engine.plan.attemptCount ? "Finish" : "Next attempt",
                 action: store.advance
             )
             .buttonStyle(.borderedProminent)
+            .foregroundStyle(PracticeStyle.buttonInk)
             .accessibilityIdentifier("advance-session")
             if store.engine.attempts.count < store.engine.plan.attemptCount {
                 Button("End session", action: store.cancel)
@@ -185,10 +238,12 @@ struct PracticeView: View {
     }
 
     private func finished(title: String, detail: String) -> some View {
-        VStack(spacing: 24) {
-            Image(systemName: "circle.dotted")
-                .font(.system(size: 54, weight: .ultraLight))
-                .foregroundStyle(PracticeStyle.accent)
+        VStack(spacing: spacing) {
+            #if os(iOS)
+                Image(systemName: "circle.dotted")
+                    .font(.system(size: 54, weight: .ultraLight))
+                    .foregroundStyle(PracticeStyle.accent)
+            #endif
             Text(title)
                 .font(.system(size: PracticeStyle.heroSize, weight: .regular, design: .serif))
                 .multilineTextAlignment(.center)
@@ -196,6 +251,7 @@ struct PracticeView: View {
             Text(detail).font(.subheadline).foregroundStyle(.secondary)
             Button("Practice again", action: store.reset)
                 .buttonStyle(.borderedProminent)
+                .foregroundStyle(PracticeStyle.buttonInk)
                 .accessibilityIdentifier("practice-again")
             Button("View history") { showHistory = true }
         }
