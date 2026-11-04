@@ -10,7 +10,7 @@
       </BuildActionEntry>
     </BuildActionEntries>
   </BuildAction>
-  <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
+  <TestAction systemAttachmentLifetime="keepAlways" userAttachmentLifetime="keepAlways" buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
     <Testables>
       <TestableReference skipped="NO">
         <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="36681D6E1688E0B42F3AECEF" BuildableName="ChronoceptionWatchUITests.xctest" BlueprintName="ChronoceptionWatchUITests" ReferencedContainer="container:Chronoception.xcodeproj" />

@@ -19,3 +19,5 @@ Verification runs compiler/core tests, generated event traces, meaningful seeded
 Shipping is autonomous under configured project authority. Signing/team access, actual device evidence and store distribution are commissioning facts to prove, not reasons to substitute a document for an app. Consult on changes that create consequential long-term architectural obligations.
 
 The distribution checklist and current commissioning status are in `docs/RELEASE.md`; prepared store copy is in `docs/STORE.md`. Repository `main` now requires the core, unsigned release archive, iPhone UI and Watch UI jobs from GitHub Actions, including for admins. No standing human review is required by that rule.
+
+Native acceptance retains XCTest’s app recordings on passing and failing runs. A receipt requires the five named journeys, nine named screenshots and a recording plus launch observation for each journey. Raw Watch display video was observed showing the watch face rather than the tested app; it is not used as app evidence.

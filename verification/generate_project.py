@@ -110,7 +110,7 @@ for name in ['Chronoception','ChronoceptionWatch']:
     for target in [name,test_name]:
         entry=ET.SubElement(entries,'BuildActionEntry',buildForTesting='YES',buildForRunning='NO' if 'UITests' in target else 'YES',buildForProfiling='NO' if 'UITests' in target else 'YES',buildForArchiving='NO' if 'UITests' in target else 'YES',buildForAnalyzing='YES')
         reference(entry,target)
-    action=ET.SubElement(scheme,'TestAction',buildConfiguration='Debug',selectedDebuggerIdentifier='Xcode.DebuggerFoundation.Debugger.LLDB',selectedLauncherIdentifier='Xcode.IDEFoundation.Launcher.LLDB',shouldUseLaunchSchemeArgsEnv='YES')
+    action=ET.SubElement(scheme,'TestAction',systemAttachmentLifetime='keepAlways',userAttachmentLifetime='keepAlways',buildConfiguration='Debug',selectedDebuggerIdentifier='Xcode.DebuggerFoundation.Debugger.LLDB',selectedLauncherIdentifier='Xcode.IDEFoundation.Launcher.LLDB',shouldUseLaunchSchemeArgsEnv='YES')
     testable=ET.SubElement(ET.SubElement(action,'Testables'),'TestableReference',skipped='NO')
     reference(testable,test_name)
     launch=ET.SubElement(scheme,'LaunchAction',buildConfiguration='Debug',selectedDebuggerIdentifier='Xcode.DebuggerFoundation.Debugger.LLDB',selectedLauncherIdentifier='Xcode.IDEFoundation.Launcher.LLDB',launchStyle='0',useCustomWorkingDirectory='NO',ignoresPersistentStateOnLaunch='NO',debugDocumentVersioning='YES',debugServiceExtension='internal',allowLocationSimulation='YES')

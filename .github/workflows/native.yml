@@ -84,7 +84,7 @@ jobs:
       - name: Select and boot simulator
         id: simulator
         run: python3 verification/select_simulator.py '${{ matrix.kind }}'
-      - name: Exercise the full native app and record video
+      - name: Exercise the full native app and preserve its recordings
         env:
           DEVICE: ${{ steps.simulator.outputs.device }}
           SCHEME: ${{ matrix.scheme }}
@@ -96,13 +96,6 @@ jobs:
             CODE_SIGNING_ALLOWED=NO ARCHS="$(uname -m)" ONLY_ACTIVE_ARCH=YES build-for-testing \
             2>&1 | tee "evidence/$KIND-build.log"
           python3 verification/native_smoke.py "$KIND" "$DEVICE" "$RUNNER_TEMP/native-$KIND"
-          xcrun simctl io "$DEVICE" recordVideo --codec h264 "evidence/$KIND.mov" &
-          video_pid=$!
-          finish_video() {
-            kill -INT "$video_pid" 2>/dev/null || true
-            wait "$video_pid" || true
-          }
-          trap finish_video EXIT
           xcodebuild -project Chronoception.xcodeproj -scheme "$SCHEME" \
             -destination "id=$DEVICE" -derivedDataPath "$RUNNER_TEMP/native-$KIND" \
             -test-timeouts-enabled YES -maximum-test-execution-time-allowance 120 \
