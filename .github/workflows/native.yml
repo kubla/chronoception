@@ -32,6 +32,13 @@ jobs:
           node verification/build_browser.mjs --check
           npm exec --yes --package=typescript@5.9.3 -- tsc -p verification/browser-tsconfig.json
           node --test verification/browser.test.mjs 2>&1 | tee evidence/browser.log
+      - name: Exercise browser journeys and narrow layouts
+        run: |
+          set -o pipefail
+          export PLAYWRIGHT_BROWSERS_PATH="$RUNNER_TEMP/preview-browsers"
+          npm install --prefix "$RUNNER_TEMP/preview-tools" --no-save --ignore-scripts playwright@1.64.1
+          node "$RUNNER_TEMP/preview-tools/node_modules/playwright/cli.js" install chromium
+          node verification/browser.acceptance.mjs "$RUNNER_TEMP/preview-tools/node_modules/playwright/index.mjs" 2>&1 | tee evidence/browser-acceptance.log
       - name: Test the tests with meaningful faults
         run: python3 verification/mutation.py
       - name: Check bounded state model
