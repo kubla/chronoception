@@ -80,6 +80,7 @@ def make_target(name, watch=False, test=False):
         embedded=add('embed-watch','PBXBuildFile',fileRef=identity('product:ChronoceptionWatch'),settings={'ATTRIBUTES':['RemoveHeadersOnCopy']})
         phases.append(add('watch-copy','PBXCopyFilesBuildPhase',buildActionMask=2147483647,dstPath='$(CONTENTS_FOLDER_PATH)/Watch',dstSubfolderSpec=16,files=[embedded],name='Embed Watch Content',runOnlyForDeploymentPostprocessing=0))
     settings=dict(PRODUCT_BUNDLE_IDENTIFIER=bundle, PRODUCT_NAME='$(TARGET_NAME)', SWIFT_VERSION='6.0', SWIFT_STRICT_CONCURRENCY='complete', GENERATE_INFOPLIST_FILE='YES', CODE_SIGN_STYLE='Automatic', CURRENT_PROJECT_VERSION='1', MARKETING_VERSION='0.1.0', ENABLE_USER_SCRIPT_SANDBOXING='YES', TARGETED_DEVICE_FAMILY='4' if watch else '1', SDKROOT='watchos' if watch else 'iphoneos', SUPPORTED_PLATFORMS='watchos watchsimulator' if watch else 'iphoneos iphonesimulator')
+    settings['SKIP_INSTALL'] = 'YES' if watch or test else 'NO'
     settings['WATCHOS_DEPLOYMENT_TARGET' if watch else 'IPHONEOS_DEPLOYMENT_TARGET']='10.0' if watch else '17.0'
     if test:
         settings['TEST_TARGET_NAME']='ChronoceptionWatch' if watch else 'Chronoception'

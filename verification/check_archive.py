@@ -8,6 +8,9 @@ import sys
 archive = Path(sys.argv[1])
 phone = archive / 'Products/Applications/Chronoception.app'
 watch = phone / 'Watch/ChronoceptionWatch.app'
+archive_info = plistlib.loads((archive / 'Info.plist').read_bytes())
+assert set(path.name for path in (archive / 'Products/Applications').iterdir()) == {'Chronoception.app'}, 'Archive must contain one top-level app with Watch embedded'
+assert archive_info['ApplicationProperties']['ApplicationPath'] == 'Applications/Chronoception.app'
 expected = [(phone, 'io.mjjt.chronoception'), (watch, 'io.mjjt.chronoception.watchkitapp')]
 products = []
 for path, identifier in expected:

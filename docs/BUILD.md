@@ -17,3 +17,5 @@ Verification runs compiler/core tests, generated event traces, meaningful seeded
 ## Delivery
 
 Shipping is autonomous under configured project authority. Signing/team access, actual device evidence and store distribution are commissioning facts to prove, not reasons to substitute a document for an app. Consult on changes that create consequential long-term architectural obligations.
+
+The distribution checklist and current commissioning status are in `docs/RELEASE.md`; prepared store copy is in `docs/STORE.md`. Repository `main` now requires the core, unsigned release archive, iPhone UI and Watch UI jobs from GitHub Actions, including for admins. No standing human review is required by that rule.

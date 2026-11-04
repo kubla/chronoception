@@ -21,3 +21,5 @@ Physical device checks must exercise a normal interval, wrist lowering or phone 
 The historical specifications remain sources of ideas, not a release checklist.
 
 CI pins Xcode 26.2 and chooses a Simulator runtime matching that SDK, rather than combining the runner’s older default Xcode with its newest installed runtime. The [runner image inventory](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md) documents both installed choices.
+
+The archive check rejects multiple top-level apps and requires Xcode’s `ApplicationProperties` distribution metadata. It was demonstrated failing against the original generic archive, then passing after the Watch target was changed to `SKIP_INSTALL=YES`. The Watch app remains embedded and independent at runtime.

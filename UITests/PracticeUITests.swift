@@ -4,13 +4,22 @@ import XCTest
 final class PracticeUITests: XCTestCase {
     private var app: XCUIApplication!
 
-    private func launchFixture() {
+    private func launchFixture(attempts: Int = 1) {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["--ui-testing"]
         app.launchEnvironment["CHRONOCEPTION_TEST_HISTORY"] = UUID().uuidString
         app.launchEnvironment["CHRONOCEPTION_TEST_INTERVAL"] = "300"
+        app.launchEnvironment["CHRONOCEPTION_TEST_ATTEMPTS"] = String(attempts)
+        let started = ContinuousClock.now
         app.launch()
+        XCTAssertTrue(app.buttons["begin-session"].waitForExistence(timeout: 15))
+        let elapsed = started.duration(to: ContinuousClock.now).components
+        let seconds = Double(elapsed.seconds) + Double(elapsed.attoseconds) / 1e18
+        let timing = XCTAttachment(string: "launch_to_ready_seconds_including_automation=\(seconds)")
+        timing.name = "Launch to ready (automation)"
+        timing.lifetime = .keepAlways
+        add(timing)
     }
 
     func testRealEstimateFeedbackAndHistorySurviveRelaunch() {
@@ -61,6 +70,32 @@ final class PracticeUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["history-count"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["history-count"].label, "0 recorded attempts")
         capture("Cancelled history")
+    }
+
+    func testRepeatedPracticeRequiresEachEstimateAndExplicitAdvance() {
+        launchFixture(attempts: 3)
+        tap("begin-session")
+        for index in 1...3 {
+            tap("mark-estimate")
+            XCTAssertTrue(app.staticTexts["attempt-feedback"].waitForExistence(timeout: 5))
+            XCTAssertEqual(app.buttons["advance-session"].label, index == 3 ? "Finish" : "Next attempt")
+            tap("advance-session")
+        }
+        XCTAssertEqual(app.staticTexts["session-finished"].label, "Session complete")
+        tap("open-history")
+        XCTAssertTrue(app.staticTexts["history-count"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["history-count"].label, "3 recorded attempts")
+        capture("Repeated practice history")
+    }
+
+    func testPrivacyIsAvailableWithoutStartingPractice() {
+        launchFixture()
+        tap("open-about")
+        let privacy = app.staticTexts["privacy-summary"]
+        for _ in 0..<5 where !privacy.exists { app.swipeUp() }
+        XCTAssertTrue(privacy.waitForExistence(timeout: 5))
+        XCTAssertTrue(privacy.label.contains("stored locally"))
+        capture("About and privacy")
     }
 
     private func tap(_ identifier: String) {

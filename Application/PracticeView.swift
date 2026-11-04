@@ -5,6 +5,7 @@ struct PracticeView: View {
     @Bindable var store: PracticeStore
     @State private var showIntervals = false
     @State private var showHistory = false
+    @State private var showInfo = false
 
     var body: some View {
         NavigationStack {
@@ -13,7 +14,7 @@ struct PracticeView: View {
                     if let message = store.storageMessage {
                         VStack(spacing: 8) {
                             Text(message).font(.footnote)
-                            Button("Try saving again", action: store.retryStorage)
+                            Button("Try again", action: store.retryStorage)
                         }
                         .padding(12)
                         .background(PracticeStyle.surface, in: RoundedRectangle(cornerRadius: 14))
@@ -41,6 +42,14 @@ struct PracticeView: View {
                 .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showInfo = true
+                    } label: {
+                        Label("About Chronoception", systemImage: "info.circle")
+                    }
+                    .accessibilityIdentifier("open-about")
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showHistory = true
@@ -50,6 +59,7 @@ struct PracticeView: View {
                     .accessibilityIdentifier("open-history")
                 }
             }
+            .sheet(isPresented: $showInfo) { AppInfoView() }
             .sheet(isPresented: $showIntervals) {
                 IntervalSelection(interval: $store.interval)
             }
