@@ -153,9 +153,9 @@ final class PracticeUITests: XCTestCase {
 
     private func assertComparisonVisible(_ labels: [String], title: String) {
         #if os(watchOS)
-            let close = app.buttons["close-calibration"]
+            let close = app.buttons.matching(identifier: "close-calibration").firstMatch
         #else
-            let close = app.buttons["close-history"]
+            let close = app.buttons.matching(identifier: "close-history").firstMatch
         #endif
         let elements = labels.map { app.staticTexts[$0] }
         for element in elements { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
