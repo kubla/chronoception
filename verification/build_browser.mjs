@@ -4,8 +4,9 @@ import { createHash } from 'node:crypto';
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const hash = source => createHash('sha256').update(source).digest('hex').slice(0, 12);
-const core = stripTypeScriptTypes(read('docs/preview/core.mts'), { mode: 'strip' });
-const app = stripTypeScriptTypes(read('docs/preview/app.mts'), { mode: 'strip' })
+const tidy = source => source.split('\n').map(line => line.trimEnd()).join('\n');
+const core = tidy(stripTypeScriptTypes(read('docs/preview/core.mts'), { mode: 'strip' }));
+const app = tidy(stripTypeScriptTypes(read('docs/preview/app.mts'), { mode: 'strip' }))
   .replace("'./core.mjs'", "'./core.mjs?v=" + hash(core) + "'");
 const index = read('docs/index.html')
   .replace(/href="preview\/style.css(?:\?v=[a-f0-9]+)?"/, 'href="preview/style.css?v=' + hash(read('docs/preview/style.css')) + '"')

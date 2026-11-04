@@ -8,6 +8,9 @@ import Observation
 final class PracticeStore {
     var interval: PracticeInterval = .fiveMinutes
     var attemptCount = 1
+    var trainingSelected = false
+    var training = TrainingEngine(plan: .singleFiveMinutes)
+    private var trainingRecord: TrainingRecord?
     var engine = SessionEngine(plan: .singleFiveMinutes)
     private(set) var history = PracticeHistory()
     private(set) var storageMessage: String?
@@ -20,8 +23,8 @@ final class PracticeStore {
     private var currentRecord: PracticeRecord?
     private var historyLoadFailed = false
 
-    init() {
-        var directory = URL.applicationSupportDirectory.appending(path: "Chronoception")
+    init(directory: URL = URL.applicationSupportDirectory.appending(path: "Chronoception")) {
+        var directory = directory
         #if DEBUG
             let environment = ProcessInfo.processInfo.environment
             if ProcessInfo.processInfo.arguments.contains("--ui-testing") {
@@ -40,9 +43,74 @@ final class PracticeStore {
         #endif
         repository = HistoryRepository(url: directory.appending(path: "history.json"))
         loadHistory()
+        #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("--ui-testing"),
+                let raw = ProcessInfo.processInfo.environment["CHRONOCEPTION_TEST_SEED_HISTORY"]
+            {
+                history = try! JSONDecoder().decode(PracticeHistory.self, from: Data(raw.utf8))
+                saveHistory()
+            }
+        #endif
     }
 
     private var tick: Duration { origin.duration(to: clock.now) }
+
+    func beginTraining() {
+        guard let plan = SessionPlan(interval: interval, attemptCount: attemptCount) else { return }
+        training = TrainingEngine(plan: plan)
+        trainingRecord = TrainingRecord(id: UUID(), startedAt: Date(), plan: plan)
+        training.send(.start(at: tick))
+        persistTraining()
+        hapticSequence += 1
+    }
+
+    var trainingSessionID: UUID? { trainingRecord?.id }
+
+    func runTraining(sessionID: UUID?) async {
+        guard let sessionID, !Task.isCancelled, trainingRecord?.id == sessionID else { return }
+        while trainingRecord?.id == sessionID, case .training(let deadline) = training.phase {
+            do {
+                try await clock.sleep(until: origin.advanced(by: deadline), tolerance: .milliseconds(20))
+            } catch {
+                if trainingRecord?.id == sessionID { interruptTraining() }
+                return
+            }
+            guard !Task.isCancelled, trainingRecord?.id == sessionID else { return }
+            let previous = training.completedIntervals
+            training.send(.pulse(at: tick))
+            if training.completedIntervals > previous { hapticSequence += 1 }
+            persistTraining()
+        }
+    }
+
+    func interruptTraining() {
+        training.send(.interrupt)
+        persistTraining()
+    }
+
+    func cancelTraining() {
+        training.send(.cancel)
+        persistTraining()
+    }
+
+    func resetTraining() {
+        training = TrainingEngine(plan: .singleFiveMinutes)
+        trainingRecord = nil
+    }
+
+    private func persistTraining() {
+        guard var record = trainingRecord else { return }
+        record.completedIntervals = training.completedIntervals
+        switch training.phase {
+        case .completed: record.status = .completed
+        case .cancelled: record.status = .cancelled
+        case .interrupted: record.status = .interrupted
+        default: record.status = .active
+        }
+        trainingRecord = record
+        history.upsert(record)
+        saveHistory()
+    }
 
     func begin() {
         guard let plan = SessionPlan(interval: interval, attemptCount: attemptCount) else { return }
@@ -86,10 +154,11 @@ final class PracticeStore {
             var loaded = try repository.load()
             let recovered = loaded.markInterruptedSessions()
             for record in history.records.reversed() { loaded.upsert(record) }
+            for record in history.trainingRecords.reversed() { loaded.upsert(record) }
             history = loaded
             historyLoadFailed = false
             storageMessage = nil
-            if recovered || !history.records.isEmpty { saveHistory() }
+            if recovered || !history.records.isEmpty || !history.trainingRecords.isEmpty { saveHistory() }
         } catch {
             historyLoadFailed = true
             storageMessage = "Saved history couldn’t be read. The file has been preserved."

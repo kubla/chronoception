@@ -78,3 +78,45 @@ test('interval labels agree with native integer-second labels', () => {
   assert.equal(intervalLabel(65), '1m 5s');
   assert.equal(intervalLabel(300), '5 min');
 });
+
+const trainingCore = await import('../docs/preview/core.mjs');
+const training = () => trainingCore.startTraining({ intervalSeconds: 1, attemptCount: 3 }, 'training', '2026-11-04T12:00:00Z', 1000);
+test('training repeats at fixed boundaries and finishes without generating estimates', () => {
+  let value = training();
+  assert.equal(trainingCore.pulseTraining(value, 1999), value);
+  value = trainingCore.pulseTraining(value, 2100);
+  assert.equal(value.completedIntervals, 1);
+  assert.equal(value.nextCueMilliseconds, 3000);
+  assert.equal(trainingCore.pulseTraining(value, 2100), value);
+  value = trainingCore.pulseTraining(value, 3000);
+  value = trainingCore.pulseTraining(value, 4000);
+  assert.equal(value.phase, 'completed');
+  assert.equal(value.completedIntervals, 3);
+  assert.equal(trainingCore.pulseTraining(value, 5000), value);
+  assert.equal(trainingCore.trainingRecord(value).status, 'completed');
+  assert.equal('attempts' in trainingCore.trainingRecord(value), false);
+});
+test('late training interrupts without catching up fake cues', () => {
+  const value = trainingCore.pulseTraining(training(), 4000);
+  assert.equal(value.phase, 'interrupted');
+  assert.equal(value.completedIntervals, 0);
+});
+test('cancelled and interrupted training ignore future pulses', () => {
+  const first = trainingCore.pulseTraining(training(), 2000);
+  for (const phase of ['cancelled', 'interrupted']) {
+    const value = { ...first, phase };
+    assert.equal(trainingCore.pulseTraining(value, 3000), value);
+    assert.equal(value.completedIntervals, 1);
+  }
+});
+test('training history round-trips independently and rejects invalid cue counts', () => {
+  const record = trainingCore.trainingRecord(training());
+  assert.deepEqual(trainingCore.decodeTrainingHistory(JSON.stringify([record])), [record]);
+  for (const completedIntervals of [-1, 4, 0.5]) assert.throws(() => trainingCore.decodeTrainingHistory(JSON.stringify([{ ...record, completedIntervals }])));
+});
+test('calibration compares recent and previous samples within one interval', () => {
+  const attempts = Array.from({ length: 10 }, (_, i) => ({ intervalSeconds: 10, elapsedSeconds: i + 1 }));
+  const value = trainingCore.calibration([{ ...record(started()), plan: { intervalSeconds: 10, attemptCount: 10 }, attempts }]);
+  assert.equal(value[0].recentError, 20);
+  assert.equal(value[0].previousError, 70);
+});

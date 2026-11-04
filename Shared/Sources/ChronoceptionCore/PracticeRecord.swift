@@ -31,9 +31,35 @@ public struct PracticeRecord: Identifiable, Equatable, Sendable, Codable {
 
 public struct PracticeHistory: Equatable, Sendable, Codable {
     public private(set) var records: [PracticeRecord]
+    public private(set) var trainingRecords: [TrainingRecord]
 
-    public init(records: [PracticeRecord] = []) {
+    public init(records: [PracticeRecord] = [], trainingRecords: [TrainingRecord] = []) {
         self.records = records
+        self.trainingRecords = trainingRecords
+    }
+
+    private enum CodingKeys: String, CodingKey { case records, trainingRecords }
+
+    public init(from decoder: any Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        records = try values.decode([PracticeRecord].self, forKey: .records)
+        trainingRecords = try values.decodeIfPresent([TrainingRecord].self, forKey: .trainingRecords) ?? []
+    }
+
+    public mutating func upsert(_ record: TrainingRecord) {
+        if let index = trainingRecords.firstIndex(where: { $0.id == record.id }) {
+            trainingRecords[index] = record
+        } else {
+            trainingRecords.insert(record, at: 0)
+        }
+    }
+
+    public var calibration: [CalibrationSummary] {
+        let attempts = records.sorted { $0.startedAt > $1.startedAt }.flatMap { $0.attempts.reversed() }
+        let intervals = Set(attempts.map(\.interval)).sorted { $0.seconds < $1.seconds }
+        return intervals.map { interval in
+            CalibrationSummary(interval: interval, newestFirst: attempts.filter { $0.interval == interval })
+        }
     }
 
     public mutating func upsert(_ record: PracticeRecord) {
@@ -49,6 +75,10 @@ public struct PracticeHistory: Equatable, Sendable, Codable {
         var changed = false
         for index in records.indices where records[index].status == .active {
             records[index].status = .interrupted
+            changed = true
+        }
+        for index in trainingRecords.indices where trainingRecords[index].status == .active {
+            trainingRecords[index].status = .interrupted
             changed = true
         }
         return changed

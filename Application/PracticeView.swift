@@ -4,6 +4,7 @@ import SwiftUI
 struct PracticeView: View {
     @Bindable var store: PracticeStore
     @State private var showIntervals = false
+    @State private var showCounts = false
     @State private var showHistory = false
     @State private var showInfo = false
 
@@ -20,14 +21,18 @@ struct PracticeView: View {
                         .background(PracticeStyle.surface, in: RoundedRectangle(cornerRadius: 14))
                         .accessibilityIdentifier("storage-status")
                     }
-                    switch store.engine.phase {
-                    case .ready: configuration
-                    case .estimating: estimation
-                    case .feedback(let attempt): feedback(attempt)
-                    case .completed: finished(title: "Session complete", detail: savedDetail)
-                    case .cancelled: finished(title: "Session ended", detail: savedDetail)
-                    case .interrupted:
-                        finished(title: "Timing interrupted", detail: "Completed attempts are retained.")
+                    if store.training.phase != .ready {
+                        TrainingView(store: store)
+                    } else {
+                        switch store.engine.phase {
+                        case .ready: configuration
+                        case .estimating: estimation
+                        case .feedback(let attempt): feedback(attempt)
+                        case .completed: finished(title: "Session complete", detail: savedDetail)
+                        case .cancelled: finished(title: "Session ended", detail: savedDetail)
+                        case .interrupted:
+                            finished(title: "Timing interrupted", detail: "Completed attempts are retained.")
+                        }
                     }
                 }
                 .padding()
@@ -35,7 +40,7 @@ struct PracticeView: View {
                 .frame(maxWidth: .infinity)
                 .foregroundStyle(PracticeStyle.ink)
             }
-            .id(phaseIdentity)
+            .id(store.training.phase == .ready ? phaseIdentity : 6)
             .background(PracticeStyle.background)
             #if os(watchOS)
                 .navigationTitle("Practice")
@@ -64,6 +69,9 @@ struct PracticeView: View {
                 }
             }
             .sheet(isPresented: $showInfo) { AppInfoView() }
+            .sheet(isPresented: $showCounts) {
+                RepetitionSelection(count: $store.attemptCount)
+            }
             .sheet(isPresented: $showIntervals) {
                 IntervalSelection(interval: $store.interval)
             }
@@ -96,6 +104,7 @@ struct PracticeView: View {
     private var configuration: some View {
         #if os(watchOS)
             VStack(spacing: 10) {
+                modePicker
                 Button {
                     showIntervals = true
                 } label: {
@@ -107,11 +116,11 @@ struct PracticeView: View {
                 }
                 .accessibilityLabel("Interval, \(store.interval.label)")
                 .accessibilityIdentifier("choose-interval")
-                Picker("Attempts", selection: $store.attemptCount) {
-                    ForEach([1, 3, 5], id: \.self) { count in Text("\(count)").tag(count) }
+                Button("\(store.trainingSelected ? "Repetitions" : "Attempts"): \(store.attemptCount)") {
+                    showCounts = true
                 }
-                .pickerStyle(.navigationLink)
-                Button("Begin", action: store.begin)
+                .accessibilityIdentifier("choose-repetitions")
+                Button("Begin", action: beginSelectedMode)
                     .buttonStyle(.borderedProminent)
                     .tint(PracticeStyle.accent)
                     .foregroundStyle(PracticeStyle.buttonInk)
@@ -119,11 +128,12 @@ struct PracticeView: View {
             }
         #else
             VStack(spacing: 26) {
+                modePicker
                 Text("Feel the interval.")
                     .font(.system(size: PracticeStyle.heroSize, weight: .regular, design: .serif))
                     .multilineTextAlignment(.center)
                     .padding(.top, 20)
-                Text("Choose a duration. Mark it when it feels complete.")
+                Text("Choose a duration. Train with cues or test your sense of time.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -143,15 +153,17 @@ struct PracticeView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityIdentifier("choose-interval")
-                Text("Attempts").font(.caption).foregroundStyle(.secondary)
-                Picker("Attempts", selection: $store.attemptCount) {
+                Text(store.trainingSelected ? "Repetitions" : "Attempts").font(.caption).foregroundStyle(
+                    .secondary)
+                Picker(store.trainingSelected ? "Repetitions" : "Attempts", selection: $store.attemptCount) {
                     ForEach([1, 3, 5], id: \.self) { count in Text("\(count)").tag(count) }
                 }
                 #if os(iOS)
                     .pickerStyle(.segmented)
                 #endif
                 .accessibilityLabel("Number of attempts")
-                Button("Begin", action: store.begin)
+                .accessibilityIdentifier("choose-repetitions")
+                Button("Begin", action: beginSelectedMode)
                     .buttonStyle(.borderedProminent)
                     .tint(PracticeStyle.accent)
                     .foregroundStyle(PracticeStyle.buttonInk)
@@ -162,6 +174,27 @@ struct PracticeView: View {
                     .foregroundStyle(.secondary)
             }
         #endif
+    }
+
+    private var modePicker: some View {
+        #if os(watchOS)
+            Button(store.trainingSelected ? "Train yourself" : "Test yourself") {
+                store.trainingSelected.toggle()
+            }
+            .accessibilityHint("Switch practice mode")
+            .accessibilityIdentifier("practice-mode")
+        #else
+            Picker("Practice mode", selection: $store.trainingSelected) {
+                Text("Test yourself").tag(false)
+                Text("Train yourself").tag(true)
+            }
+            .pickerStyle(.segmented)
+            .accessibilityIdentifier("practice-mode")
+        #endif
+    }
+
+    private func beginSelectedMode() {
+        if store.trainingSelected { store.beginTraining() } else { store.begin() }
     }
 
     private var estimation: some View {
@@ -299,6 +332,24 @@ private struct IntervalSelection: View {
                     Button("Done") { dismiss() }.foregroundStyle(PracticeStyle.toolbarInk)
                 }
             }
+        }
+    }
+}
+
+private struct RepetitionSelection: View {
+    @Binding var count: Int
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List([1, 3, 5], id: \.self) { value in
+                Button("\(value)") {
+                    count = value
+                    dismiss()
+                }
+                .accessibilityIdentifier("repetitions-\(value)")
+            }
+            .navigationTitle("Repetitions")
         }
     }
 }
