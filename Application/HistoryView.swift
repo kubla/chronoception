@@ -48,7 +48,8 @@ struct HistoryView: View {
             .navigationTitle("History")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }.accessibilityIdentifier("close-history")
+                    Button("Done") { dismiss() }.foregroundStyle(PracticeStyle.toolbarInk)
+                        .accessibilityIdentifier("close-history")
                 }
             }
         }

@@ -19,18 +19,22 @@ struct AppInfoView: View {
                     .accessibilityIdentifier("privacy-summary")
                     Link(
                         "Privacy policy",
-                        destination: URL(string: "https://kubla.github.io/chronoception/privacy.html")!)
+                        destination: URL(string: "https://kubla.github.io/chronoception/privacy.html")!
+                    )
+                    .foregroundStyle(PracticeStyle.accent)
                 }
                 Section("Support") {
                     Link(
                         "Report a problem",
-                        destination: URL(string: "https://github.com/kubla/chronoception/issues")!)
+                        destination: URL(string: "https://github.com/kubla/chronoception/issues")!
+                    )
+                    .foregroundStyle(PracticeStyle.accent)
                 }
             }
             .navigationTitle("About")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button("Done") { dismiss() }.foregroundStyle(PracticeStyle.toolbarInk)
                 }
             }
         }

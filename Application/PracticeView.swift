@@ -49,6 +49,7 @@ struct PracticeView: View {
                         showInfo = true
                     } label: {
                         Label("About Chronoception", systemImage: "info.circle")
+                            .foregroundStyle(PracticeStyle.toolbarInk)
                     }
                     .accessibilityIdentifier("open-about")
                 }
@@ -57,6 +58,7 @@ struct PracticeView: View {
                         showHistory = true
                     } label: {
                         Label("History", systemImage: "clock.arrow.circlepath")
+                            .foregroundStyle(PracticeStyle.toolbarInk)
                     }
                     .accessibilityIdentifier("open-history")
                 }
@@ -111,6 +113,7 @@ struct PracticeView: View {
                 .pickerStyle(.navigationLink)
                 Button("Begin", action: store.begin)
                     .buttonStyle(.borderedProminent)
+                    .tint(PracticeStyle.accent)
                     .foregroundStyle(PracticeStyle.buttonInk)
                     .accessibilityIdentifier("begin-session")
             }
@@ -150,6 +153,7 @@ struct PracticeView: View {
                 .accessibilityLabel("Number of attempts")
                 Button("Begin", action: store.begin)
                     .buttonStyle(.borderedProminent)
+                    .tint(PracticeStyle.accent)
                     .foregroundStyle(PracticeStyle.buttonInk)
                     .frame(maxWidth: .infinity)
                     .accessibilityIdentifier("begin-session")
@@ -222,6 +226,7 @@ struct PracticeView: View {
                 action: store.advance
             )
             .buttonStyle(.borderedProminent)
+            .tint(PracticeStyle.accent)
             .foregroundStyle(PracticeStyle.buttonInk)
             .accessibilityIdentifier("advance-session")
             if store.engine.attempts.count < store.engine.plan.attemptCount {
@@ -251,6 +256,7 @@ struct PracticeView: View {
             Text(detail).font(.subheadline).foregroundStyle(.secondary)
             Button("Practice again", action: store.reset)
                 .buttonStyle(.borderedProminent)
+                .tint(PracticeStyle.accent)
                 .foregroundStyle(PracticeStyle.buttonInk)
                 .accessibilityIdentifier("practice-again")
             Button("View history") { showHistory = true }
@@ -272,6 +278,7 @@ private struct IntervalSelection: View {
                         interval = value
                         dismiss()
                     }
+                    .foregroundStyle(PracticeStyle.ink)
                     .accessibilityIdentifier("interval-\(value.seconds)")
                 }
                 Section("Custom interval") {
@@ -287,7 +294,11 @@ private struct IntervalSelection: View {
                 }
             }
             .navigationTitle("Interval")
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }.foregroundStyle(PracticeStyle.toolbarInk)
+                }
+            }
         }
     }
 }
