@@ -47,7 +47,11 @@ final class PracticeUITests: XCTestCase {
         tap("open-history")
         XCTAssertTrue(app.staticTexts["history-count"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["history-count"].label, "1 recorded attempt")
-        XCTAssertTrue(app.staticTexts["5 min calibration"].exists)
+        #if os(watchOS)
+            XCTAssertTrue(app.buttons["calibration-300"].exists)
+        #else
+            XCTAssertTrue(app.staticTexts["5 min calibration"].exists)
+        #endif
         capture("Persisted history")
     }
 
@@ -90,7 +94,11 @@ final class PracticeUITests: XCTestCase {
         tap("open-history")
         XCTAssertTrue(app.staticTexts["history-count"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["history-count"].label, "3 recorded attempts")
-        XCTAssertTrue(app.staticTexts["30s calibration"].exists)
+        #if os(watchOS)
+            XCTAssertTrue(app.buttons["calibration-30"].exists)
+        #else
+            XCTAssertTrue(app.staticTexts["30s calibration"].exists)
+        #endif
         capture("Repeated practice history")
     }
 
@@ -126,33 +134,42 @@ final class PracticeUITests: XCTestCase {
         let data = try! JSONSerialization.data(withJSONObject: ["records": [other, first]])
         launchFixture(seed: String(data: data, encoding: .utf8)!)
         tap("open-history")
-        reveal(["10s calibration", "Latest 5: 20.0% error", "Previous 5: 70.0% error"])
-        capture("Calibration comparison")
-        reveal(["5 min calibration", "Latest 1: 0.0% error"])
+        #if os(watchOS)
+            tap("calibration-10")
+            assertComparisonVisible(
+                ["Calibration", "Latest 5: 20.0% error", "Previous 5: 70.0% error"], title: "10s")
+            capture("Calibration comparison")
+            tap("close-calibration")
+            tap("calibration-300")
+            assertComparisonVisible(["Calibration", "Latest 1: 0.0% error"], title: "5 min")
+        #else
+            assertComparisonVisible(
+                ["10s calibration", "Latest 5: 20.0% error", "Previous 5: 70.0% error"], title: "History")
+            capture("Calibration comparison")
+            assertComparisonVisible(["5 min calibration", "Latest 1: 0.0% error"], title: "History")
+        #endif
         capture("Other interval calibration")
     }
 
-    private func reveal(_ labels: [String]) {
+    private func assertComparisonVisible(_ labels: [String], title: String) {
+        #if os(watchOS)
+            let close = app.buttons["close-calibration"]
+        #else
+            let close = app.buttons["close-history"]
+        #endif
         let elements = labels.map { app.staticTexts[$0] }
         for element in elements { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
-        let title = app.navigationBars.staticTexts["History"].firstMatch
-        XCTAssertTrue(title.waitForExistence(timeout: 5))
-        for _ in 0..<12 {
-            let top = max(title.frame.maxY, app.buttons["close-history"].frame.maxY) + 4
-            let viewport = CGRect(
-                x: app.frame.minX + 4, y: top, width: app.frame.width - 8,
-                height: app.frame.maxY - top - 12)
-            let frames = elements.map { $0.frame }
-            let known = frames.filter { !$0.isEmpty }
-            let bounds = known.reduce(CGRect.null) { $0.union($1) }
-            print("Calibration viewport=\(viewport) frames=\(frames)")
-            if known.count == frames.count && viewport.contains(bounds) { return }
-            let downward = known.count == frames.count && bounds.minY < viewport.minY
-            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.4 : 0.7))
-            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.65 : 0.45))
-            start.press(forDuration: 0.05, thenDragTo: end)
-        }
-        XCTFail("Comparison must be inside the visible viewport before capture: \(labels)")
+        let heading = app.navigationBars.staticTexts[title].firstMatch
+        XCTAssertTrue(heading.waitForExistence(timeout: 5))
+        let top = max(heading.frame.maxY, close.frame.maxY) + 4
+        let viewport = CGRect(
+            x: app.frame.minX + 4, y: top, width: app.frame.width - 8,
+            height: app.frame.maxY - top - 12)
+        let frames = elements.map { $0.frame }
+        let bounds = frames.reduce(CGRect.null) { $0.union($1) }
+        print("Calibration viewport=\(viewport) frames=\(frames)")
+        XCTAssertTrue(frames.allSatisfy { !$0.isEmpty }, "Comparison geometry must be available")
+        XCTAssertTrue(viewport.contains(bounds), "Comparison must be visible before capture: \(labels)")
     }
 
     private func chooseTraining() {

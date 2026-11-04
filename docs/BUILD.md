@@ -12,7 +12,7 @@ Choose **Train yourself** for repeated interval cues or **Test yourself** for un
 
 The default training adapter runs in the foreground. Leaving the app or hiding the tab interrupts that mode. The visual-only browser also interrupts when you open another screen or switch preview devices. A boundary more than 500 ms late interrupts rather than inventing missed cues or delivering a burst of catch-up cues. Deadlines stay anchored to the session start, so small scheduling delays do not accumulate. The 500 ms threshold is an operating choice, not a perceptual accuracy claim. Actual haptic latency and perceptibility need device measurement.
 
-History groups estimates by interval. Each group compares the latest five available estimates with the preceding five when available; sample counts stay visible. Training is excluded. These observations do not claim a measured training effect.
+History groups estimates by interval. Watch opens each comparison in a focused detail screen; phone shows its comparisons inline. Each group compares the latest five available estimates with the preceding five when available; sample counts stay visible. Training is excluded. These observations do not claim a measured training effect.
 
 **Product status remains incomplete:** Watch quiet practice now requests a screen-off mindfulness runtime, and iPhone offers a separate notification-based pocket cue experiment. Their physical cue delivery and signed personal distribution still need acceptance. See [screen-free experiments](experiments/screen-free-cues.md). Follow [the product parent](https://github.com/kubla/chronoception/issues/11). A passing change does not close it.
 
