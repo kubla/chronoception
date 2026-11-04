@@ -1,25 +1,27 @@
 import XCTest
 
+@MainActor
 final class PracticeUITests: XCTestCase {
     private var app: XCUIApplication!
 
-    override func setUpWithError() throws {
+    private func launchFixture() {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["--ui-testing"]
         app.launchEnvironment["CHRONOCEPTION_TEST_HISTORY"] = UUID().uuidString
-        app.launchEnvironment["CHRONOCEPTION_TEST_INTERVAL"] = "30"
+        app.launchEnvironment["CHRONOCEPTION_TEST_INTERVAL"] = "300"
         app.launch()
     }
 
     func testRealEstimateFeedbackAndHistorySurviveRelaunch() {
+        launchFixture()
         capture("Ready")
         tap("begin-session")
         XCTAssertTrue(app.buttons["mark-estimate"].waitForExistence(timeout: 5))
-        let labels = app.staticTexts.allElementsBoundByIndex.map(\.label)
+        let labels = app.staticTexts.allElementsBoundByIndex.map { $0.label }
         Thread.sleep(forTimeInterval: 1.2)
         XCTAssertEqual(
-            app.staticTexts.allElementsBoundByIndex.map(\.label), labels,
+            app.staticTexts.allElementsBoundByIndex.map { $0.label }, labels,
             "Estimating must not reveal a ticking clock.")
         capture("Estimating")
         tap("mark-estimate")
@@ -39,6 +41,7 @@ final class PracticeUITests: XCTestCase {
     }
 
     func testRelaunchInterruptsAnUnfinishedSession() {
+        launchFixture()
         tap("begin-session")
         XCTAssertTrue(app.buttons["mark-estimate"].waitForExistence(timeout: 5))
         app.terminate()
@@ -50,6 +53,7 @@ final class PracticeUITests: XCTestCase {
     }
 
     func testCancelDoesNotManufactureAnEstimate() {
+        launchFixture()
         tap("begin-session")
         tap("end-session")
         XCTAssertEqual(app.staticTexts["session-finished"].label, "Session ended")

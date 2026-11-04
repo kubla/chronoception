@@ -1,7 +1,7 @@
 name: Native acceptance
 on:
   push:
-    branches: [agent/native-practice, main]
+    branches: [main]
   pull_request:
 permissions:
   contents: read
@@ -76,7 +76,7 @@ jobs:
           xcodebuild -quiet -project Chronoception.xcodeproj -scheme "$SCHEME" \
             -destination "id=$DEVICE" -derivedDataPath "$RUNNER_TEMP/native-$KIND" \
             -parallel-testing-enabled NO -resultBundlePath "evidence/$KIND.xcresult" \
-            CODE_SIGNING_ALLOWED=NO test 2>&1 | tee "evidence/$KIND.log"
+            CODE_SIGNING_ALLOWED=NO ARCHS="$(uname -m)" ONLY_ACTIVE_ARCH=YES test 2>&1 | tee "evidence/$KIND.log"
       - name: Export screenshots and validate native result
         if: always()
         env:
