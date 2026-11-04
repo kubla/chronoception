@@ -138,13 +138,16 @@ final class PracticeUITests: XCTestCase {
         let title = app.navigationBars.staticTexts["History"].firstMatch
         XCTAssertTrue(title.waitForExistence(timeout: 5))
         for _ in 0..<12 {
-            let top = title.frame.maxY + 4
+            let top = max(title.frame.maxY, app.buttons["close-history"].frame.maxY) + 4
             let viewport = CGRect(
                 x: app.frame.minX + 4, y: top, width: app.frame.width - 8,
                 height: app.frame.maxY - top - 12)
-            let bounds = elements.reduce(CGRect.null) { $0.union($1.frame) }
-            if viewport.contains(bounds) { return }
-            let downward = bounds.minY < viewport.minY
+            let frames = elements.map { $0.frame }
+            let known = frames.filter { !$0.isEmpty }
+            let bounds = known.reduce(CGRect.null) { $0.union($1) }
+            print("Calibration viewport=\(viewport) frames=\(frames)")
+            if known.count == frames.count && viewport.contains(bounds) { return }
+            let downward = known.count == frames.count && bounds.minY < viewport.minY
             let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.4 : 0.7))
             let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.65 : 0.45))
             start.press(forDuration: 0.05, thenDragTo: end)
