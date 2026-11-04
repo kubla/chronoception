@@ -1,0 +1,17 @@
+{
+  "candidate": "9fc37f45b56fd33df6ae538c9c8585506d712b6b",
+  "result": "compiled_unsigned",
+  "products": [
+    {
+      "bundle": "io.mjjt.chronoception",
+      "version": "0.1.0",
+      "architectures": "arm64"
+    },
+    {
+      "bundle": "io.mjjt.chronoception.watchkitapp",
+      "version": "0.1.0",
+      "architectures": "arm64_32 arm64"
+    }
+  ],
+  "distribution": "not_run"
+}

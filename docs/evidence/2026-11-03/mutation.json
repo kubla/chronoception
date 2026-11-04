@@ -1,0 +1,12 @@
+[
+  {
+    "mutation": "error-sign",
+    "detected": true,
+    "test": "testEarlyLateAndExactFeedback"
+  },
+  {
+    "mutation": "cancel-completes",
+    "detected": true,
+    "test": "testCancellationIsTerminalAndKeepsCompletedAttempts"
+  }
+]

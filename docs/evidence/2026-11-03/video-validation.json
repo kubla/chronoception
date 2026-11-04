@@ -1,0 +1,162 @@
+[
+  {
+    "kind": "phone",
+    "file": "phone/phone-screenshots/EDB72F1D-D13B-4BD5-9772-D15F100C2C39.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1206,
+        "height": 2622
+      }
+    ],
+    "format": {
+      "duration": "17.106667"
+    }
+  },
+  {
+    "kind": "phone",
+    "file": "phone/phone-screenshots/B8011569-FCFD-4497-9ABB-E5EB1A30447A.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1206,
+        "height": 2622
+      }
+    ],
+    "format": {
+      "duration": "36.500000"
+    }
+  },
+  {
+    "kind": "phone",
+    "file": "phone/phone-screenshots/67E6CE2A-D1FF-4A46-987E-F4A68BD4616A.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1206,
+        "height": 2622
+      }
+    ],
+    "format": {
+      "duration": "36.423333"
+    }
+  },
+  {
+    "kind": "phone",
+    "file": "phone/phone-screenshots/37297303-A079-4DFC-9442-108115972386.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1206,
+        "height": 2622
+      }
+    ],
+    "format": {
+      "duration": "37.890000"
+    }
+  },
+  {
+    "kind": "phone",
+    "file": "phone/phone-screenshots/C41E07D9-D623-45D8-BC4F-ADB0937B6258.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1206,
+        "height": 2622
+      }
+    ],
+    "format": {
+      "duration": "24.085000"
+    }
+  },
+  {
+    "kind": "watch",
+    "file": "watch/watch-screenshots/8E8D0EFC-D06B-45E7-9020-67198121C0E5.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 416,
+        "height": 496
+      }
+    ],
+    "format": {
+      "duration": "21.145000"
+    }
+  },
+  {
+    "kind": "watch",
+    "file": "watch/watch-screenshots/EDF97F38-B2AC-483A-9EFD-71333CBF3A1A.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 416,
+        "height": 496
+      }
+    ],
+    "format": {
+      "duration": "26.308333"
+    }
+  },
+  {
+    "kind": "watch",
+    "file": "watch/watch-screenshots/BABDB43A-0F13-4924-ADBA-A14D5FB85BAF.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 416,
+        "height": 496
+      }
+    ],
+    "format": {
+      "duration": "21.935000"
+    }
+  },
+  {
+    "kind": "watch",
+    "file": "watch/watch-screenshots/14C5933F-A0FE-4F2A-BADC-A046A709E77F.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 416,
+        "height": 496
+      }
+    ],
+    "format": {
+      "duration": "25.380000"
+    }
+  },
+  {
+    "kind": "watch",
+    "file": "watch/watch-screenshots/18FAFD83-6BC6-4D5E-8D4E-86509C64CA65.mp4",
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 416,
+        "height": 496
+      }
+    ],
+    "format": {
+      "duration": "15.991667"
+    }
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "repository": "kubla/chronoception",
+  "head": "1c1948eb546bf874608cef76dcd6825bedd28bef",
+  "tested_pr_merge": "9fc37f45b56fd33df6ae538c9c8585506d712b6b",
+  "run": 41758706725,
+  "status": "all_four_checks_passed",
+  "signed_distribution": "not_run",
+  "physical_device_acceptance": "not_run"
+}

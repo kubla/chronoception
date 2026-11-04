@@ -1,0 +1,102 @@
+{
+  "candidate": "9fc37f45b56fd33df6ae538c9c8585506d712b6b",
+  "run": "41758706725",
+  "kind": "phone",
+  "result": "passed",
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "B7CD7ED2-0DFF-42FE-A30F-21CD2E3D3D2C",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23C54",
+          "osVersion": "26.2",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 5,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "Chronoception \u00b7 Built with macOS 15.8.2",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1793759677.709,
+    "passedTests": 5,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1793759452.891,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - Chronoception",
+    "topInsights": [],
+    "totalTestCount": 5
+  },
+  "media": [
+    {
+      "journey": "testRealEstimateFeedbackAndHistorySurviveRelaunch",
+      "videos": [
+        "67E6CE2A-D1FF-4A46-987E-F4A68BD4616A.mp4"
+      ],
+      "captures": [
+        "Ready",
+        "Estimating",
+        "Feedback",
+        "Finished",
+        "Persisted history"
+      ],
+      "launch_to_ready_seconds_including_automation": 9.391166208
+    },
+    {
+      "journey": "testRelaunchInterruptsAnUnfinishedSession",
+      "videos": [
+        "C41E07D9-D623-45D8-BC4F-ADB0937B6258.mp4"
+      ],
+      "captures": [
+        "Interrupted history"
+      ],
+      "launch_to_ready_seconds_including_automation": 8.174424
+    },
+    {
+      "journey": "testCancelDoesNotManufactureAnEstimate",
+      "videos": [
+        "37297303-A079-4DFC-9442-108115972386.mp4"
+      ],
+      "captures": [
+        "Cancelled history"
+      ],
+      "launch_to_ready_seconds_including_automation": 25.605770208
+    },
+    {
+      "journey": "testRepeatedPracticeRequiresEachEstimateAndExplicitAdvance",
+      "videos": [
+        "B8011569-FCFD-4497-9ABB-E5EB1A30447A.mp4"
+      ],
+      "captures": [
+        "Repeated practice history"
+      ],
+      "launch_to_ready_seconds_including_automation": 8.642651709
+    },
+    {
+      "journey": "testPrivacyIsAvailableWithoutStartingPractice",
+      "videos": [
+        "EDB72F1D-D13B-4BD5-9772-D15F100C2C39.mp4"
+      ],
+      "captures": [
+        "About and privacy"
+      ],
+      "launch_to_ready_seconds_including_automation": 10.904419458
+    }
+  ],
+  "missing_evidence": [],
+  "title_contrast": "Rendered navigation-title contrast: 19.22:1",
+  "physical_haptics": "not_run",
+  "store_distribution": "not_run"
+}
