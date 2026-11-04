@@ -126,15 +126,30 @@ final class PracticeUITests: XCTestCase {
         let data = try! JSONSerialization.data(withJSONObject: ["records": [other, first]])
         launchFixture(seed: String(data: data, encoding: .utf8)!)
         tap("open-history")
-        let recent = app.staticTexts["Latest 5: 20.0% error"]
-        for _ in 0..<5 where !recent.isHittable { app.swipeUp() }
-        XCTAssertTrue(recent.exists)
-        XCTAssertTrue(app.staticTexts["Previous 5: 70.0% error"].exists)
-        let otherInterval = app.staticTexts["5 min calibration"]
-        for _ in 0..<5 where !otherInterval.isHittable { app.swipeUp() }
-        XCTAssertTrue(otherInterval.exists)
-        XCTAssertTrue(app.staticTexts["Latest 1: 0.0% error"].exists)
+        reveal(["10s calibration", "Latest 5: 20.0% error", "Previous 5: 70.0% error"])
         capture("Calibration comparison")
+        reveal(["5 min calibration", "Latest 1: 0.0% error"])
+        capture("Other interval calibration")
+    }
+
+    private func reveal(_ labels: [String]) {
+        let elements = labels.map { app.staticTexts[$0] }
+        for element in elements { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
+        let title = app.navigationBars.staticTexts["History"].firstMatch
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        for _ in 0..<12 {
+            let top = title.frame.maxY + 4
+            let viewport = CGRect(
+                x: app.frame.minX + 4, y: top, width: app.frame.width - 8,
+                height: app.frame.maxY - top - 12)
+            let bounds = elements.reduce(CGRect.null) { $0.union($1.frame) }
+            if viewport.contains(bounds) { return }
+            let downward = bounds.minY < viewport.minY
+            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.4 : 0.7))
+            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.65 : 0.45))
+            start.press(forDuration: 0.05, thenDragTo: end)
+        }
+        XCTFail("Comparison must be inside the visible viewport before capture: \(labels)")
     }
 
     private func chooseTraining() {

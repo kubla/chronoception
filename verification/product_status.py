@@ -38,7 +38,7 @@ def assess(run, receipts, candidate_tree):
             problems.append(kind + ": train, test and calibration journeys required")
     rows = [
         {"outcome": "Train, test, and review calibration in the foreground", "status": "verified" if not problems else "unverified", "next": "Retain candidate evidence" if not problems else "Repair the missing or failed acceptance evidence"},
-        {"outcome": "Screen-free cues on actual iPhone and Watch", "status": "not_verified", "next": "Implement supported locked-device cue adapters and collect device timing, perceptibility, interruption and battery evidence"},
+        {"outcome": "Screen-free cues on actual iPhone and Watch", "status": "not_verified", "next": "Verify the screen-free adapters on actual devices: timing, perceptibility, interruption and battery evidence"},
         {"outcome": "Signed personal native delivery", "status": "not_verified", "next": "Establish personal signing destination, distribute, install and smoke-test the signed build"},
     ]
     return {"parent_issue": PARENT, "candidate_tree": candidate_tree,

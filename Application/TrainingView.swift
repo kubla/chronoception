@@ -6,12 +6,12 @@ struct TrainingView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: spacing) {
             if let message = store.trainingMessage {
                 Text(message).font(.caption).accessibilityIdentifier("training-runtime-message")
             }
             Text(store.training.plan.interval.label)
-                .font(.system(.title, design: .serif))
+                .font(.system(.title2, design: .serif))
             switch store.training.phase {
             case .training:
                 Text("Feel each interval.").font(.headline)
@@ -27,9 +27,9 @@ struct TrainingView: View {
                     .accessibilityIdentifier("end-training")
             case .completed, .cancelled, .interrupted:
                 Text(finishedTitle)
-                    .font(.system(.title2, design: .serif))
+                    .font(finishedFont)
                     .accessibilityIdentifier("training-finished")
-                Text("\(store.training.completedIntervals) cued intervals saved.")
+                Text("\(store.training.completedIntervals) cued intervals saved.").font(.caption)
                 if store.training.phase == .interrupted {
                     Text("Timing stopped when the app left the foreground or a cue was delayed.")
                         .font(.caption).foregroundStyle(.secondary)
@@ -47,6 +47,22 @@ struct TrainingView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase != .active { store.trainingLeftActiveScene() }
         }
+    }
+
+    private var finishedFont: Font {
+        #if os(watchOS)
+            .system(.title3, design: .serif)
+        #else
+            .system(size: PracticeStyle.heroSize, weight: .regular, design: .serif)
+        #endif
+    }
+
+    private var spacing: CGFloat {
+        #if os(watchOS)
+            10
+        #else
+            16
+        #endif
     }
 
     private var finishedTitle: String {
