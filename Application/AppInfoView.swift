@@ -11,7 +11,13 @@ struct AppInfoView: View {
                         "Train with repeated interval cues, then test your sense of time without a countdown. Review calibration for each interval."
                     )
                     Text("Phone and Watch work independently. Their histories stay separate.")
-                    Text("Training currently needs this app open. Locking or leaving the app interrupts it.")
+                    #if os(watchOS)
+                        Text("Quiet practice can request screen-off runtime. Switching apps ends it.")
+                    #else
+                        Text(
+                            "Normal training needs this app open. The pocket cue experiment schedules system notifications separately."
+                        )
+                    #endif
                 }
                 Section("Privacy") {
                     Text(

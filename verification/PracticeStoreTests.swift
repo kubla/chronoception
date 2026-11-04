@@ -38,6 +38,7 @@ struct PracticeStoreTests {
         let reloaded = PracticeStore(directory: directory)
         precondition(reloaded.history.trainingRecords.count == 1)
         precondition(reloaded.history.trainingRecords[0].status == .cancelled)
+        await PocketCueTests.run()
         print(
             "PASS: old-runner cancellation preserves replacement training; training-only retry survives relaunch."
         )

@@ -16,25 +16,28 @@ struct HistoryView: View {
                     } else {
                         summary
                         ForEach(history.calibration) { summary in
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("\(summary.interval.label) calibration").font(.headline)
-                                Text(
-                                    "Latest \(summary.recent.count): \(summary.recentErrorPercent, specifier: "%.1f")% error"
-                                )
-                                if let previous = summary.previousErrorPercent {
-                                    Text(
-                                        "Previous \(summary.previous.count): \(previous, specifier: "%.1f")% error"
-                                    )
-                                } else {
-                                    Text("Keep practicing to compare with earlier estimates.")
+                            #if os(watchOS)
+                                NavigationLink {
+                                    CalibrationDetail(summary: summary)
+                                } label: {
+                                    HStack {
+                                        Text("\(summary.interval.label) calibration")
+                                        Spacer()
+                                        Image(systemName: "chevron.right").font(.caption)
+                                    }
+                                    .font(.headline)
+                                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
                                 }
-                            }
-                            .font(.caption)
-                            .accessibilityIdentifier("calibration-summary")
+                                .accessibilityIdentifier("calibration-\(summary.interval.seconds)")
+                            #else
+                                CalibrationValues(
+                                    summary: summary, title: "\(summary.interval.label) calibration")
+                            #endif
                         }
                         ForEach(history.trainingRecords) { record in
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Training · \(record.interval.label)").font(.headline)
+                                if record.screenOffRequested == true { Text("Quiet practice") }
                                 Text(
                                     "\(record.completedIntervals) of \(record.plannedRepetitions) cued intervals"
                                 )
@@ -94,14 +97,55 @@ struct HistoryView: View {
             )
             .font(.headline)
             .accessibilityIdentifier("history-count")
-            if !history.completedAttempts.isEmpty {
-                let mean =
-                    history.completedAttempts.reduce(0) { $0 + $1.absoluteErrorFraction }
-                    / Double(history.completedAttempts.count)
-                Text("Mean absolute error: \(mean * 100, specifier: "%.1f")%")
-                    .font(.subheadline)
-                Text("Completed attempts are retained when a session ends early.")
-                    .font(.caption).foregroundStyle(.secondary)
+            #if !os(watchOS)
+                if !history.completedAttempts.isEmpty {
+                    let mean =
+                        history.completedAttempts.reduce(0) { $0 + $1.absoluteErrorFraction }
+                        / Double(history.completedAttempts.count)
+                    Text("Mean absolute error: \(mean * 100, specifier: "%.1f")%")
+                        .font(.subheadline)
+                    Text("Completed attempts are retained when a session ends early.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            #endif
+        }
+    }
+}
+
+private struct CalibrationValues: View {
+    let summary: CalibrationSummary
+    let title: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title).font(.headline)
+            Text("Latest \(summary.recent.count): \(summary.recentErrorPercent, specifier: "%.1f")% error")
+            if let previous = summary.previousErrorPercent {
+                Text("Previous \(summary.previous.count): \(previous, specifier: "%.1f")% error")
+            } else {
+                Text("Keep practicing to compare with earlier estimates.")
+            }
+        }
+        .font(.caption)
+    }
+}
+
+private struct CalibrationDetail: View {
+    let summary: CalibrationSummary
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        ScrollView {
+            CalibrationValues(summary: summary, title: "Calibration")
+                .padding()
+                .foregroundStyle(PracticeStyle.ink)
+        }
+        .accessibilityIdentifier("calibration-detail")
+        .background(PracticeStyle.background)
+        .navigationTitle(summary.interval.label)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") { dismiss() }.accessibilityIdentifier("close-calibration")
             }
         }
     }

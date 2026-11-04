@@ -26,11 +26,13 @@ An attempt resolves once. Terminal sessions remain terminal. Completed attempts 
 ```mermaid
 stateDiagram-v2
     [*] --> Ready
-    Ready --> Training: start marker
+    Ready --> Training: runtime started / start marker
+    Ready --> Cancelled: cancel while runtime starts
+    Ready --> Interrupted: runtime startup failed
     Training --> Training: interval boundary / cue
     Training --> Completed: last boundary / cue
     Training --> Cancelled: end training
-    Training --> Interrupted: foreground lost or boundary over 500ms late
+    Training --> Interrupted: runtime lost, foreground mode left, or boundary over 500ms late
     Completed --> [*]
     Cancelled --> [*]
     Interrupted --> [*]
@@ -39,3 +41,5 @@ stateDiagram-v2
 `TrainingEngine` accepts explicit monotonic time. Each accepted boundary adds exactly one cued interval; duplicate pulses do not add cues. A delayed boundary interrupts without catch-up. Cancellation and interruption retain only accepted boundaries. The platform adapter requests the cue and retains the count; neither that count nor a Simulator recording proves that a person felt a haptic.
 
 Training records and estimates remain separate, including after persistence/relaunch. Old estimation-only history loads without migration loss. Calibration compares estimates for the same duration, newest first, in windows of up to five observations with explicit sample counts.
+
+The iPhone pocket experiment has one app-owned queue controller, retained across sheet replacement. Each schedule/cancel action has its own generation; stale preparation cannot enqueue further requests for a replacement action. Cancellation reconciles matching system requests before reporting the queue state, including after relaunch. The queue records requests, not felt intervals or estimate results.

@@ -87,7 +87,7 @@ def make_target(name, watch=False, test=False):
     else:
         settings.update(INFOPLIST_KEY_CFBundleDisplayName='Chronoception', ASSETCATALOG_COMPILER_APPICON_NAME='AppIconWatch' if watch else 'AppIcon', ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME='AccentColor', SWIFT_EMIT_LOC_STRINGS='YES')
         if watch:
-            settings.update(INFOPLIST_KEY_WKApplication='YES', INFOPLIST_KEY_WKCompanionAppBundleIdentifier='io.mjjt.chronoception', INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp='YES')
+            settings.update(INFOPLIST_FILE='Application/WatchInfo.plist', INFOPLIST_KEY_WKApplication='YES', INFOPLIST_KEY_WKCompanionAppBundleIdentifier='io.mjjt.chronoception', INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp='YES')
         else:
             settings.update(INFOPLIST_KEY_UILaunchScreen_Generation='YES', INFOPLIST_KEY_UIApplicationSceneManifest_Generation='YES', INFOPLIST_KEY_UISupportedInterfaceOrientations='UIInterfaceOrientationPortrait')
     add('target:'+name,'PBXNativeTarget',buildConfigurationList=configurations(name,settings),buildPhases=phases,buildRules=[],dependencies=dependencies,name=name,packageProductDependencies=package_products,productName=name,productReference=product,productType='com.apple.product-type.bundle.ui-testing' if test else 'com.apple.product-type.application')

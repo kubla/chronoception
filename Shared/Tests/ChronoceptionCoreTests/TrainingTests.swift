@@ -22,6 +22,15 @@ final class TrainingTests: XCTestCase {
         XCTAssertEqual(engine.completedIntervals, 3)
     }
 
+    func testRuntimeFailureBeforeTheStartCueInterruptsWithoutObservations() {
+        var engine = TrainingEngine(plan: plan)
+        engine.send(.interrupt)
+        XCTAssertEqual(engine.phase, .interrupted)
+        XCTAssertEqual(engine.completedIntervals, 0)
+        engine.send(.start(at: .zero))
+        XCTAssertEqual(engine.phase, .interrupted)
+    }
+
     func testDelayedTrainingInterruptsRatherThanInventingMissedCues() {
         var engine = TrainingEngine(plan: plan)
         engine.send(.start(at: .zero))

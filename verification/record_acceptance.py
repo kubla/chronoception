@@ -21,11 +21,15 @@ expected = {
     'testCancelDoesNotManufactureAnEstimate': ['Cancelled history'],
     'testRepeatedPracticeRequiresEachEstimateAndExplicitAdvance': ['Repeated practice history'],
     'testPrivacyIsAvailableWithoutStartingPractice': ['About and privacy'],
-    'testCalibrationComparesIntervalsAndEarlierObservations': ['Calibration comparison'],
+    'testCalibrationComparesIntervalsAndEarlierObservations': ['Calibration comparison', 'Other interval calibration'],
     'testTrainingRepeatsAndPersistsWithoutCreatingEstimates': ['Training running', 'Training complete', 'Training history'],
     'testTrainingCancellationRetainsNoInventedCues': ['Cancelled training'],
     'testTrainingRelaunchInterruptsInsteadOfCompleting': ['Interrupted training'],
 }
+if kind == 'phone':
+    expected['testPocketExperimentSchedulesAndCancelsSystemRequests'] = ['Pocket cues scheduled', 'Pocket cues cancelled']
+else:
+    expected['testQuietPracticeRejectsAWindowBeyondTheRuntimeLimit'] = ['Quiet practice limit']
 media = []
 missing = []
 for name, captures in expected.items():

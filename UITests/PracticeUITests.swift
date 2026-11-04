@@ -47,7 +47,11 @@ final class PracticeUITests: XCTestCase {
         tap("open-history")
         XCTAssertTrue(app.staticTexts["history-count"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["history-count"].label, "1 recorded attempt")
-        XCTAssertTrue(app.staticTexts["5 min calibration"].exists)
+        #if os(watchOS)
+            XCTAssertTrue(app.buttons["calibration-300"].exists)
+        #else
+            XCTAssertTrue(app.staticTexts["5 min calibration"].exists)
+        #endif
         capture("Persisted history")
     }
 
@@ -90,7 +94,11 @@ final class PracticeUITests: XCTestCase {
         tap("open-history")
         XCTAssertTrue(app.staticTexts["history-count"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["history-count"].label, "3 recorded attempts")
-        XCTAssertTrue(app.staticTexts["30s calibration"].exists)
+        #if os(watchOS)
+            XCTAssertTrue(app.buttons["calibration-30"].exists)
+        #else
+            XCTAssertTrue(app.staticTexts["30s calibration"].exists)
+        #endif
         capture("Repeated practice history")
     }
 
@@ -126,15 +134,42 @@ final class PracticeUITests: XCTestCase {
         let data = try! JSONSerialization.data(withJSONObject: ["records": [other, first]])
         launchFixture(seed: String(data: data, encoding: .utf8)!)
         tap("open-history")
-        let recent = app.staticTexts["Latest 5: 20.0% error"]
-        for _ in 0..<5 where !recent.isHittable { app.swipeUp() }
-        XCTAssertTrue(recent.exists)
-        XCTAssertTrue(app.staticTexts["Previous 5: 70.0% error"].exists)
-        let otherInterval = app.staticTexts["5 min calibration"]
-        for _ in 0..<5 where !otherInterval.isHittable { app.swipeUp() }
-        XCTAssertTrue(otherInterval.exists)
-        XCTAssertTrue(app.staticTexts["Latest 1: 0.0% error"].exists)
-        capture("Calibration comparison")
+        #if os(watchOS)
+            tap("calibration-10")
+            assertComparisonVisible(
+                ["Calibration", "Latest 5: 20.0% error", "Previous 5: 70.0% error"], title: "10s")
+            capture("Calibration comparison")
+            tap("close-calibration")
+            tap("calibration-300")
+            assertComparisonVisible(["Calibration", "Latest 1: 0.0% error"], title: "5 min")
+        #else
+            assertComparisonVisible(
+                ["10s calibration", "Latest 5: 20.0% error", "Previous 5: 70.0% error"], title: "History")
+            capture("Calibration comparison")
+            assertComparisonVisible(["5 min calibration", "Latest 1: 0.0% error"], title: "History")
+        #endif
+        capture("Other interval calibration")
+    }
+
+    private func assertComparisonVisible(_ labels: [String], title: String) {
+        #if os(watchOS)
+            let close = app.buttons.matching(identifier: "close-calibration").firstMatch
+        #else
+            let close = app.buttons.matching(identifier: "close-history").firstMatch
+        #endif
+        let elements = labels.map { app.staticTexts[$0] }
+        for element in elements { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
+        let heading = app.navigationBars.staticTexts[title].firstMatch
+        XCTAssertTrue(heading.waitForExistence(timeout: 5))
+        let top = max(heading.frame.maxY, close.frame.maxY) + 4
+        let viewport = CGRect(
+            x: app.frame.minX + 4, y: top, width: app.frame.width - 8,
+            height: app.frame.maxY - top - 12)
+        let frames = elements.map { $0.frame }
+        let bounds = frames.reduce(CGRect.null) { $0.union($1) }
+        print("Calibration viewport=\(viewport) frames=\(frames)")
+        XCTAssertTrue(frames.allSatisfy { !$0.isEmpty }, "Comparison geometry must be available")
+        XCTAssertTrue(viewport.contains(bounds), "Comparison must be visible before capture: \(labels)")
     }
 
     private func chooseTraining() {
@@ -186,6 +221,39 @@ final class PracticeUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["0 of 1 cued intervals"].exists)
         capture("Interrupted training")
     }
+
+    #if os(iOS)
+        func testPocketExperimentSchedulesAndCancelsSystemRequests() {
+            launchFixture(attempts: 3)
+            chooseTraining()
+            tap("open-pocket-experiment")
+            XCTAssertTrue(app.staticTexts["pocket-status"].waitForExistence(timeout: 5))
+            tap("schedule-pocket-cues")
+            let system = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+            if system.buttons["Allow"].waitForExistence(timeout: 5) { system.buttons["Allow"].tap() }
+            let scheduled = NSPredicate(format: "label == %@", "3 cues pending")
+            expectation(for: scheduled, evaluatedWith: app.staticTexts["pocket-status"])
+            waitForExpectations(timeout: 10)
+            capture("Pocket cues scheduled")
+            tap("cancel-pocket-cues")
+            let cancelled = NSPredicate(format: "label == %@", "No cues pending")
+            expectation(for: cancelled, evaluatedWith: app.staticTexts["pocket-status"])
+            waitForExpectations(timeout: 10)
+            capture("Pocket cues cancelled")
+        }
+    #else
+        func testQuietPracticeRejectsAWindowBeyondTheRuntimeLimit() {
+            launchFixture(interval: 3601)
+            chooseTraining()
+            app.switches["quiet-training"].tap()
+            tap("begin-session")
+            XCTAssertTrue(app.staticTexts["training-configuration-message"].waitForExistence(timeout: 5))
+            XCTAssertEqual(
+                app.staticTexts["training-configuration-message"].label,
+                "Quiet practice must fit within one hour.")
+            capture("Quiet practice limit")
+        }
+    #endif
 
     private func tap(_ identifier: String) {
         let button = app.buttons.matching(identifier: identifier).firstMatch
