@@ -20,3 +20,11 @@ Record requested versus observed haptic timing, missed/late/duplicate cues, runt
 - Background runtime is not a hard real-time scheduler. Record interruptions and late cues; never manufacture completed training from elapsed time alone.
 
 [Focused source research](2026-11-04-watch-workout-runtime-nuance.md) documents the API nuances and inspected engineer examples. [Work item #13](https://github.com/kubla/chronoception/issues/13) and [product parent #11](https://github.com/kubla/chronoception/issues/11) retain the approved candidate and unfinished acceptance.
+
+## Engineering judgment after inspecting Silent Bell
+
+Silent Bell declares `WKBackgroundModes: [physical-therapy]` in its [pinned project configuration](https://github.com/jakublipinski/Silent-Bell/blob/f5555cf0b0751304ec98a68249711507e9119f42/project.yml), then uses the ordinary `WKExtendedRuntimeSession` start/delegate API. Its [session source](https://github.com/jakublipinski/Silent-Bell/blob/f5555cf0b0751304ec98a68249711507e9119f42/SilentBell/ReminderSession.swift) schedules one direct haptic at a time and handles expiry through an alert that the user taps to restart. This is a WatchKit execution category, not a HealthKit workout or a physical-therapy sensor integration.
+
+The author's real-device account supports high confidence that physical-therapy mode can preserve face/app access within its one-hour window. It does not solve all-day renewal: a new extended session must begin with the app active. The author explicitly retains HKWorkoutSession as the escape hatch from the cap and resume burden. His current runtime also experiences some early system suppression. [Author's runtime/lifecycle account](https://github.com/jakublipinski/Silent-Bell/blob/f5555cf0b0751304ec98a68249711507e9119f42/README.md).
+
+Implementation order: establish a conventional **running workout** as the background-haptic reference first, because both the platform contract and concrete timer implementations support that mechanism. Then compare prepared/stopped states as power/Health-side-effect optimizations. This is a deliberate choice over the companion research note's prepared-first experiment suggestion. High confidence in the running-workout mechanism does not establish a numeric latency bound or all-day battery quality; those are the decisive measurements.
