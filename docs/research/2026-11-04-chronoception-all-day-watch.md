@@ -8,7 +8,11 @@ Michael clarified: Watch training must act like a timer that automatically repea
 
 The existing mindfulness runtime is a bounded foreground/frontmost adapter. It does not meet this outcome. This is missing product implementation in addition to missing physical acceptance. Existing foreground training, estimation and calibration remain accepted slices.
 
-## Recommendation
+## Original recommendation, superseded in priority by the workout authorization
+
+Michael subsequently accepted a workout-backed runtime if needed for timely cues. The [decision record](2026-11-04-chronoception-workout-runtime-decision.md) now prioritizes that experiment; notification scheduling remains a comparison candidate. The findings below remain evidence, not a standing prohibition on workout use.
+
+## Notification candidate
 
 Investigate a **persistent Watch-local cue schedule** owned by the operating system. Keep bounded practice sessions and persistent schedules conceptually distinct. The app installs, inspects, edits and cancels the schedule; it need not execute continuously between cues. Schedule on the Watch itself to retain phone independence and a Watch-specific destination. Apple's routing table identifies Watch-origin local notifications as Watch-only. [Routing contract](https://developer.apple.com/documentation/watchos-apps/taking-advantage-of-notification-forwarding).
 
